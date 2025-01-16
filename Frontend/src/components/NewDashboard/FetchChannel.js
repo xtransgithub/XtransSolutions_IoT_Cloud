@@ -6,7 +6,7 @@ export const fetchChannelData = async (id, token, setFieldData, setHistoricalDat
     await getChannelById(id, token, setCurrentChannel); // Make sure to wait for this
     try {
         const fieldResponse = await axios.get(`${server}api/channels/${id}/entries/read`);
-        console.log(fieldResponse);
+        // console.log(fieldResponse);
 
         const allFields = new Set();
         fieldResponse.data.entries.forEach(entry => {
@@ -14,7 +14,7 @@ export const fetchChannelData = async (id, token, setFieldData, setHistoricalDat
         });
 
         const createdFields = Array.from(allFields);
-        console.log(allFields);
+        // console.log(allFields);
 
         // Initialize `latestEntry` with default values for each field
         const latestEntry = createdFields.reduce((acc, fieldName) => {

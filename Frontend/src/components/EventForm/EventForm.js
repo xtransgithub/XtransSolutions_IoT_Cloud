@@ -4,6 +4,7 @@ import { Formik, Field, Form, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { useNavigate } from "react-router-dom";
+import { server } from "../../config";
 
 const EventForm = () => {
   const navigate = useNavigate();
@@ -12,13 +13,11 @@ const EventForm = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const token = localStorage.getItem("token");
-  const server = "http://162.255.85.191:8000/";
 
-  // Fetch channels when the component mounts
   useEffect(() => {
     const fetchChannels = async () => {
       if (!token) {
-        navigate("/signin"); // Redirect to sign-in page if token is not found
+        navigate("/signin");
         return;
       }
 
@@ -43,37 +42,30 @@ const EventForm = () => {
     fetchChannels();
   }, [navigate, token]);
 
-  // Fetch fields when a channel is selected
   const handleChannelChange = (channelId, setFieldValue) => {
-    // Set the selected channel id in Formik form state
     setFieldValue("channelId", channelId);
-
-    console.log("Fetching fields for channel ID:", channelId); // Debugging statement
-
-    // Fetch fields for the selected channel
+  
     axios
-      .get(`${server}api/channels/${channelId}/entries/read`, {
+      .get(`${server}api/auth/channels`, {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then((response) => {
-        console.log("Fields fetched successfully:", response.data); // Debugging statement
-
-        // Assuming 'entries' contains objects with 'fieldData' array, which might be empty or contain actual data
-        // If 'fieldData' exists and contains items, use that. Otherwise, show a message or set an empty list.
-        const fields = response.data.entries
-          .flatMap(entry => entry.fieldData) // Extract all fieldData from entries
-          .filter((field, index, self) => self.indexOf(field) === index); // Remove duplicates if any
-
-        setFields(fields); // Set fields for dropdown
+        const selectedChannel = response.data.channels.find(channel => channel._id === channelId);
+  
+        if (selectedChannel && Array.isArray(selectedChannel.fields)) {
+          const uniqueFields = [...new Set(selectedChannel.fields)];
+          setFields(uniqueFields.map(field => ({ name: field, value: field })));
+        } else {
+          setFields([]);
+        }
       })
       .catch((error) => {
         console.error("Error fetching fields:", error.response ? error.response.data : error.message);
-        setFields([]); // Clear fields if error occurs
+        setFields([]);
         setError("Failed to fetch fields. Please try again.");
       });
-  };
+  };  
 
-  // Validation Schema
   const validationSchema = Yup.object({
     channelId: Yup.string().required("Please select a channel"),
     fieldName: Yup.string().required("Please select a field"),
@@ -81,10 +73,9 @@ const EventForm = () => {
     triggerValue: Yup.number()
       .required("Please enter a trigger value")
       .positive("Trigger value must be a positive number")
-      .typeError("Trigger value must be a number"), // Added to handle non-numeric inputs
+      .typeError("Trigger value must be a number"),
   });
 
-  // Submit function
   const handleSubmit = (values, { setSubmitting, resetForm }) => {
     const requestData = {
       ch_id: values.channelId,
@@ -96,7 +87,7 @@ const EventForm = () => {
     axios
       .post(`${server}api/auth/events`, requestData, {
         headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`, // Assuming token is stored in localStorage
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
       })
       .then((response) => {
@@ -131,7 +122,6 @@ const EventForm = () => {
       >
         {({ isSubmitting, values, setFieldValue }) => (
           <Form className="card p-4 shadow">
-            {/* Channel Selection */}
             <div className="mb-3">
               <label htmlFor="channelId" className="form-label">
                 Select Channel:
@@ -153,7 +143,6 @@ const EventForm = () => {
               <ErrorMessage name="channelId" component="div" className="text-danger" />
             </div>
 
-            {/* Field Selection */}
             <div className="mb-3">
               <label htmlFor="fieldName" className="form-label">
                 Select Field:
@@ -169,7 +158,7 @@ const EventForm = () => {
                 {fields && fields.length > 0 ? (
                   fields.map((field, index) => (
                     <option key={index} value={field.value}>
-                      {field.name} {/* If fields have a 'name' and 'value' structure */}
+                      {field.name}
                     </option>
                   ))
                 ) : (
@@ -179,7 +168,6 @@ const EventForm = () => {
               <ErrorMessage name="fieldName" component="div" className="text-danger" />
             </div>
 
-            {/* Operator Selection */}
             <div className="mb-3">
               <label htmlFor="operator" className="form-label">
                 Operator:
@@ -200,7 +188,6 @@ const EventForm = () => {
               <ErrorMessage name="operator" component="div" className="text-danger" />
             </div>
 
-            {/* Trigger Value Input */}
             <div className="mb-3">
               <label htmlFor="triggerValue" className="form-label">
                 Trigger Value:
@@ -214,7 +201,6 @@ const EventForm = () => {
               <ErrorMessage name="triggerValue" component="div" className="text-danger" />
             </div>
 
-            {/* Submit Button */}
             <div className="d-grid">
               <button type="submit" className="btn btn-primary" disabled={isSubmitting}>
                 {isSubmitting ? "Setting Event..." : "Set Event"}
