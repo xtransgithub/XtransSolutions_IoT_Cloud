@@ -1,0 +1,41 @@
+.channel-row:hover{
+  transform: translateY(-5px);
+}
+
+.channel-row {
+  display: block;
+  top: 0px;
+  position: relative;
+  max-width: 100%;
+  background-color: white;
+  border-radius: 10px;
+  text-decoration: none;
+  z-index: 0;
+  overflow: hidden;
+  border: 1px solid white;
+}
+
+.channel-row:hover {
+  transition: all 0.25s ease-in-out;
+  box-shadow: 0px 4px 8px rgba(38, 38, 38, 0.2);
+  top: -4px;
+  border: 1px solid #cccccc;
+  background-color: #f2f8f9;
+}
+
+.channel-row:hover:before {
+  transform: scale(2.15);
+}
+
+.create-channel{
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}

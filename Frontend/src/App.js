@@ -1,0 +1,65 @@
+import React from 'react';
+import './App.css';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import Home from './components/home/Home';
+import SignIn from './components/Signin/Signin';
+import SignUp from './components/Signup/Signup';
+import ChannelDashboard from './components/NewDashboard/NewDashboard';
+import CreateChannelForm from './components/CreateChannelForm/CreateChannelForm';
+import PrivateRoute from './PrivateRoute';
+import UserProfile from './components/UserProfile/UserProfile';
+import Contact from './components/Contact/Contact';
+import ChannelPage from './components/ChannelPage/ChannelPage';
+import ForgotPasswordPage from './components/forgetPass/forgetPass';
+import ResetPasswordPage from './components/resetPassword/resetPasswordPage';
+import Layout from './layout';
+
+function App() {
+  return (
+    <>
+      <Router>
+        <Routes>
+          {/* Public Routes */}
+          <Route path='/' element={<Home />} />
+          <Route path="/signin" element={<SignIn />} />
+          <Route path="/signup" element={<SignUp />} />
+          <Route path="/contact" element={<Contact />} />
+          <Route path="/forget-password" element={<ForgotPasswordPage />} />
+          <Route path="/update-password/:token" element={<ResetPasswordPage />} />
+
+          {/* Protected Routes */}
+          <Route path="/channels" element={
+            <PrivateRoute>
+              <Layout>
+                <ChannelPage />
+              </Layout>
+            </PrivateRoute>
+          } />
+          <Route path="/newChannel" element={
+            <PrivateRoute>
+              <Layout>
+                <CreateChannelForm />
+              </Layout>
+            </PrivateRoute>
+          } />
+          <Route path="/dashboard/:id" element={
+            <PrivateRoute>
+              <Layout>
+                <ChannelDashboard />
+              </Layout>
+            </PrivateRoute>
+          } />
+          <Route path="/profile" element={
+            <PrivateRoute>
+              <Layout>
+                <UserProfile />
+              </Layout>
+            </PrivateRoute>
+          } />
+        </Routes>
+      </Router>
+    </>
+  );
+}
+
+export default App;
