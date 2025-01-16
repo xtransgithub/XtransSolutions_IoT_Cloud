@@ -6,6 +6,7 @@ const authRouter = require('./routes/authRoute')
 const dataRouter = require('./routes/dataRoute')
 const accountRouter = require('./routes/accountRoute')
 const channelRouter = require('./routes/channelRoute')
+const eventRouter = require('./routes/eventRoute')
 const authenticateJWT = require('./middleware/authenticateJWT'); 
 const Channel = require('./models/channelModel');
 const verification = require('./controllers/verificationController')
@@ -45,6 +46,7 @@ app.use('/api/auth', authenticateJWT, authRouter);
 app.use('/api/csv', csvRouter);
 console.log(1)
 app.use('/api/auth', channelRouter)
+app.use('/api/auth', eventRouter)
 console.log(2)
 const addEntryToChannel = async (channelId, fieldData, res) => {
     try {
