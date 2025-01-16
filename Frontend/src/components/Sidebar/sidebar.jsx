@@ -57,9 +57,9 @@ function Sidebar() {
                         </a>
                     </li>
                     <li className="sidebar-item">
-                        <a href="/alerts" className="sidebar-link">
+                        <a href="/event-form" className="sidebar-link">
                             <i className="bi bi-bell"></i>
-                            <span>Alerts</span>
+                            <span>Event Form</span>
                         </a> 
                     </li>
                     <li className="sidebar-item">
