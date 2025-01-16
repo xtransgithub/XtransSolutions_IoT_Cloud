@@ -45,8 +45,8 @@ const EventForm = () => {
 
   // Fetch fields when a channel is selected
   const handleChannelChange = (channelId, setFieldValue) => {
-    // Set the selected channel id in Formik form state
     setFieldValue("channelId", channelId);
+    setFieldValue("fieldName", ""); // Reset field selection when the channel changes
 
     console.log("Fetching fields for channel ID:", channelId); // Debugging statement
 
@@ -58,11 +58,10 @@ const EventForm = () => {
       .then((response) => {
         console.log("Fields fetched successfully:", response.data); // Debugging statement
 
-        // Assuming 'entries' contains objects with 'fieldData' array, which might be empty or contain actual data
-        // If 'fieldData' exists and contains items, use that. Otherwise, show a message or set an empty list.
         const fields = response.data.entries
           .flatMap(entry => entry.fieldData) // Extract all fieldData from entries
-          .filter((field, index, self) => self.indexOf(field) === index); // Remove duplicates if any
+          .map(field => field.name) // Extract only the field names
+          .filter((value, index, self) => self.indexOf(value) === index); // Remove duplicates if any
 
         setFields(fields); // Set fields for dropdown
       })
@@ -78,21 +77,24 @@ const EventForm = () => {
     channelId: Yup.string().required("Please select a channel"),
     fieldName: Yup.string().required("Please select a field"),
     operator: Yup.string().required("Please select an operator"),
-    triggerValue: Yup.number()
+    triggerValue: Yup.string()
       .required("Please enter a trigger value")
-      .positive("Trigger value must be a positive number")
-      .typeError("Trigger value must be a number"), // Added to handle non-numeric inputs
+      .matches(/^[a-zA-Z0-9\s]*$/, "Trigger value must be a valid string"), // Only allow alphanumeric and spaces
   });
 
   // Submit function
   const handleSubmit = (values, { setSubmitting, resetForm }) => {
     const requestData = {
-      ch_id: values.channelId,
-      fieldName: values.fieldName,
-      operator: values.operator,
-      triggerValue: parseFloat(values.triggerValue),
+      ch_id: values.channelId,        // Correct field name for channel ID
+      fieldName: values.fieldName,    // The field name selected
+      operator: values.operator,      // The operator selected (greater than, less than, etc.)
+      triggerValue: values.triggerValue,  // Trigger value as a string
+      triggerType: "email",           // Assuming triggerType is fixed as email for now
     };
 
+    console.log("Request Data:", requestData);
+
+    // Make the API request to create the event
     axios
       .post(`${server}api/auth/events`, requestData, {
         headers: {
@@ -100,15 +102,19 @@ const EventForm = () => {
         },
       })
       .then((response) => {
-        alert(response.data.message);
-        resetForm();
+        alert(response.data.message);  // Notify user about the result
+        resetForm();                    // Reset the form after successful submission
       })
       .catch((error) => {
         console.error("Error setting event:", error);
-        alert("Failed to set event");
+        if (error.response && error.response.data) {
+          alert(error.response.data.message); // Display the error message from the backend
+        } else {
+          alert("Failed to set event");    // Show a generic error message
+        }
       })
       .finally(() => {
-        setSubmitting(false);
+        setSubmitting(false);  // Allow submission again after the request completes
       });
   };
 
@@ -168,8 +174,8 @@ const EventForm = () => {
                 <option value="">Select a Field</option>
                 {fields && fields.length > 0 ? (
                   fields.map((field, index) => (
-                    <option key={index} value={field.value}>
-                      {field.name} {/* If fields have a 'name' and 'value' structure */}
+                    <option key={index} value={field}>
+                      {field}
                     </option>
                   ))
                 ) : (
@@ -206,7 +212,7 @@ const EventForm = () => {
                 Trigger Value:
               </label>
               <Field
-                type="number"
+                type="text"
                 name="triggerValue"
                 id="triggerValue"
                 className="form-control"
