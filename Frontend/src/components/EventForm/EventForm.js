@@ -52,13 +52,22 @@ const EventForm = () => {
 
     // Fetch fields for the selected channel
     axios
-      .get(`api/auth/channels/${channelId}/entries/read`) // Replace with your actual endpoint
+      .get(`${server}api/channels/${channelId}/entries/read`, {
+        headers: { Authorization: `Bearer ${token}` },
+      })
       .then((response) => {
-        console.log("Fields fetched successfully:", response.data.fields); // Debugging statement
-        setFields(response.data.fields);
+        console.log("Fields fetched successfully:", response.data); // Debugging statement
+
+        // Assuming 'entries' contains objects with 'fieldData' array, which might be empty or contain actual data
+        // If 'fieldData' exists and contains items, use that. Otherwise, show a message or set an empty list.
+        const fields = response.data.entries
+          .flatMap(entry => entry.fieldData) // Extract all fieldData from entries
+          .filter((field, index, self) => self.indexOf(field) === index); // Remove duplicates if any
+
+        setFields(fields); // Set fields for dropdown
       })
       .catch((error) => {
-        console.error("Error fetching fields:", error.response ? error.response.data : error.message); // Log full error details
+        console.error("Error fetching fields:", error.response ? error.response.data : error.message);
         setFields([]); // Clear fields if error occurs
         setError("Failed to fetch fields. Please try again.");
       });
@@ -71,7 +80,8 @@ const EventForm = () => {
     operator: Yup.string().required("Please select an operator"),
     triggerValue: Yup.number()
       .required("Please enter a trigger value")
-      .positive("Trigger value must be a positive number"),
+      .positive("Trigger value must be a positive number")
+      .typeError("Trigger value must be a number"), // Added to handle non-numeric inputs
   });
 
   // Submit function
@@ -84,7 +94,7 @@ const EventForm = () => {
     };
 
     axios
-      .post("/api/auth/events", requestData, {
+      .post(`${server}api/auth/events`, requestData, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`, // Assuming token is stored in localStorage
         },
@@ -140,11 +150,7 @@ const EventForm = () => {
                   </option>
                 ))}
               </Field>
-              <ErrorMessage
-                name="channelId"
-                component="div"
-                className="text-danger"
-              />
+              <ErrorMessage name="channelId" component="div" className="text-danger" />
             </div>
 
             {/* Field Selection */}
@@ -160,21 +166,17 @@ const EventForm = () => {
                 disabled={!values.channelId}
               >
                 <option value="">Select a Field</option>
-                {fields.length > 0 ? (
+                {fields && fields.length > 0 ? (
                   fields.map((field, index) => (
-                    <option key={index} value={field}>
-                      {field}
+                    <option key={index} value={field.value}>
+                      {field.name} {/* If fields have a 'name' and 'value' structure */}
                     </option>
                   ))
                 ) : (
                   <option value="">No fields available</option>
                 )}
               </Field>
-              <ErrorMessage
-                name="fieldName"
-                component="div"
-                className="text-danger"
-              />
+              <ErrorMessage name="fieldName" component="div" className="text-danger" />
             </div>
 
             {/* Operator Selection */}
@@ -195,11 +197,7 @@ const EventForm = () => {
                 <option value="greater than equal to">Greater Than Equal To</option>
                 <option value="not equal to">Not Equal To</option>
               </Field>
-              <ErrorMessage
-                name="operator"
-                component="div"
-                className="text-danger"
-              />
+              <ErrorMessage name="operator" component="div" className="text-danger" />
             </div>
 
             {/* Trigger Value Input */}
@@ -213,20 +211,12 @@ const EventForm = () => {
                 id="triggerValue"
                 className="form-control"
               />
-              <ErrorMessage
-                name="triggerValue"
-                component="div"
-                className="text-danger"
-              />
+              <ErrorMessage name="triggerValue" component="div" className="text-danger" />
             </div>
 
             {/* Submit Button */}
             <div className="d-grid">
-              <button
-                type="submit"
-                className="btn btn-primary"
-                disabled={isSubmitting}
-              >
+              <button type="submit" className="btn btn-primary" disabled={isSubmitting}>
                 {isSubmitting ? "Setting Event..." : "Set Event"}
               </button>
             </div>
