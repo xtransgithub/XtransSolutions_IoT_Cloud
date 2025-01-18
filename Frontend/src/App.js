@@ -58,7 +58,7 @@ function App() {
             </PrivateRoute>
           } />
           {/* New Route for Event Form */}
-          <Route path="/event-form" element={
+          <Route path="/events" element={
             <PrivateRoute>
               <Layout>
                 <EventForm />

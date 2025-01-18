@@ -44,36 +44,24 @@ const EventForm = () => {
 
   const handleChannelChange = (channelId, setFieldValue) => {
     setFieldValue("channelId", channelId);
-  
-    axios
-      .get(`${server}api/auth/channels`, {
-        headers: { Authorization: `Bearer ${token}` },
-      })
-      .then((response) => {
-        const selectedChannel = response.data.channels.find(channel => channel._id === channelId);
-  
-        if (selectedChannel && Array.isArray(selectedChannel.fields)) {
-          const uniqueFields = [...new Set(selectedChannel.fields)];
-          setFields(uniqueFields.map(field => ({ name: field, value: field })));
-        } else {
-          setFields([]);
-        }
-      })
-      .catch((error) => {
-        console.error("Error fetching fields:", error.response ? error.response.data : error.message);
-        setFields([]);
-        setError("Failed to fetch fields. Please try again.");
-      });
-  };  
+    setFieldValue("fieldName", "");
+
+    const selectedChannel = channels.find((channel) => channel._id === channelId);
+
+    if (selectedChannel && Array.isArray(selectedChannel.fields)) {
+      setFields(selectedChannel.fields);
+    } else {
+      setFields([]);
+    }
+  };
 
   const validationSchema = Yup.object({
     channelId: Yup.string().required("Please select a channel"),
     fieldName: Yup.string().required("Please select a field"),
     operator: Yup.string().required("Please select an operator"),
-    triggerValue: Yup.number()
+    triggerValue: Yup.string()
       .required("Please enter a trigger value")
-      .positive("Trigger value must be a positive number")
-      .typeError("Trigger value must be a number"),
+      .matches(/^[a-zA-Z0-9\s]*$/, "Trigger value must be a valid string"),
   });
 
   const handleSubmit = (values, { setSubmitting, resetForm }) => {
@@ -81,8 +69,11 @@ const EventForm = () => {
       ch_id: values.channelId,
       fieldName: values.fieldName,
       operator: values.operator,
-      triggerValue: parseFloat(values.triggerValue),
+      triggerValue: values.triggerValue,
+      triggerType: "email",
     };
+
+    console.log("Request Data:", requestData);
 
     axios
       .post(`${server}api/auth/events`, requestData, {
@@ -91,12 +82,16 @@ const EventForm = () => {
         },
       })
       .then((response) => {
-        alert(response.data.message);
+        console.log(response);
         resetForm();
       })
       .catch((error) => {
         console.error("Error setting event:", error);
-        alert("Failed to set event");
+        if (error.response && error.response.data) {
+          alert(error.response.data.message);
+        } else {
+          alert("Failed to set event");
+        }
       })
       .finally(() => {
         setSubmitting(false);
@@ -157,8 +152,8 @@ const EventForm = () => {
                 <option value="">Select a Field</option>
                 {fields && fields.length > 0 ? (
                   fields.map((field, index) => (
-                    <option key={index} value={field.value}>
-                      {field.name}
+                    <option key={index} value={field}>
+                      {field}
                     </option>
                   ))
                 ) : (
@@ -193,7 +188,7 @@ const EventForm = () => {
                 Trigger Value:
               </label>
               <Field
-                type="number"
+                type="text"
                 name="triggerValue"
                 id="triggerValue"
                 className="form-control"
