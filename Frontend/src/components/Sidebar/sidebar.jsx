@@ -29,12 +29,6 @@ function Sidebar() {
                             <span>Profile</span>
                         </a>
                     </li>
-                    {/* <li className="sidebar-item">
-                        <a href="/channels" className="sidebar-link">
-                            <i className="bi bi-card-list"></i>
-                            <span>Channels</span>
-                        </a>
-                    </li> */}
                     <li className="sidebar-item">
                         <a href="/channels" className="sidebar-link collapsed has-dropdown" data-bs-toggle="collapse"
                             data-bs-target="#channel-list" aria-expanded="false" aria-controls="channel-list">
@@ -57,9 +51,9 @@ function Sidebar() {
                         </a>
                     </li>
                     <li className="sidebar-item">
-                        <a href="/alerts" className="sidebar-link">
+                        <a href="/events" className="sidebar-link">
                             <i className="bi bi-bell"></i>
-                            <span>Alerts</span>
+                            <span>Events</span>
                         </a> 
                     </li>
                     <li className="sidebar-item">

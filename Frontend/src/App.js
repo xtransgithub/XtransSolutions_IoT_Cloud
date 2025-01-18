@@ -13,6 +13,7 @@ import ChannelPage from './components/ChannelPage/ChannelPage';
 import ForgotPasswordPage from './components/forgetPass/forgetPass';
 import ResetPasswordPage from './components/resetPassword/resetPasswordPage';
 import Layout from './layout';
+import EventForm from './components/EventForm/EventForm';
 
 function App() {
   return (
@@ -53,6 +54,14 @@ function App() {
             <PrivateRoute>
               <Layout>
                 <UserProfile />
+              </Layout>
+            </PrivateRoute>
+          } />
+          {/* New Route for Event Form */}
+          <Route path="/events" element={
+            <PrivateRoute>
+              <Layout>
+                <EventForm />
               </Layout>
             </PrivateRoute>
           } />

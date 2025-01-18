@@ -27,6 +27,7 @@ const ChannelDashboard = () => {
     const [fieldToRemove, setFieldToRemove] = useState('');
     const { id } = useParams();
     const [newFields, setNewFields] = useState([]);
+    const [chartTypes, setChartTypes] = useState({});
 
     const token = localStorage.getItem('token');
     // const fieldPattern = /^[a-z0-9]+$/;
@@ -35,6 +36,16 @@ const ChannelDashboard = () => {
     useEffect(() => {
         fetchChannelData(id, token, setFieldData, setHistoricalData, setFieldCounts, setChannelData, setCurrentChannel);
     }, [id, token]);
+
+    useEffect(() => {
+        if (channelData.fields) {
+            const initialChartTypes = channelData.fields.reduce((acc, field) => {
+                acc[field] = 'line'; // Default to line chart for all fields
+                return acc;
+            }, {});
+            setChartTypes(initialChartTypes);
+        }
+    }, [channelData.fields]);
 
     const toggleEdit = () => {
         setIsEditing(!isEditing);
@@ -45,6 +56,11 @@ const ChannelDashboard = () => {
     const handleAddFieldArray = () => {
         setNewFields([...newFields, '']);
     }
+
+    const handleChartTypeChange = (field, type) => {
+        setChartTypes(prev => ({ ...prev, [field]: type }));
+    };
+
 
     return (
         <div className="container">
@@ -84,9 +100,24 @@ const ChannelDashboard = () => {
                     ) : (
                         <div className="charts-container">
                             {channelData.fields.map((field, index) => (
-                                <div className="chart mb-4" key={index}>
-                                    <FieldDisplay name={field} value={fieldData[field]} count={fieldCounts[field] || 0} onRemove={() =>handleRemoveField(id, field, token, setChannelData, setFieldData, setHistoricalData)} />
+                            <div className="chart mb-4" key={index}>
+                                <FieldDisplay name={field} value={fieldData[field]} count={fieldCounts[field] || 0} onRemove={() => handleRemoveField(id, field, token, setChannelData, setFieldData, setHistoricalData)} />
+
+                                <select
+                                    className="form-select mb-2"
+                                    value={chartTypes[field] || 'line'} // Default to line chart
+                                    onChange={(e) => handleChartTypeChange(field, e.target.value)}
+                                >
+                                    <option value="all">All Charts</option>
+                                    <option value="gauge">Gauge Chart</option>
+                                    <option value="line">Line Chart</option>
+                                </select>
+
+                                {(chartTypes[field] === 'all' || chartTypes[field] === 'gauge') && (
                                     <GaugeChartComponent value={fieldData[field]} />
+                                )}
+
+                                {(chartTypes[field] === 'all' || chartTypes[field] === 'line') && (
                                     <LineChartComponent
                                         data={{
                                             series1: historicalData[field]?.map(entry => entry.value) || [],
@@ -96,8 +127,9 @@ const ChannelDashboard = () => {
                                             return date.toLocaleTimeString([], { day: 'numeric', month: 'numeric', hour: '2-digit', minute: '2-digit' });
                                         }) || []}
                                     />
-                                </div>
-                            ))}
+                                )}
+                            </div>
+                        ))}
                         </div>
                     )}
                 </div>
