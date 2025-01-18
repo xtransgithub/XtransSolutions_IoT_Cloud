@@ -2,9 +2,9 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { Formik, Field, Form, ErrorMessage } from "formik";
 import * as Yup from "yup";
-import "bootstrap/dist/css/bootstrap.min.css";
 import { useNavigate } from "react-router-dom";
 import { server } from "../../config";
+import AlertModal from "../Alert/Alert";
 
 const EventForm = () => {
   const navigate = useNavigate();
@@ -12,6 +12,8 @@ const EventForm = () => {
   const [fields, setFields] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+  const [showAlert, setShowAlert] = useState(false);
+  const [alertMessage, setAlertMessage] = useState("");
   const token = localStorage.getItem("token");
 
   useEffect(() => {
@@ -82,28 +84,33 @@ const EventForm = () => {
         },
       })
       .then((response) => {
-        console.log(response);
+        setAlertMessage(response.data.message);
+        setShowAlert(true); // Show success alert
         resetForm();
       })
       .catch((error) => {
         console.error("Error setting event:", error);
-        if (error.response && error.response.data) {
-          alert(error.response.data.message);
-        } else {
-          alert("Failed to set event");
-        }
+        const errorMessage = error.response && error.response.data ? error.response.data.message : "Failed to set event";
+        setAlertMessage(errorMessage);
+        setShowAlert(true); // Show error alert
       })
       .finally(() => {
         setSubmitting(false);
       });
   };
 
+  const handleCloseAlert = () => {
+    setShowAlert(false); // Close the modal
+  };
+
   return (
-    <div className="container mt-5">
-      <h1 className="text-center mb-4">Set Event Alerts</h1>
+    <div className="container m-0">
+      <h2 className="text-start mb-3">Set Event Alerts</h2>
 
       {loading && <div>Loading channels...</div>}
       {error && <div className="alert alert-danger">{error}</div>}
+
+      {showAlert && <AlertModal message={alertMessage} onClose={handleCloseAlert} />}
 
       <Formik
         initialValues={{
