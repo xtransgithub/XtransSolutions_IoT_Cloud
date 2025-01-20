@@ -14,6 +14,7 @@ import ForgotPasswordPage from './components/forgetPass/forgetPass';
 import ResetPasswordPage from './components/resetPassword/resetPasswordPage';
 import Layout from './layout';
 import EventForm from './components/EventForm/EventForm';
+import Documentation from "./components/Documentation/Documentation";
 
 function App() {
   return (
@@ -27,6 +28,7 @@ function App() {
           <Route path="/contact" element={<Contact />} />
           <Route path="/forget-password" element={<ForgotPasswordPage />} />
           <Route path="/update-password/:token" element={<ResetPasswordPage />} />
+          <Route path="/documentation" element={<Documentation />} />
 
           {/* Protected Routes */}
           <Route path="/channels" element={
