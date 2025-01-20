@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import Images from '../../assets'; 
-import './navbar.css'
+import Images from '../../assets';
+import './navbar.css';
 
 const Navbar = () => {
   const navigate = useNavigate();
@@ -15,48 +15,73 @@ const Navbar = () => {
   };
 
   return (
-    <nav className="navbar sticky-top bg-dark">
-        <div className="container-fluid">
-          <a className="navbar-brand" href="/">
-            <img 
-              src={Images.logo} 
-              alt="XTrans Logo" 
-              width="30" 
-              height="30" 
-              className="d-inline-block align-text-top"
-            />
-            <span className="company"> Xtrans Solutions</span>
-          </a>
-          
-          <div className="d-flex align-items-center">
-            <Link to="/" className="nav-link">Home</Link>
-            <Link to="/channels" className="nav-link">Channels</Link>
-            <Link to="/documentation" className="nav-link">Documentation</Link>
-            <Link to="/contact" className="nav-link">Support</Link>
-            
+    <nav className="navbar navbar-expand-lg navbar-dark bg-dark sticky-top text-white">
+      <div className="container-fluid">
+        <a className="navbar-brand d-flex align-items-center" href="/">
+          <img 
+            src={Images.logo} 
+            alt="XTrans Logo" 
+            width="30" 
+            height="30" 
+            className="d-inline-block align-text-top"
+          />
+          <span className="ms-2 company"> Xtrans Solutions</span>
+        </a>
+
+        <button 
+          className="navbar-toggler" 
+          type="button" 
+          data-bs-toggle="collapse" 
+          data-bs-target="#navbarNav" 
+          aria-controls="navbarNav" 
+          aria-expanded="false" 
+          aria-label="Toggle navigation"
+        >
+          <span className="navbar-toggler-icon"></span>
+        </button>
+
+        <div className="collapse navbar-collapse" id="navbarNav">
+          <ul className="navbar-nav ms-auto">
+            <li className="nav-item">
+              <Link to="/" className="nav-link text-white">Home</Link>
+            </li>
+            <li className="nav-item">
+              <Link to="/channels" className="nav-link text-white">Channels</Link>
+            </li>
+            <li className="nav-item">
+              <Link to="/documentation" className="nav-link text-white">Documentation</Link>
+            </li>
+            <li className="nav-item">
+              <Link to="/contact" className="nav-link text-white">Support</Link>
+            </li>
+
             {token ? (
-              <div className="btn-group">
+              <li className="nav-item dropdown">
                 <button 
+                  className="btn btn-secondary dropdown-toggle" 
                   type="button" 
-                  className="btn btn-secondary dropdown-toggle acc-drop" 
+                  id="dropdownMenuButton" 
                   data-bs-toggle="dropdown" 
                   aria-expanded="false"
                 >
                   <i className="bi bi-person-circle"></i>
                 </button>
-                <ul className="dropdown-menu dropdown-menu-end">
+                <ul className="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton">
                   <li><Link className="dropdown-item" to="/profile">My Profile</Link></li>
                   <li><Link className="dropdown-item" to="/settings">Account Settings</Link></li>
                   <li><hr className="dropdown-divider" /></li>
-                  <li><button className="dropdown-item navbardrop" onClick={handleLogout}>Logout</button></li>
+                  <li><button className="dropdown-item" onClick={handleLogout}>Logout</button></li>
                 </ul>
-              </div>
+              </li>
             ) : (
-              <Link to="/signin" className="nav-link">Sign In</Link>
+              <li className="nav-item">
+                <Link to="/signin" className="nav-link text-white">Sign In</Link>
+              </li>
             )}
-          </div>
+          </ul>
         </div>
-      </nav>
+      </div>
+    </nav>
   );
 };
 
