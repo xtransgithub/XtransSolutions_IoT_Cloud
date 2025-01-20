@@ -32,7 +32,7 @@ const Documentation = () => {
                 className="nav-link"
                 href="#introduction"
                 style={{
-                  color: "#e4e4e4",
+                  color: "rgb(169, 201, 233)",
                   textDecoration: "none",
                   padding: "10px 0",
                 }}
