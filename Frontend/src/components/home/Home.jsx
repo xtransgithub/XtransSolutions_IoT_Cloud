@@ -20,7 +20,7 @@ const Home = () => {
                 Discover how Xtrans combines cutting-edge technologies to transform IoT projects with advanced analytics,
                 seamless integration, and intelligent automation.
               </p>
-              <Link to="/signin" className="btn btn-primary mt-4">Get started</Link>
+              <Link to="/signin" className="btn btn-primary mt-4 mb-3">Get started</Link>
             </div>
             <div className="col-md-6 text-center">
               <img src={CloudImg} alt="IoT Cloud Visualization" className="img-fluid rounded" />

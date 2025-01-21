@@ -114,19 +114,23 @@ const ChannelDashboard = () => {
                                 </select>
 
                                 {(chartTypes[field] === 'all' || chartTypes[field] === 'gauge') && (
-                                    <GaugeChartComponent value={fieldData[field]} />
+                                    <div className='GuageChart'>
+                                        <GaugeChartComponent value={fieldData[field]} />
+                                    </div>
                                 )}
 
                                 {(chartTypes[field] === 'all' || chartTypes[field] === 'line') && (
-                                    <LineChartComponent
-                                        data={{
-                                            series1: historicalData[field]?.map(entry => entry.value) || [],
-                                        }}
-                                        timeLabels={historicalData[field]?.map(entry => {
-                                            const date = new Date(entry.timestamp);
-                                            return date.toLocaleTimeString([], { day: 'numeric', month: 'numeric', hour: '2-digit', minute: '2-digit' });
-                                        }) || []}
-                                    />
+                                    <div className='LineChart'>
+                                        <LineChartComponent
+                                            data={{
+                                                series1: historicalData[field]?.map(entry => entry.value) || [],
+                                            }}
+                                            timeLabels={historicalData[field]?.map(entry => {
+                                                const date = new Date(entry.timestamp);
+                                                return date.toLocaleTimeString([], { day: 'numeric', month: 'numeric', hour: '2-digit', minute: '2-digit' });
+                                            }) || []}
+                                        />  
+                                    </div>
                                 )}
                             </div>
                         ))}

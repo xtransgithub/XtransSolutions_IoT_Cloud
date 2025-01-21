@@ -1,8 +1,14 @@
-import React from "react";
+import React, {useState} from "react";
 import Navbar from "../Navbar/Navbar";
 import { Link } from "react-router-dom";
 
 const Documentation = () => {
+  const [isSidebarVisible, setIsSidebarVisible] = useState(false);
+  
+  const toggleSidebar = () => {
+    setIsSidebarVisible(!isSidebarVisible);
+  };
+
   return (
     <div style={{ display: "flex", flexDirection: "column", height: "100vh" }}>
       {/* Navbar */}
@@ -10,19 +16,43 @@ const Documentation = () => {
 
       {/* Main Content Wrapper */}
       <div style={{ display: "flex", flexGrow: 1 }}>
-        {/* Sidebar */}
-        <nav
+        {/* Toggle Button */}
+        <button
+          onClick={toggleSidebar}
           style={{
-            width: "250px",
-            backgroundColor: "#0e2238",
-            borderRight: "1px solid #dee2e6",
-            padding: "1rem",
             position: "fixed",
-            top: "3.5rem",
-            bottom: 0,
-            overflowY: "auto",
+            top: "4rem",
+            left: isSidebarVisible ? "250px" : "10px",
+            zIndex: 1000,
+            backgroundColor: "#0e2238",
+            color: "white",
+            border: "none",
+            borderRadius: "5px",
+            padding: "10px 15px",
+            cursor: "pointer",
+            transition: "left 0.3s",
+            fontWeight: "bold",
           }}
         >
+          {isSidebarVisible ? "Hide Contents" : "Show Contents"}
+        </button>
+
+        {/* Sidebar */}
+        {isSidebarVisible && (
+          <nav
+            style={{
+              width: "250px",
+              backgroundColor: "#0e2238",
+              borderRight: "1px solid #dee2e6",
+              padding: "1rem",
+              position: "fixed",
+              top: "3.5rem",
+              bottom: 0,
+              overflowY: "auto",
+              transition: "transform 0.3s",
+            }}
+          >
+        
           <h5 style={{ marginBottom: "1.5rem", color: "rgb(169, 201, 233)" }}>
             Documentation
           </h5>
@@ -133,16 +163,17 @@ const Documentation = () => {
             </li>
           </ul>
         </nav>
-
+        )}
         {/* Main Content */}
         <div
           style={{
-            marginLeft: "250px",
+            marginLeft: isSidebarVisible ? "250px" : "0",
             padding: "1rem",
             flexGrow: 1,
             overflowY: "auto",
             marginTop: "3.5rem", // Adjusted to leave space for the navbar
             backgroundColor: "#f8f9fa",
+            transition: "margin-left 0.3s",
           }}
         >
           <h1 style={{ color: "#0e2238" }}>Documentation</h1>

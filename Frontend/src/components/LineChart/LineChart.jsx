@@ -35,7 +35,25 @@ const LineChartComponent = ({ data, timeLabels }) => {
     ],
   };
 
-  return <Line data={chartData} />;
+  const chartOptions = {
+    responsive: true, 
+    maintainAspectRatio: false,
+    scales: {
+      x: {
+        beginAtZero: true,
+      },
+      y: {
+        beginAtZero: true,
+      },
+    },
+
+  };
+  
+  return (
+    <div style={{ width: '100%', height: '200px' }}>
+      <Line data={chartData} options={chartOptions} />
+    </div>
+  );
 };
 
 export default LineChartComponent;
