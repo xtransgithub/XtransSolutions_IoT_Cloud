@@ -1,51 +1,44 @@
-/* For all navbar links including dropdown items */
 .navbar-nav .nav-link {
     color: white !important;
-    padding: 8px 20px !important; /* Increase padding for better spacing */
-    margin-right: 15px; /* Add margin between links */
+    padding: 8px 20px !important;
+    margin-right: 15px;
     border-radius: 5px !important;
     text-align: center;
-    background: linear-gradient(to right, #0e2238, #0e2238) !important; /* Linear background */
+    background: linear-gradient(to right, #0e2238, #0e2238) !important;
 }
 
-/* For smaller screens, decrease the space between links if needed */
 @media (max-width: 991px) {
     .navbar-nav .nav-link {
-        margin-right: 10px; /* Reduce margin on smaller screens */
+        margin-right: 10px;
     }
 }
 
-/* On hover: darker linear background */
 .navbar-nav .nav-link:hover {
-    background: linear-gradient(to right, #2c5282, #1e3c72) !important; /* Darker linear background on hover */
+    background: linear-gradient(to right, #2c5282, #1e3c72) !important;
 }
 
-/* For dropdown menu items (including account dropdown) */
 .dropdown-menu {
-    background: linear-gradient(to right, #0e2238, #0e2238) !important; /* Same gradient */
+    background: linear-gradient(to right, #0e2238, #0e2238) !important;
     border-radius: 5px;
-    border: none; /* Remove default border */
-    box-shadow: 0px 4px 6px #0e2238; /* Optional: Add shadow for better visibility */
+    border: none;
+    box-shadow: 0px 4px 6px #0e2238;
     text-align: center;
 }
 
-/* Dropdown menu items styling */
 .dropdown-menu .dropdown-item {
     color: white !important;
     padding: 8px 15px !important;
     border-radius: 5px !important;
-    transition: background-color 0.3s ease; /* Smooth transition for hover effect */
-    text-align: center; /* Ensure text is center-aligned */
-    display: block; /* Ensure full-width clickable area */
+    transition: background-color 0.3s ease;
+    text-align: center;
+    display: block;
 }
 
-/* Dropdown menu item hover effect */
 .dropdown-menu .dropdown-item:hover {
-    background: linear-gradient(to right, #2c5282, #1e3c72) !important; /* Darker linear gradient on hover */
-    color: #ffffff !important; /* Maintain white text color */
+    background: linear-gradient(to right, #2c5282, #1e3c72) !important;
+    color: #ffffff !important;
 }
 
-/* Optional: Tweak other dropdown styling */
 .dropdown-menu .dropdown-divider {
-    background-color: #0e2238; /* Optional: Divider matching the gradient */
+    background-color: #0e2238;
 }
