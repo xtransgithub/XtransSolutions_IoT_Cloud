@@ -31,7 +31,7 @@ exports.setEvents = async (req, res) => {
     try {
         console.log("we are in events");
         const userId = req.user._id;
-        const { operator, ch_id, fieldName, triggerValue } = req.body;
+        const { email, operator, ch_id, fieldName, triggerValue } = req.body;
 
         const user = await User.findOne({ _id: userId });
         const channel = await Channel.findById({_id: ch_id});
@@ -62,7 +62,7 @@ exports.setEvents = async (req, res) => {
             const to = user.email;
             const subject = 'Email Alert';
             const text = `Alert! The field value is ${curVal}, which meets the condition '${operator}' with the threshold ${triggerValue}.`;
-            const email = process.env.EMAIL_ADDRESS;
+            // const email = process.env.EMAIL_ADDRESS;
 
             const userAlertKey = `${userId}_${ch_id}_${fieldName}`;
 
