@@ -61,25 +61,22 @@ const EventForm = () => {
     channelId: Yup.string().required("Please select a channel"),
     fieldName: Yup.string().required("Please select a field"),
     operator: Yup.string().required("Please select an operator"),
-    triggerValue: Yup.number()
+    triggerValue: Yup.string()
       .required("Please enter a trigger value")
-      .typeError("Trigger value must be a number"),
-    email: Yup.string()
-      .required("Please enter an email address")
-      .email("Invalid email address"),
+      .matches(/^[a-zA-Z0-9\s]*$/, "Trigger value must be a valid string"),
   });
 
   const handleSubmit = (values, { setSubmitting, resetForm }) => {
     const requestData = {
-      email: values.email,
-      operator: values.operator,
       ch_id: values.channelId,
       fieldName: values.fieldName,
-      triggerValue: parseFloat(values.triggerValue),
+      operator: values.operator,
+      triggerValue: values.triggerValue,
+      triggerType: "email",
     };
-  
+
     console.log("Request Data:", requestData);
-  
+
     axios
       .post(`${server}api/auth/events`, requestData, {
         headers: {
@@ -88,25 +85,22 @@ const EventForm = () => {
       })
       .then((response) => {
         setAlertMessage(response.data.message);
-        setShowAlert(true);
+        setShowAlert(true); // Show success alert
         resetForm();
       })
       .catch((error) => {
         console.error("Error setting event:", error);
-        const errorMessage =
-          error.response && error.response.data
-            ? error.response.data.message
-            : "Failed to set event";
+        const errorMessage = error.response && error.response.data ? error.response.data.message : "Failed to set event";
         setAlertMessage(errorMessage);
-        setShowAlert(true);
+        setShowAlert(true); // Show error alert
       })
       .finally(() => {
         setSubmitting(false);
       });
-  };  
+  };
 
   const handleCloseAlert = () => {
-    setShowAlert(false);
+    setShowAlert(false); // Close the modal
   };
 
   return (
@@ -124,7 +118,6 @@ const EventForm = () => {
           fieldName: "",
           operator: "greater than",
           triggerValue: "",
-          email: "",
         }}
         validationSchema={validationSchema}
         onSubmit={handleSubmit}
@@ -208,19 +201,6 @@ const EventForm = () => {
                 className="form-control"
               />
               <ErrorMessage name="triggerValue" component="div" className="text-danger" />
-            </div>
-
-            <div className="mb-3">
-              <label htmlFor="email" className="form-label">
-                Email Address:
-              </label>
-              <Field
-                type="email"
-                name="email"
-                id="email"
-                className="form-control"
-              />
-              <ErrorMessage name="email" component="div" className="text-danger" />
             </div>
 
             <div className="d-grid">

@@ -90,63 +90,70 @@ const UserProfile = () => {
   }
 
   return (
-    <div className="container m-0">
-      <h2 className="text-start mb-4">User Profile</h2>
+    <div className="container my-4">
+      <h2 className="text-center mb-4">User Profile</h2>
       {user ? (
         <>
           {/* Personal Information */}
           <div className="profile-section mb-4">
-            <h2 className="h4">Personal Information</h2>
-            <div className="row">
-              <div className="col-md-3 mb-3 me-2 bg-light rounded">
-                <label className="form-label">First Name</label>
-                {editMode ? (
-                  <input
-                    type="text"
-                    value={firstName}
-                    onChange={(e) => setFirstName(e.target.value)}
-                    className="form-control"
-                  />
-                ) : (
-                  <p>{user.firstName}</p>
-                )}
+            <h3 className="h5">Personal Information</h3>
+            <div className="row g-3">
+              <div className="col-md-6 col-sm-12">
+                <div className="p-3 bg-light rounded">
+                  <label className="form-label">First Name</label>
+                  {editMode ? (
+                    <input
+                      type="text"
+                      value={firstName}
+                      onChange={(e) => setFirstName(e.target.value)}
+                      className="form-control"
+                    />
+                  ) : (
+                    <p className="mb-0">{user.firstName}</p>
+                  )}
+                </div>
               </div>
-
-              <div className="col-md-3 mb-3 ms-2 bg-light rounded">
-                <label className="form-label">Last Name</label>
-                {editMode ? (
-                  <input
-                    type="text"
-                    value={lastName}
-                    onChange={(e) => setLastName(e.target.value)}
-                    className="form-control"
-                  />
-                ) : (
-                  <p>{user.lastName}</p>
-                )}
+              <div className="col-md-6 col-sm-12">
+                <div className="p-3 bg-light rounded">
+                  <label className="form-label">Last Name</label>
+                  {editMode ? (
+                    <input
+                      type="text"
+                      value={lastName}
+                      onChange={(e) => setLastName(e.target.value)}
+                      className="form-control"
+                    />
+                  ) : (
+                    <p className="mb-0">{user.lastName}</p>
+                  )}
+                </div>
               </div>
             </div>
           </div>
 
           {/* Contact Information */}
           <div className="profile-section mb-4">
-            <h2 className="h4">Contact Information</h2>
-            <div className="row">
-              <div className="col-md-3 mb-3 me-2 bg-light rounded">
-                <label className="form-label">Email</label>
-                <p>{user.email}</p>
+            <h3 className="h5">Contact Information</h3>
+            <div className="row g-3">
+              <div className="col-md-6 col-sm-12">
+                <div className="p-3 bg-light rounded">
+                  <label className="form-label">Email</label>
+                  <p className="mb-0">{user.email}</p>
+                </div>
               </div>
-              <div className="col-md-3 mb-3 ms-2 bg-light rounded">
-                <label className="form-label">Mobile Number</label>
-                <p>{user.mobileNumber}</p>
+              <div className="col-md-6 col-sm-12">
+                <div className="p-3 bg-light rounded">
+                  <label className="form-label">Mobile Number</label>
+                  <p className="mb-0">{user.mobileNumber}</p>
+                </div>
               </div>
             </div>
           </div>
 
           {/* Avatar Section */}
           {user.avatar && (
-            <div className="profile-section mb-4">
-              <h2 className="h4">Avatar</h2>
+            <div className="profile-section mb-4 text-center">
+              <h3 className="h5">Avatar</h3>
               <img
                 src={user.avatar}
                 alt="User Avatar"
@@ -157,7 +164,7 @@ const UserProfile = () => {
           )}
 
           {/* Action Buttons */}
-          <div className="d-flex justify-content-between mt-4">
+          <div className="d-flex justify-content-center gap-3 mt-4">
             {editMode ? (
               <button className="btn btn-primary" onClick={handleSave}>
                 Save Changes
@@ -175,7 +182,7 @@ const UserProfile = () => {
           )}
         </>
       ) : (
-        <p>Loading user profile...</p>
+        <p className="text-center">Loading user profile...</p>
       )}
     </div>
   );
