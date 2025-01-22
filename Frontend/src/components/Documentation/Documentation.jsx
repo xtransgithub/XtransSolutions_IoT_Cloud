@@ -1,6 +1,8 @@
 import React, {useState} from "react";
 import Navbar from "../Navbar/Navbar";
 import { Link } from "react-router-dom";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faBars, faTimes } from '@fortawesome/free-solid-svg-icons';
 
 const Documentation = () => {
   const [isSidebarVisible, setIsSidebarVisible] = useState(false);
@@ -8,6 +10,18 @@ const Documentation = () => {
   const toggleSidebar = () => {
     setIsSidebarVisible(!isSidebarVisible);
   };
+
+  // Array of documentation sections for dynamic indexing
+  const sections = [
+    { id: "introduction", title: "Introduction" },
+    { id: "usage", title: "How to Use" },
+    { id: "navigation", title: "Navigation" },
+    { id: "signup", title: "How to Sign Up" },
+    { id: "create-channel", title: "How to Create a Channel" },
+    { id: "channel-dashboard", title: "How to Use the Channel Dashboard" },
+    { id: "alerts", title: "Configuring Event Alerts" },
+    { id: "reset-password", title: "Steps to Reset Your Password" },
+  ];
 
   return (
     <div style={{ display: "flex", flexDirection: "column", height: "100vh" }}>
@@ -34,7 +48,7 @@ const Documentation = () => {
             fontWeight: "bold",
           }}
         >
-          {isSidebarVisible ? "Hide Contents" : "Show Contents"}
+          <FontAwesomeIcon icon={isSidebarVisible ? faTimes : faBars} />
         </button>
 
         {/* Sidebar */}
@@ -56,119 +70,32 @@ const Documentation = () => {
           <h5 style={{ marginBottom: "1.5rem", color: "rgb(169, 201, 233)" }}>
             Documentation
           </h5>
-          <ul className="nav flex-column">
-            <li className="nav-item">
-              <a
-                className="nav-link"
-                href="#introduction"
-                style={{
-                  color: "rgb(169, 201, 233)",
-                  textDecoration: "none",
-                  padding: "10px 0",
-                }}
-              >
-                Introduction
-              </a>
-            </li>
-            <li className="nav-item">
-              <a
-                className="nav-link"
-                href="#usage"
-                style={{
-                  color: "rgb(169, 201, 233)",
-                  textDecoration: "none",
-                  padding: "10px 0",
-                }}
-              >
-                How to Use
-              </a>
-            </li>
-            <li className="nav-item">
-              <a
-                className="nav-link"
-                href="#navigation"
-                style={{
-                  color: "rgb(169, 201, 233)",
-                  textDecoration: "none",
-                  padding: "10px 0",
-                }}
-              >
-                Navigation
-              </a>
-            </li>
-            <li className="nav-item">
-              <a
-                className="nav-link"
-                href="#signup"
-                style={{
-                  color: "rgb(169, 201, 233)",
-                  textDecoration: "none",
-                  padding: "10px 0",
-                }}
-              >
-                How to Sign Up
-              </a>
-            </li>
-            <li className="nav-item">
-              <a
-                className="nav-link"
-                href="#create-channel"
-                style={{
-                  color: "rgb(169, 201, 233)",
-                  textDecoration: "none",
-                  padding: "10px 0",
-                }}
-              >
-                How to Create a Channel
-              </a>
-            </li>
-            <li className="nav-item">
-              <a
-                className="nav-link"
-                href="#channel-dashboard"
-                style={{
-                  color: "rgb(169, 201, 233)",
-                  textDecoration: "none",
-                  padding: "10px 0",
-                }}
-              >
-                How to Use the Channel Dashboard
-              </a>
-            </li>
-            <li className="nav-item">
-              <a
-                className="nav-link"
-                href="#alerts"
-                style={{
-                  color: "rgb(169, 201, 233)",
-                  textDecoration: "none",
-                  padding: "10px 0",
-                }}
-              >
-                Configuring Event Alerts
-              </a>
-            </li>
-            <li className="nav-item">
-              <a
-                className="nav-link"
-                href="#reset-password"
-                style={{
-                  color: "rgb(169, 201, 233)",
-                  textDecoration: "none",
-                  padding: "10px 0",
-                }}
-              >
-                Steps to Reset Your Password
-              </a>
-            </li>
-          </ul>
-        </nav>
+        
+            <ul className="nav flex-column">
+              {sections.map((section) => (
+                <li key={section.id} className="nav-item">
+                  <a
+                    className="nav-link"
+                    href={`#${section.id}`}
+                    style={{
+                      color: "rgb(169, 201, 233)",
+                      textDecoration: "none",
+                      padding: "10px 0",
+                    }}
+                  >
+                    {section.title}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </nav>
         )}
+
         {/* Main Content */}
         <div
           style={{
             marginLeft: isSidebarVisible ? "250px" : "0",
-            padding: "1rem",
+            padding: "2rem 4rem 0rem 4rem",
             flexGrow: 1,
             overflowY: "auto",
             marginTop: "3.5rem", // Adjusted to leave space for the navbar
