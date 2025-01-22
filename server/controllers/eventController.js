@@ -59,7 +59,7 @@ exports.setEvents = async (req, res) => {
         }
 
         if (evaluateCondition(curVal, operator, triggerValue)) {
-            const to = user.email;
+            const to = email;
             const subject = 'Email Alert';
             const text = `Alert! The field value is ${curVal}, which meets the condition '${operator}' with the threshold ${triggerValue}.`;
             // const email = process.env.EMAIL_ADDRESS;
