@@ -66,7 +66,7 @@ function Contact() {
               <h3>INDIA</h3>
               <p>
                 Xtrans Solutions Pvt. Ltd.<br />
-                #343, 3rd Floor, 9th Main, Sector-7, HSR Layout, Bangalore-560102
+                Hubstairs coworkspace ,No 9, 2nd Floor, 27th Main, 100 Feet Ring Rd, above TATA Motors, BTM 1st Stage, Bengaluru, Karnataka 560068
               </p>
             </div>
 
