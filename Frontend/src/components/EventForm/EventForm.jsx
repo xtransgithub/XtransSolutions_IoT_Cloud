@@ -71,7 +71,7 @@ const EventForm = () => {
 
   const handleSubmit = (values, { setSubmitting, resetForm }) => {
     const requestData = {
-      email: values.email,
+      reciver_email: values.email,
       operator: values.operator,
       ch_id: values.channelId,
       fieldName: values.fieldName,
@@ -124,7 +124,7 @@ const EventForm = () => {
           fieldName: "",
           operator: "greater than",
           triggerValue: "",
-          email: "",
+          reciver_email: "",
         }}
         validationSchema={validationSchema}
         onSubmit={handleSubmit}
@@ -217,7 +217,7 @@ const EventForm = () => {
               <Field
                 type="email"
                 name="email"
-                id="email"
+                id="reciver_email"
                 className="form-control"
               />
               <ErrorMessage name="email" component="div" className="text-danger" />
