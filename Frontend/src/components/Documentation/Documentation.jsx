@@ -17,6 +17,7 @@ const Documentation = () => {
     { id: "signup", title: "How to Sign Up" },
     { id: "create-channel", title: "How to Create a Channel" },
     { id: "channel-dashboard", title: "How to Use the Channel Dashboard" },
+    { id: "raspberry-pi", title: "Connecting Raspberry Pi to IoT Cloud" },
     { id: "alerts", title: "Configuring Event Alerts" },
     { id: "reset-password", title: "Steps to Reset Your Password" },
   ];
@@ -286,6 +287,168 @@ const Documentation = () => {
           <p>
             By following these steps, you can effectively manage and monitor your channels to optimize IoT workflows.
           </p>
+          </section>
+
+          <section
+            id="raspberry-pi"
+            style={{ marginBottom: "2rem", scrollMarginTop: "4rem" }}
+          >
+            <h2>Connecting Raspberry Pi to IoT Cloud</h2>
+            <p>
+              The following documentation provides a step-by-step guide to
+              connect your Raspberry Pi to an IoT cloud platform and upload
+              sensor data dynamically.
+            </p>
+
+            <h3>Hardware Requirements</h3>
+            <ul>
+              <li>Xtrans AIOT Kit</li>
+            </ul>
+
+            <h3>Software Requirements</h3>
+            <ol>
+              <li>
+                <strong>Python Libraries:</strong>
+                <p>
+                  Install the following Python libraries before running the
+                  script:
+                </p>
+                <pre>
+                  sudo pip install Adafruit_DHT Adafruit_GPIO RPi.GPIO requests
+                </pre>
+              </li>
+              <li>
+                <strong>IoT Cloud Setup:</strong>
+                <ul>
+                  <li>
+                    Visit your IoT cloud platform and log in or create an
+                    account.
+                  </li>
+                  <li>
+                    Create a new channel with a unique name and description.
+                  </li>
+                  <li>
+                    Add fields in the channel to correspond with the sensor
+                    readings:
+                    <ul>
+                      <li>f1: Temperature</li>
+                      <li>f2: Humidity</li>
+                      <li>f3: Light</li>
+                      <li>f4: Gas</li>
+                      <li>f5: Soil Moisture</li>
+                    </ul>
+                  </li>
+                </ul>
+              </li>
+            </ol>
+
+            <h3>Python Script Explanation</h3>
+            <ol>
+              <li>
+                <strong>Sensor Configuration:</strong>
+                <ul>
+                  <li>
+                    The script initializes sensors like DHT11 and connects the
+                    MCP3008 ADC to handle analog sensor inputs.
+                  </li>
+                  <li>GPIO pins are used for the LDR light detection.</li>
+                </ul>
+              </li>
+              <li>
+                <strong>API Endpoint:</strong>
+                <p>
+                  Replace the <code>base_url</code> in the script with the URL
+                  of your IoT cloud channel's API. Example:
+                </p>
+                <pre>
+                  base_url =
+                  'http://&lt;cloud-platform-ip&gt;:&lt;port&gt;/api/channels/&lt;channel-id&gt;/entries'
+                </pre>
+              </li>
+              <li>
+                <strong>Data Preparation:</strong>
+                <p>
+                  Sensor data is read in real-time, and values are dynamically
+                  mapped to the IoT cloud fields:
+                </p>
+                <pre>{`fields = {
+  "f1": temperature,  # Temperature in °C
+  "f2": humidity,     # Humidity in %
+  "f3": light,        # Light status (0: detected, 1: not detected)
+  "f4": gas,          # Gas sensor reading (ADC value)
+  "f5": soilmois      # Soil moisture sensor reading (ADC value)
+}`}</pre>
+              </li>
+              <li>
+                <strong>Data Upload:</strong>
+                <p>
+                  The script sends the data to the IoT cloud using the requests
+                  library.
+                </p>
+              </li>
+            </ol>
+
+            <h3>Running the Script on Raspberry Pi</h3>
+            <ol>
+              <li>
+                <strong>Enable SPI and GPIO:</strong>
+                <p>
+                  Run <code>raspi-config</code> and enable SPI under "Interface
+                  Options."
+                </p>
+              </li>
+              <li>
+                <strong>Set Up Sensors:</strong>
+                <ul>
+                  <li>Connect the DHT11 sensor to GPIO pin 4.</li>
+                  <li>
+                    Connect the LDR and other analog sensors to MCP3008 channels
+                    as per the script:
+                    <ul>
+                      <li>ADC Channel 0: Gas Sensor.</li>
+                      <li>ADC Channel 1: Soil Moisture Sensor.</li>
+                    </ul>
+                  </li>
+                </ul>
+              </li>
+              <li>
+                <strong>Run the Script:</strong>
+                <p>
+                  Save the script as <code>send_data_to_cloud.py</code> and
+                  execute it with:
+                </p>
+                <pre>python3 send_data_to_cloud.py</pre>
+              </li>
+              <li>
+                <strong>Verify Data:</strong>
+                <p>
+                  Check the IoT cloud dashboard for incoming data. Ensure the
+                  field names (<code>f1</code>, <code>f2</code>, etc.) match
+                  between the script and the cloud channel configuration.
+                </p>
+              </li>
+            </ol>
+
+            <h3>Example Channel Setup</h3>
+            <ul>
+              <li>
+                <strong>Channel Name:</strong> Environmental Monitoring
+              </li>
+              <li>
+                <strong>Description:</strong> This channel logs data from
+                temperature, humidity, light, gas, and soil moisture sensors.
+              </li>
+              <li>
+                <strong>Fields:</strong>
+                <ul>
+                  <li>f1: Temperature</li>
+                  <li>f2: Humidity</li>
+                  <li>f3: Light</li>
+                  <li>f4: Gas</li>
+                  <li>f5: Soil Moisture</li>
+                </ul>
+              </li>
+            </ul>
           </section>
 
           <section id="alerts" style={{ marginBottom: "2rem", scrollMarginTop: "4rem", }}>
