@@ -4,6 +4,7 @@ import axios from "axios";
 import ChannelCard from "./ChannelCard";
 import "./channel.css";
 import { server } from "../../config";
+import Loading from "../loading"; 
 
 const ChannelPage = () => {
   const navigate = useNavigate();
@@ -53,11 +54,7 @@ const ChannelPage = () => {
       <h2 className="mb-2">Manage Channels</h2>
       <div className="row">
         {isLoading ? (
-          <div className="d-flex justify-content-center align-items-center loader">
-            <div className="spinner-border text-primary" role="status">
-              <span className="visually-hidden">Loading...</span>
-            </div>
-          </div>
+          <Loading message={"Loading channels..."} />
         ) : channels.length > 0 ? (
           channels.map((channel) => (
             <ChannelCard

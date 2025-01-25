@@ -7,6 +7,7 @@ import { useParams } from 'react-router-dom';
 
 import { fetchChannelData } from './FetchChannel';
 import { getCSV } from './CsvUtils';
+import Loading from '../loading';
 
 import {
     handleChannelUpdate,
@@ -22,6 +23,7 @@ const ChannelDashboard = () => {
     const [fieldCounts, setFieldCounts] = useState({});
     const [historicalData, setHistoricalData] = useState({});
     const [isEditing, setIsEditing] = useState(false);
+    const [isLoading, setIsLoading] = useState(true);
     const [updatedChannelName, setUpdatedChannelName] = useState('');
     const [updatedFields, setUpdatedFields] = useState([]);
     const [fieldToRemove, setFieldToRemove] = useState('');
@@ -47,6 +49,12 @@ const ChannelDashboard = () => {
         }
     }, [channelData.fields]);
 
+    useEffect(() => {
+        setTimeout(() => {
+          setIsLoading(false);
+        }, 1500);
+    }, []);
+
     const toggleEdit = () => {
         setIsEditing(!isEditing);
         setUpdatedChannelName(channelData.name);
@@ -60,6 +68,10 @@ const ChannelDashboard = () => {
     const handleChartTypeChange = (field, type) => {
         setChartTypes(prev => ({ ...prev, [field]: type }));
     };
+
+    if(isLoading){
+        return <Loading message={"Loading Channel..."} />
+    }
 
 
     return (

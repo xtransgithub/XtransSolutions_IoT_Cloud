@@ -1,13 +1,26 @@
-import React, {useState} from "react";
+import React, {useState, useEffect} from "react";
 import Navbar from "../Navbar/Navbar";
 import { Link } from "react-router-dom";
 
+import Loading from "../loading";
+
 const Documentation = () => {
   const [isSidebarVisible, setIsSidebarVisible] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   
+  useEffect(() => {
+    setTimeout(() => {
+      setIsLoading(false);
+    }, 1000);
+  }, []);
+
   const toggleSidebar = () => {
     setIsSidebarVisible(!isSidebarVisible);
   };
+
+  if(isLoading) {
+    return <Loading message={"Loading Documentation..."} />
+  }
 
   // Array of documentation sections for dynamic indexing
   const sections = [
