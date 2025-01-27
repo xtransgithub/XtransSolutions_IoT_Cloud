@@ -15,6 +15,8 @@ import ResetPasswordPage from './components/resetPassword/resetPasswordPage';
 import Layout from './layout';
 import EventForm from './components/EventForm/EventForm';
 import Documentation from "./components/Documentation/Documentation";
+import Analysis from './components/Analytics/Analysis';
+import Prediction from './components/Prediction/Prediction';
 
 function App() {
   return (
@@ -64,6 +66,20 @@ function App() {
             <PrivateRoute>
               <Layout>
                 <EventForm />
+              </Layout>
+            </PrivateRoute>
+          } />
+          <Route path="/analysis" element={
+            <PrivateRoute>
+              <Layout>
+                <Analysis />
+              </Layout>
+            </PrivateRoute>
+          } />
+          <Route path="/prediction" element={
+            <PrivateRoute>
+              <Layout>
+                <Prediction />
               </Layout>
             </PrivateRoute>
           } />

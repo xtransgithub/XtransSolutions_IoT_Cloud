@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import AlertModal from '../Alert/Alert';
 
 import { server } from '../../config';
+import Loading from '../loading';
 
 const UserProfile = () => {
   const [user, setUser] = useState(null);
@@ -12,6 +13,7 @@ const UserProfile = () => {
   const [lastName, setLastName] = useState('');
   const [error, setError] = useState('');
   const [successMessage, setSuccessMessage] = useState('');
+  const [isLoading, setIsLoading] = useState(true);
   const navigate = useNavigate();
   const [showAlert, setShowAlert] = useState(false);
 
@@ -40,6 +42,8 @@ const UserProfile = () => {
         }
       } catch (error) {
         setError('An error occurred while fetching user details');
+      } finally {
+        setIsLoading(false);
       }
     };
 
@@ -85,13 +89,17 @@ const UserProfile = () => {
     setShowAlert(false);
   };
 
+  if (isLoading) {
+    return <Loading message="Loading user profile..." />;
+  }
+
   if (error) {
     return <div className="alert alert-danger">{error}</div>;
   }
 
   return (
-    <div className="container my-4">
-      <h2 className="text-center mb-4">User Profile</h2>
+    <div className="container m-0">
+      <h2 className="text-start mb-4">User Profile</h2>
       {user ? (
         <>
           {/* Personal Information */}

@@ -1,0 +1,21 @@
+.prediction {
+    padding: 20px;
+  }
+  
+  .prediction h2 {
+    text-align: center;
+    color: #007bff;
+  }
+  
+  .prediction form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    width: 300px;
+    margin: 0 auto;
+  }
+  
+  .prediction label {
+    font-weight: bold;
+  }
+  
