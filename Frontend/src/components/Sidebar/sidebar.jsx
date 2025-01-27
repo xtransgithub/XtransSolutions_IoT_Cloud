@@ -63,9 +63,15 @@ function Sidebar() {
                         </a> 
                     </li>
                     <li className="sidebar-item">
-                        <a href="/analytics" className="sidebar-link">
-                            <i className="bi bi-graph-up"></i>
+                        <a href="/analysis" className="sidebar-link">
+                            <i className="bi bi-bar-chart-line"></i>
                             <span>Analytics</span>
+                        </a> 
+                    </li>
+                    <li className="sidebar-item">
+                        <a href="/prediction" className="sidebar-link">
+                            <i className="bi bi-graph-up-arrow"></i>
+                            <span>Prediction</span>
                         </a> 
                     </li>
                     <li className="sidebar-item">
