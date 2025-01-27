@@ -45,7 +45,28 @@ const Prediction = () => {
         <button type="submit">Predict</button>
       </form>
 
-      {result && <div className="result">Forecast: {JSON.stringify(result)}</div>}
+      {result && result.forecast && (
+        <div className="result">
+          <h3>Forecast Results</h3>
+          <table className="result-table">
+            <thead>
+              <tr>
+                <th>Timestamp</th>
+                <th>Value</th>
+              </tr>
+            </thead>
+            <tbody>
+              {result.forecast.map((item, index) => (
+                <tr key={index}>
+                  <td>{item.timestamp}</td>
+                  <td>{item.value.toFixed(4)}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      )}
+
       {error && <div className="error">Error: {error}</div>}
     </div>
   );

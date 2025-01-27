@@ -90,8 +90,20 @@ const Analysis = () => {
         <button type="submit">Analyze</button>
       </form>
 
-      {result && <div className="result">Result: {JSON.stringify(result)}</div>}
-      {error && <div className="error">Error: {error}</div>}
+      {result && (
+  <div className="result">
+    <h3>Analysis Result:</h3>
+    <div className="result-content">
+      {Object.entries(result).map(([key, value]) => (
+        <div className="result-row" key={key}>
+          <span className="result-key">{key}:</span>
+          <span className="result-value">{value}</span>
+        </div>
+      ))}
+    </div>
+  </div>
+)}
+
     </div>
   );
 };
