@@ -1,7 +1,0 @@
-Flask
-pandas
-numpy
-statsmodels
-requests
-scikit-learn
-requests
