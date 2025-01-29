@@ -5,6 +5,7 @@ import ChannelCard from "./ChannelCard";
 import "./channel.css";
 import { server } from "../../config";
 import Loading from "../loading"; 
+import { Link } from "react-router-dom";
 
 const ChannelPage = () => {
   const navigate = useNavigate();
@@ -65,7 +66,10 @@ const ChannelPage = () => {
             />
           ))
         ) : (
-          <p>No channels found. Create one to get started!</p>
+          <div>
+            <p>No channels found. Create one to get started!</p>
+            <Link to="/newChannel" className="btn btn-secondary mt-2 mb-3">Create Channel</Link>
+          </div>
         )}
       </div>
     </div>
