@@ -9,7 +9,7 @@ app = Flask(__name__)
 CORS(app)
 
 # Sample Node.js API URL
-NODEJS_API_URL = 'http://localhost:8000/api/channels/{channel_id}/entries/read'
+NODEJS_API_URL = 'http://http://162.255.85.191/:8000/api/channels/{channel_id}/entries/read'
 
 @app.route('/')
 def home():

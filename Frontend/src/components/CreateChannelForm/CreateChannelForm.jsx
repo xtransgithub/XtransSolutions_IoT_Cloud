@@ -20,7 +20,13 @@ const CreateChannelForm = () => {
                     .required('Field name is required')
                     .matches(/^[a-z0-9]+$/, 'Field name can only contain lowercase letters and numbers')
             )
-            .min(1, 'At least one field is required'),
+            .min(1, 'At least one field is required')
+            .max(5, 'Maximum number of fields is 5')
+            .test(
+                'unique-fields',
+                'Enter unique field names',
+                (value) => value && new Set(value).size === value.length
+            ),
     });
 
     const handleSubmit = async (values, { setSubmitting, resetForm }) => {
@@ -80,9 +86,8 @@ const CreateChannelForm = () => {
                         <div className="col-md-6">
                             <div className="mb-3">
                                 <label htmlFor="description" className="form-label">Description</label>
-                                <Field
-                                    name="description"
-                                    render={({ field }) => (
+                                <Field name="description">
+                                    {({ field }) => (
                                         <TextareaAutosize
                                             {...field}
                                             id="description"
@@ -91,7 +96,7 @@ const CreateChannelForm = () => {
                                             minRows={1}
                                         />
                                     )}
-                                />
+                                </Field>
                                 <ErrorMessage name="description" component="div" className="text-danger" />
                             </div>
                         </div>
@@ -102,30 +107,36 @@ const CreateChannelForm = () => {
                                 <FieldArray name="fields">
                                     {({ insert, remove, push }) => (
                                         <div>
-                                            {values.fields.length > 0 && values.fields.map((field, index) => (
-                                                <div key={index} className="d-flex align-items-center mb-3">
-                                                    <Field
-                                                        type="text"
-                                                        name={`fields.${index}`}
-                                                        placeholder={`Field ${index + 1}`}
-                                                        className="form-control me-2"
-                                                    />
-                                                    <ErrorMessage name={`fields.${index}`} component="div" className="text-danger" />
-                                                    {values.fields.length > 1 && (
-                                                        <button
-                                                            type="button"
-                                                            className="btn btn-danger btn-sm"
-                                                            onClick={() => remove(index)}
-                                                        >
-                                                            Delete
-                                                        </button>
-                                                    )}
-                                                </div>
-                                            ))}
+                                            {values.fields.length > 0 &&
+                                                values.fields.map((field, index) => (
+                                                    <div key={index} className="mb-3">
+                                                        <div className="d-flex align-items-start">
+                                                            <Field
+                                                                type="text"
+                                                                name={`fields.${index}`}
+                                                                placeholder={`Field ${index + 1}`}
+                                                                className="form-control"
+                                                            />
+                                                            {values.fields.length > 1 && (
+                                                                <button
+                                                                    type="button"
+                                                                    className="btn btn-danger btn-sm ms-2"
+                                                                    onClick={() => remove(index)}
+                                                                >
+                                                                    Delete
+                                                                </button>
+                                                            )}
+                                                        </div>
+                                                        <div className="text-danger mt-1">
+                                                            <ErrorMessage name={`fields.${index}`} />
+                                                        </div>
+                                                    </div>
+                                                ))}
                                             <button
                                                 type="button"
                                                 className="btn btn-secondary"
                                                 onClick={() => push('')}
+                                                disabled={values.fields.length >= 5}
                                             >
                                                 Add Field
                                             </button>
