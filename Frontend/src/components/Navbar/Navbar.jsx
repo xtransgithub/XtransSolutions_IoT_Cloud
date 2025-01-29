@@ -1,11 +1,13 @@
 import React from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 import Images from '../../assets';
 import './navbar.css';
 
 const Navbar = () => {
   const navigate = useNavigate();
   const token = localStorage.getItem('token');
+  const location = useLocation();
+  const isVerifyPage = location.pathname === '/verify';
 
   const handleLogout = () => {
     localStorage.removeItem('token');
@@ -75,7 +77,14 @@ const Navbar = () => {
               </li>
             ) : (
               <li className="nav-item">
-                <Link to="/signin" className="nav-link text-white">Sign In</Link>
+                {/* <Link to="/signin" className="nav-link text-white">Sign In</Link> */}
+                <Link 
+                  to="/signin" 
+                  className={`nav-link text-white ${isVerifyPage ? 'disabled' : ''}`} 
+                  aria-disabled={isVerifyPage}
+                >
+                  Sign In
+                </Link>
               </li>
             )}
           </ul>

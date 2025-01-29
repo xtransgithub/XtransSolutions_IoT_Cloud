@@ -44,9 +44,7 @@ function SignUp() {
       setShowAlert(true);
 
       if (response.data.status === 'success') {
-        setTimeout(() => {
-          navigate("/signin");
-        }, 2000);
+        navigate("/verify");
       }
     } catch (error) {
       setResponseMessage(error.response ? error.response.data.message : 'Something went wrong');

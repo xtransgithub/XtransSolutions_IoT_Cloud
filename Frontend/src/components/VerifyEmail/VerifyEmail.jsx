@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import axios from "axios";
+import { server } from "../../config";
 
 export default function VerifyEmail() {
   const [searchParams] = useSearchParams();
@@ -18,7 +19,7 @@ export default function VerifyEmail() {
     const verifyUser = async () => {
       try {
         const response = await axios.get(
-          `http://162.255.85.191:8000/verify?uuid=${uuid}`
+          `${server}/verify?uuid=${uuid}`
         );
 
         if (response.data.status === "success") {
