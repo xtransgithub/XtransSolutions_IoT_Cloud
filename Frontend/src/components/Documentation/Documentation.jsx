@@ -98,7 +98,7 @@ const Documentation = () => {
     <div style={{ display: "flex", flexDirection: "column", height: "100vh" }}>
       <Navbar />
 
-      {/* Main Content Wrapper */}
+      Main Content Wrapper
       <div style={{ display: "flex", flexGrow: 1 }}>
         {/* Sidebar Toggle Button */}
         <button
@@ -177,7 +177,7 @@ const Documentation = () => {
             padding: "2rem 4rem 0rem 4rem",
             flexGrow: 1,
             overflowY: "auto",
-            marginTop: "3.5rem", // Adjusted to leave space for the navbar
+            marginTop: "1.5rem", // Adjusted to leave space for the navbar
             backgroundColor: "#f8f9fa",
             transition: "margin-left 0.3s",
           }}
@@ -192,14 +192,14 @@ const Documentation = () => {
               </p>
 
               <section id="introduction" style={{ marginBottom: "2rem", scrollMarginTop: "4rem", }}>
-                <h2>1. Introduction</h2>
+                <h4>1. Introduction</h4>
                 <p>
                   This platform is designed to provide a seamless experience for users to explore IoT-related projects and services. The website has been organized to make it easy for you to find the information and tools you need.
                 </p>
               </section>
 
               <section id="usage" style={{ marginBottom: "2rem", scrollMarginTop: "4rem", }}>
-                <h2>2. How to Use</h2>
+                <h4>2. How to Use</h4>
                 <p>To get the most out of the platform, follow these steps:</p>
                 <ol>
                   <li><strong>2.1 Explore the Homepage</strong>: Start by visiting the homepage to understand the core offerings and services.</li>
@@ -211,7 +211,7 @@ const Documentation = () => {
               </section>
 
               <section id="navigation" style={{ marginBottom: "2rem", scrollMarginTop: "4rem", }}>
-                <h2>3. Navigation</h2>
+                <h4>3. Navigation</h4>
                 <p>The website is divided into several key sections to make navigation simple:</p>
                 <ul>
                   <li><strong>3.1 Home</strong>: The landing page where you can get an overview of the services and features offered.</li>
@@ -226,7 +226,7 @@ const Documentation = () => {
               </section>
 
               <section id="signup" style={{ marginBottom: "2rem", scrollMarginTop: "4rem", }}>
-                <h2>4. How to Sign Up</h2>
+                <h4>4. How to Sign Up</h4>
                 <p>Follow the steps below to sign up for an account:</p>
                 <ol>
                   <li><strong>4.1 Go to the Sign-Up Page</strong>: Visit the <Link to="/signup">Sign Up</Link> page.</li>
@@ -237,7 +237,7 @@ const Documentation = () => {
               </section>
 
               <section id="create-channel" style={{ marginBottom: "2rem", scrollMarginTop: "4rem", }}>
-              <h2>5. How to Create a Channel</h2>
+              <h4>5. How to Create a Channel</h4>
               <p>Follow these steps to create a new channel:</p>
               <ol>
                 <li><strong>5.1 Navigate to the Channels Section</strong>: Go to the "Channels" page from the main navigation menu.</li>
@@ -252,7 +252,7 @@ const Documentation = () => {
             </section>
 
             <section id="channel-dashboard" style={{ marginBottom: "2rem", scrollMarginTop: "4rem",}}>
-              <h2>6. How to Use the Channel Dashboard</h2>
+              <h4>6. How to Use the Channel Dashboard</h4>
               <p>The Channel Dashboard is a versatile tool for monitoring and managing your data. Here's a step-by-step guide to help you navigate and make the most out of it:</p>
               <ol>
               <li><strong>6.1 Viewing Channel Details:</strong> The left panel displays the channel's basic information, including:
@@ -307,19 +307,19 @@ const Documentation = () => {
               id="raspberry-pi"
               style={{ marginBottom: "2rem", scrollMarginTop: "4rem" }}
             >
-              <h2>7. Connecting Raspberry Pi to IoT Cloud</h2>
+              <h4>7. Connecting Raspberry Pi to IoT Cloud</h4>
               <p>
                 The following documentation provides a step-by-step guide to
                 connect your Raspberry Pi to an IoT cloud platform and upload
                 sensor data dynamically.
               </p>
 
-              <h3>7.1 Hardware Requirements</h3>
+              <h5>7.1 Hardware Requirements</h5>
               <ul>
                 <li>Xtrans AIOT Kit</li>
               </ul>
 
-              <h3>7.2 Software Requirements</h3>
+              <h5>7.2 Software Requirements</h5>
               <ol>
                 <li>
                   <strong>7.2.1 Python Libraries:</strong>
@@ -356,7 +356,7 @@ const Documentation = () => {
                 </li>
               </ol>
 
-              <h3>7.3 Python Script Explanation</h3>
+              <h5>7.3 Python Script Explanation</h5>
               <ol>
                 <li>
                   <strong>7.3.1 Sensor Configuration:</strong>
@@ -403,7 +403,7 @@ const Documentation = () => {
                 </li>
               </ol>
 
-              <h3>7.4 Running the Script on Raspberry Pi</h3>
+              <h5>7.4 Running the Script on Raspberry Pi</h5>
               <ol>
                 <li>
                   <strong>7.4.1 Enable SPI and GPIO:</strong>
@@ -444,7 +444,7 @@ const Documentation = () => {
                 </li>
               </ol>
 
-              <h3>7.5 Example Channel Setup</h3>
+              <h5>7.5 Example Channel Setup</h5>
               <ul>
                 <li>
                   <strong>7.5.1 Channel Name:</strong> Environmental Monitoring
@@ -467,7 +467,7 @@ const Documentation = () => {
             </section>
 
             <section id="alerts" style={{ marginBottom: "2rem", scrollMarginTop: "4rem", }}>
-              <h2>8. Configuring Event Alerts</h2>
+              <h4>8. Configuring Event Alerts</h4>
               <p>To configure event alerts on your channels, follow these steps:</p>
               <ol>
                 <li><strong>8.1 Go to the Channel Settings</strong>: Navigate to the "Channels" section and select the channel for which you want to configure alerts.</li>
@@ -481,15 +481,15 @@ const Documentation = () => {
             </section>
           
             <section id="reset-password" style={{ marginBottom: "2rem", scrollMarginTop: "4rem", }}>
-              <h2>9. Steps to Reset Your Password</h2>
+              <h4>9. Steps to Reset Your Password</h4>
               <p>
                 If you’ve forgotten your password or need to reset it, follow these steps:
               </p>
               <ol>
-                <li>9.1 Navigate to the <Link to="/reset-password">Reset Password</Link>{" "} page.</li>
-                <li>9.2 Enter the reset token sent to your email.</li>
-                <li>9.3 Provide and confirm your new password.</li>
-                <li>9.4 Click "Reset Password" to submit.</li>
+                <li><strong>9.1</strong> Navigate to the <Link to="/reset-password">Reset Password</Link>{" "} page.</li>
+                <li><strong>9.2</strong> Enter the reset token sent to your email.</li>
+                <li><strong>9.3</strong> Provide and confirm your new password.</li>
+                <li><strong>9.4</strong> Click "Reset Password" to submit.</li>
               </ol>
             </section>
 

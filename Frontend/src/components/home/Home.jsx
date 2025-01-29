@@ -1,12 +1,38 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Navbar from "../Navbar/Navbar";
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 // Import local images
 import CloudImg from "../../assets/cloud_img.png";
 import IoTKitImg from "../../assets/iot_kit.png";
 
 const Home = () => {
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const navigate = useNavigate();
+  useEffect(() => {
+    const timeout = setTimeout(() => {
+      const user = localStorage.getItem("user");
+      console.log("User in localStorage:", user);
+      if (user) {
+        setIsLoggedIn(true);
+      } else {
+        setIsLoggedIn(false);
+      }
+    }, 1000);
+    return () => clearTimeout(timeout);
+  }, []);
+  
+
+  const handleGetStartedClick = () => {
+    if (isLoggedIn) {
+      console.log("Redirecting to Channels...");
+      navigate("/channels");
+    } else {
+      console.log("Redirecting to Sign-in...");
+      navigate("/signin");
+    }
+  };
+
   return (
     <>
       <Navbar />
@@ -20,7 +46,9 @@ const Home = () => {
                 Discover how Xtrans combines cutting-edge technologies to transform IoT projects with advanced analytics,
                 seamless integration, and intelligent automation.
               </p>
-              <Link to="/signin" className="btn btn-primary mt-4 mb-3">Get started</Link>
+              <button onClick={handleGetStartedClick} className="btn btn-primary mt-4 mb-3">
+                Get started
+              </button>
             </div>
             <div className="col-md-6 text-center">
               <img src={CloudImg} alt="IoT Cloud Visualization" className="img-fluid rounded" />
