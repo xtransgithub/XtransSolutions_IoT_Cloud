@@ -105,17 +105,17 @@ const Documentation = () => {
           onClick={toggleSidebar}
           style={{
             position: "fixed",
-            top: "4rem",
-            left: isSidebarVisible ? "250px" : "10px",
+            top: "3.7rem",
+            left: isSidebarVisible ? "250px" : "0px",
             zIndex: 1000,
             backgroundColor: "#0e2238",
             color: "white",
             border: "none",
-            borderRadius: "5px",
             padding: "10px 15px",
             cursor: "pointer",
             transition: "left 0.3s",
             fontWeight: "bold",
+            height: "100vh",
           }}
         >
           {isSidebarVisible ? "✖" : "☰"}
