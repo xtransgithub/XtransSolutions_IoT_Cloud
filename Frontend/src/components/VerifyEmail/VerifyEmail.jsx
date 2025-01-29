@@ -18,7 +18,7 @@ export default function VerifyEmail() {
     const verifyUser = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:5000/api/users/verify-email?uuid=${uuid}`
+          `http://162.255.85.191:8000/verify?uuid=${uuid}`
         );
 
         if (response.data.status === "success") {
