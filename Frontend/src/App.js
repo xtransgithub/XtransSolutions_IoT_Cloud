@@ -17,6 +17,7 @@ import EventForm from './components/EventForm/EventForm';
 import Documentation from "./components/Documentation/Documentation";
 import Analysis from './components/Analytics/Analysis';
 import Prediction from './components/Prediction/Prediction';
+import VerifyEmail from "./components/VerifyEmail/VerifyEmail";
 
 function App() {
   return (
@@ -31,6 +32,7 @@ function App() {
           <Route path="/forget-password" element={<ForgotPasswordPage />} />
           <Route path="/update-password/:token" element={<ResetPasswordPage />} />
           <Route path="/documentation" element={<Documentation />} />
+          <Route path="/verify-email" element={<VerifyEmail />} />
 
           {/* Protected Routes */}
           <Route path="/channels" element={
