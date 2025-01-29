@@ -4,7 +4,7 @@ const entrySchema = new mongoose.Schema({
     fieldData: [{
         name: String, // Field name like 'temperature'
         value: mongoose.Schema.Types.Mixed, // Field value like 25.3
-        unique:true
+        // unique:true
     }],
     timestamp: { type: Date, default: Date.now }
 });
