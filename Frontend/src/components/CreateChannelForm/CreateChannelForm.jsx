@@ -9,6 +9,9 @@ import { server } from '../../config';
 const CreateChannelForm = () => {
     const [showAlert, setShowAlert] = useState(false);
     const [responseMessage, setResponseMessage] = useState('');
+    const [fieldLimitAlert, setFieldLimitAlert] = useState(false);
+    const [uniqueFieldAlert, setUniqueFieldAlert] = useState(false);
+    const [uniqueChannelNameAlert, setUniqueChannelNameAlert] = useState(false);
     const navigate = useNavigate();
 
     const validationSchema = Yup.object({
@@ -26,6 +29,15 @@ const CreateChannelForm = () => {
     const handleSubmit = async (values, { setSubmitting, resetForm }) => {
         const token = localStorage.getItem('token');
 
+        // Check for unique field names
+        const fieldNames = values.fields;
+        const uniqueFieldNames = new Set(fieldNames);
+        if (fieldNames.length !== uniqueFieldNames.size) {
+            setUniqueFieldAlert(true);
+            setSubmitting(false);
+            return;
+        }
+
         try {
             const response = await axios.post(`${server}api/auth/channels`, values, {
                 headers: { 'Authorization': `Bearer ${token}` },
@@ -41,8 +53,12 @@ const CreateChannelForm = () => {
                 resetForm();
             }
         } catch (error) {
-            setResponseMessage(error.response ? error.response.data.message : 'Something went wrong');
-            setShowAlert(true);
+            if (error.response && error.response.status === 409) {
+                setUniqueChannelNameAlert(true);
+            } else {
+                setResponseMessage(error.response ? error.response.data.message : 'Something went wrong');
+                setShowAlert(true);
+            }
         } finally {
             setSubmitting(false);
         }
@@ -54,6 +70,21 @@ const CreateChannelForm = () => {
             {showAlert && (
                 <div className="alert alert-info" role="alert">
                     {responseMessage}
+                </div>
+            )}
+            {fieldLimitAlert && (
+                <div className="alert alert-warning" role="alert">
+                    You can only add up to 5 fields.
+                </div>
+            )}
+            {uniqueFieldAlert && (
+                <div className="alert alert-warning" role="alert">
+                    Field names must be unique.
+                </div>
+            )}
+            {uniqueChannelNameAlert && (
+                <div className="alert alert-warning" role="alert">
+                    Channel name must be unique.
                 </div>
             )}
             <Formik
@@ -125,7 +156,14 @@ const CreateChannelForm = () => {
                                             <button
                                                 type="button"
                                                 className="btn btn-secondary"
-                                                onClick={() => push('')}
+                                                onClick={() => {
+                                                    if (values.fields.length >= 5) {
+                                                        setFieldLimitAlert(true);
+                                                    } else {
+                                                        push('');
+                                                        setFieldLimitAlert(false);
+                                                    }
+                                                }}
                                             >
                                                 Add Field
                                             </button>
