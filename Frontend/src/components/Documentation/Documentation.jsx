@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import Navbar from "../Navbar/Navbar";
 import { Link } from "react-router-dom";
 import Loading from "../loading";
+import { FaArrowLeft, FaArrowRight } from "react-icons/fa";
 
 const Documentation = () => {
   const [isSidebarVisible, setIsSidebarVisible] = useState(false);
@@ -111,14 +112,14 @@ const Documentation = () => {
             backgroundColor: "#0e2238",
             color: "white",
             border: "none",
-            padding: "10px 15px",
+            padding: "10px 10px",
             cursor: "pointer",
             transition: "left 0.3s",
             fontWeight: "bold",
             height: "100vh",
           }}
         >
-          {isSidebarVisible ? "✖" : "☰"}
+          {isSidebarVisible ? <FaArrowLeft size={24} /> : <FaArrowRight size={24} />}
         </button>
 
         {/* Sidebar Navigation */}
