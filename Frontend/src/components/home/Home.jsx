@@ -1,10 +1,12 @@
-import React from "react";
+// import React, { useEffect, useState } from "react";
 import Navbar from "../Navbar/Navbar";
-import { Link } from "react-router-dom";
+import { Link } from 'react-router-dom';
 
 // Import local images
 import CloudImg from "../../assets/cloud_img.png";
 import IoTKitImg from "../../assets/iot_kit.png";
+
+const token = localStorage.getItem('token');
 
 const Home = () => {
   return (
@@ -20,7 +22,12 @@ const Home = () => {
                 Discover how Xtrans combines cutting-edge technologies to transform IoT projects with advanced analytics,
                 seamless integration, and intelligent automation.
               </p>
-              <Link to="/signin" className="btn btn-primary mt-4 mb-3">Get started</Link>
+              <Link 
+                to={token ? "/channels" : "/signin"} 
+                className="btn btn-primary mt-4 mb-3"
+              >
+                Get started
+              </Link>
             </div>
             <div className="col-md-6 text-center">
               <img src={CloudImg} alt="IoT Cloud Visualization" className="img-fluid rounded" />

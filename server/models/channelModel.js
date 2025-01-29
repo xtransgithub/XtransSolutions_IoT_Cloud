@@ -3,7 +3,8 @@ const mongoose = require('mongoose');
 const entrySchema = new mongoose.Schema({
     fieldData: [{
         name: String, // Field name like 'temperature'
-        value: mongoose.Schema.Types.Mixed // Field value like 25.3
+        value: mongoose.Schema.Types.Mixed, // Field value like 25.3
+        unique:true
     }],
     timestamp: { type: Date, default: Date.now }
 });
@@ -11,7 +12,8 @@ const entrySchema = new mongoose.Schema({
 const channelSchema = new mongoose.Schema({
   name: { 
     type: String, 
-    required: true 
+    required: true,
+    unique: true
     },
     description: String,
     apiKey: { 
@@ -32,7 +34,8 @@ const channelSchema = new mongoose.Schema({
     fields: {
         type: [{
             name: String, 
-            type: String
+            type: String,
+            unique:true
         }],
         validate: {
             validator: function(value) {

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { server } from "../../config";
+import { useNavigate } from "react-router-dom";
 
 const Analysis = () => {
   const [formData, setFormData] = useState({
@@ -10,6 +11,7 @@ const Analysis = () => {
     num_entries: '',
   });
 
+  const navigate = useNavigate();
   const [channels, setChannels] = useState([]);
   const [fields, setFields] = useState([]);
   const [result, setResult] = useState(null);
@@ -20,7 +22,7 @@ const Analysis = () => {
 
   useEffect(() => {
     if (!token) {
-      setError('Authorization token is missing.');
+      navigate("/signin");
       return;
     }
 
@@ -37,7 +39,7 @@ const Analysis = () => {
     };
 
     fetchChannels();
-  }, [token]);
+  });
 
   const handleChannelChange = async (e) => {
     const channelId = e.target.value;
