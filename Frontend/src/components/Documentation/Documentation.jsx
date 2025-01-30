@@ -483,7 +483,7 @@ const Documentation = () => {
           
             <section id="reset-password" style={{ marginBottom: "2rem", scrollMarginTop: "4rem", }}>
               <h4>9. Steps to Reset Your Password</h4>
-              <p>
+              <p>     
                 If you’ve forgotten your password or need to reset it, follow these steps:
               </p>
               <ol>
