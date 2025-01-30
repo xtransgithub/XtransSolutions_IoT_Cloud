@@ -60,7 +60,8 @@ def analysis():
     except ValueError as e:
         return jsonify({'error': str(e)}), 400
     except Exception as e:
-        return jsonify({'error': f'An unexpected error occurred: {str(e)}'}), 500
+        return jsonify({'error': 'Requested {} entries, but only {} available'.format(num_entries, len(data))}), 400
+
 
 
 
