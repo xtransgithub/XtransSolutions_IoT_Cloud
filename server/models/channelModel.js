@@ -35,7 +35,7 @@ const channelSchema = new mongoose.Schema({
         type: [{
             name: String, 
             type: String,
-            unique:true
+            // unique:true
         }],
         validate: {
             validator: function(value) {
