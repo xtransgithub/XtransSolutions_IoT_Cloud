@@ -46,7 +46,8 @@ def analysis():
         data = clean_data(nodejs_data['entries'], field)
 
         if len(data) < num_entries:
-            return jsonify({'error': f'Requested {num_entries} entries, but only {len(data)} available'}), 400
+            return jsonify({'error': 'Requested {} entries, but only {} available'.format(num_entries, len(data))}), 400
+
 
         # Take the last 'num_entries' rows
         data = data.tail(num_entries)
