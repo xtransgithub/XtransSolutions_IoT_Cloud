@@ -127,6 +127,28 @@ def perform_analysis(data, analysis_type):
             return {"std_dev": data['value'].std()}
         elif analysis_type == 'variance':
             return {"variance": data['value'].var()}
+        elif analysis_type == 'quartiles':
+            quartiles = np.percentile(data['value'], [25, 50, 75])
+            print(data)
+            return {
+                "Q1": quartiles[0],
+                "Q2 (Median)": quartiles[1],
+                "Q3": quartiles[2]
+            }
+        elif analysis_type == 'max':
+            return {"max": data['value'].max()}
+        elif analysis_type == 'min':
+            return {"min": data['value'].min()}
+        elif analysis_type == 'overview':
+            return {
+                "average": data['value'].mean(),
+                "median": data['value'].median(),
+                "mode": data['value'].mode().tolist() if not data['value'].mode().empty else None,
+                "max": data['value'].max(),
+                "min": data['value'].min()
+            }
+        
+
         else:
             raise ValueError("Invalid analysis type: {}".format(analysis_type))
     except Exception as e:
