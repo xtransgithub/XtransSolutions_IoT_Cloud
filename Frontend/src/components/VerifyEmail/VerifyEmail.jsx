@@ -19,9 +19,8 @@ export default function VerifyEmail() {
 
     const verifyUser = async () => {
       try {
-        const response = await axios.get(
-          `${server}auth/verify-email?uuid=${uuid}`
-        );
+        const response = await axios.get(`${server}verify?uuid=${uuid}`);
+
 
         console.log(response);
 
@@ -40,7 +39,7 @@ export default function VerifyEmail() {
   }, [uuid]);
 
   const handleLoginRedirect = () => {
-    navigate("/login"); // Redirect to login page
+    navigate("/signin"); // Redirect to login page
   };
 
   return (
