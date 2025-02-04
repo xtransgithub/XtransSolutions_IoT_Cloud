@@ -38,6 +38,21 @@ const CreateChannelForm = () => {
             return;
         }
         try {
+
+            // const { data } = await axios.get(`${server}api/auth/channels`, {
+            //     headers: { Authorization: `Bearer ${token}` },
+            // });
+
+            // const existingChannelNames = data.map(channel => channel.name.toLowerCase());
+
+            // // Check for duplicate channel name
+            // if (existingChannelNames.includes(values.name.toLowerCase())) {
+            //     setUniqueChannelNameAlert(true);
+            //     setTimeout(() => setUniqueChannelNameAlert(false), 3000);
+            //     setSubmitting(false);
+            //     return;
+            // }
+
             const response = await axios.post(`${server}api/auth/channels`, values, {
                 headers: { 'Authorization': `Bearer ${token}` },
             });
