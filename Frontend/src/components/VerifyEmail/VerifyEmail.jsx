@@ -20,8 +20,10 @@ export default function VerifyEmail() {
     const verifyUser = async () => {
       try {
         const response = await axios.get(
-          `${server}/verify?uuid=${uuid}`
+          `${server}auth/verify-email?uuid=${uuid}`
         );
+
+        console.log(response);
 
         if (response.data.status === "success") {
           setMessage("✅ Email verified successfully!");
