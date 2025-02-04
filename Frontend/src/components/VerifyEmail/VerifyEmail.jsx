@@ -11,10 +11,11 @@ export default function VerifyEmail() {
   const [isVerified, setIsVerified] = useState(false); // To track verification status
 
   useEffect(() => {
-    if (!uuid) {
-      setMessage("Invalid verification link.");
-      return;
-    }
+    // if (!uuid) {
+    //   console.log(uuid)
+    //   setMessage("Invalid verification link.");
+    //   return;
+    // }
 
     const verifyUser = async () => {
       try {
@@ -30,7 +31,7 @@ export default function VerifyEmail() {
         }
       } catch (error) {
         setMessage("⚠️ Invalid or expired verification link.");
-      }
+      } 
     };
 
     verifyUser();

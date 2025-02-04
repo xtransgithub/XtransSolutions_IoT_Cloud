@@ -41,7 +41,7 @@ exports.signup = async (req, res, next) => {
 
         // const verificationLink = `http://localhost:4001/verify?uuid=${newUser.uuid}`;
         
-        const verificationLink = `http://162.255.85.191:8000/verify?uuid=${newUser.uuid}`;
+        const verificationLink = `http://162.255.85.191:3000/verify-email?uuid=${newUser.uuid}`;
         // await transporter.sendMail({
         //     from: process.env.EMAIL_ADDRESS,
         //     to: newUser.email,
@@ -123,6 +123,8 @@ exports.verifyEmail = async (req, res, next) => {
 
         const user = await User.findOne({ uuid });
 
+        console.log(user.verified);
+        
         if (!user) {
             return res.status(400).json({ message: 'Invalid verification link.' });
         }
