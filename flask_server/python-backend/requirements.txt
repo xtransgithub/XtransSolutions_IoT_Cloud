@@ -5,3 +5,4 @@ statsmodels
 requests
 scikit-learn
 requests
+flask-cors
