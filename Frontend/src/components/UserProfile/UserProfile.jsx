@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import AlertModal from '../Alert/Alert';
-
 import { server } from '../../config';
 import Loading from '../loading';
 
@@ -24,14 +23,12 @@ const UserProfile = () => {
         navigate('/signin'); // Redirect to signin if no token is found
         return;
       }
-
       try {
         const response = await axios.get(`${server}api/auth/me`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
         });
-
         if (response.data.status === 'success') {
           const userData = response.data.user;
           setUser(userData);
@@ -46,7 +43,6 @@ const UserProfile = () => {
         setIsLoading(false);
       }
     };
-
     fetchUserDetails();
   }, [navigate]);
 
@@ -60,7 +56,6 @@ const UserProfile = () => {
       setError('User is not authenticated.');
       return;
     }
-
     try {
       const response = await axios.patch(
         `${server}api/auth/me`,
@@ -71,7 +66,6 @@ const UserProfile = () => {
           },
         }
       );
-
       if (response.data.message === 'User information updated successfully') {
         setUser(response.data.user); // Update user details in state
         setSuccessMessage('Profile updated successfully!');
@@ -82,6 +76,37 @@ const UserProfile = () => {
       }
     } catch (error) {
       setError('An error occurred while updating user details');
+    }
+  };
+
+  const handleDeleteAccount = async () => {
+    const confirmDelete = window.confirm('Are you sure you want to delete your account? This action cannot be undone.');
+    if (!confirmDelete) return;
+
+    const token = localStorage.getItem('token');
+    if (!token) {
+      setError('User is not authenticated.');
+      return;
+    }
+
+    try {
+      const response = await axios.delete(`${server}api/auth/me`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      if (response.data.status === 'success') {
+        // Clear local storage
+        localStorage.clear();
+
+        // Redirect to home page
+        navigate('/');
+      } else {
+        setError('Failed to delete account.');
+      }
+    } catch (error) {
+      setError('An error occurred while deleting your account.');
     }
   };
 
@@ -182,6 +207,9 @@ const UserProfile = () => {
                 Edit Profile
               </button>
             )}
+            <button className="btn btn-danger" onClick={handleDeleteAccount}>
+              Delete Account
+            </button>
           </div>
 
           {/* Success Alert */}
