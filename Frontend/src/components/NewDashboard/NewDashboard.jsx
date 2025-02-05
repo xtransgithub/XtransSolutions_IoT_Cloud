@@ -248,7 +248,15 @@ const ChannelDashboard = () => {
                         initialValues={{ newFields: newFields }}
                         validationSchema={addNewFieldsSchema}
                         onSubmit={(values, { setSubmitting }) => {
-                            handleAddMultipleFields(id, values.newFields, token, setChannelData, setIsEditing);
+                            const existingFields = currentChannel.currentChannelFields.map(field => field.toLowerCase());
+                            const duplicateFields = values.newFields.filter(field => existingFields.includes(field.toLowerCase()));
+
+                            if (duplicateFields.length > 0) {
+                                setShowAlert(true); // Show warning if duplicates exist
+                            } else {
+                                setShowAlert(false); // Hide warning if no duplicates
+                                handleAddMultipleFields(id, values.newFields, token, setChannelData, setIsEditing);
+                            }
                             setSubmitting(false);
                         }}
                     >
@@ -256,30 +264,41 @@ const ChannelDashboard = () => {
                             <Form>
                                 <div className="edit-section">
                                     <h5>Add New Field</h5>
+
                                     {showAlert && (
                                         <div className="alert alert-warning mt-2" role="alert">
-                                            Each channel can only have 5 fields
+                                            One or more field names already exist in this channel. Please use unique names.
                                         </div>
                                     )}
+
                                     {values.newFields.map((field, index) => (
                                         <div key={index} className="field-input mb-2">
-                                            <Field name={`newFields[${index}]`} type="text" className="form-control" placeholder="Enter new field name" />
+                                            <Field
+                                                name={`newFields[${index}]`}
+                                                type="text"
+                                                className="form-control"
+                                                placeholder="Enter new field name"
+                                            />
                                             <ErrorMessage name={`newFields[${index}]`} component="div" className="error-message" />
                                         </div>
                                     ))}
-                                    <button type="button" className='btn btn-primary' 
+
+                                    <button
+                                        type="button"
+                                        className="btn btn-primary"
                                         onClick={() => {
                                             const totalFields = currentChannel.currentChannelFields.length + values.newFields.length;
                                             if (totalFields < 5) {
                                                 setFieldValue('newFields', [...values.newFields, '']);
-                                                setShowAlert(false); 
+                                                setShowAlert(false);
                                             } else {
-                                                setShowAlert(true); 
+                                                setShowAlert(true);
                                             }
                                         }}
                                     >
                                         Add Another Field
                                     </button>
+
                                     <button type="submit" className="btn btn-primary ms-3" disabled={isSubmitting}>
                                         Submit
                                     </button>
