@@ -78,3 +78,26 @@ exports.changeName = async (req, res, next) => {
         console.error('Could not update the user:', error);
     }
 }
+
+exports.deleteUser = async (req, res, next) => {
+    try {
+        const userId = req.user._id; 
+
+        const user = await User.findByIdAndDelete(userId);
+
+        if (!user) {
+            return res.status(404).json({
+                status: 'fail',
+                message: 'User not found',
+            });
+        }
+
+        res.status(200).json({
+            status: 'success',
+            message: 'User deleted successfully',
+        });
+
+    } catch (error) {
+        next(error);
+    }
+};
