@@ -35,6 +35,8 @@ const accountController = require('../controllers/accoutController')
 
 router.get('/me',authenticateJWT, accountController.getUser);
 
+router.delete('/me',authenticateJWT, accountController.deleteUser);
+
 router.patch('/me', authenticateJWT, accountController.changeName);
 
 // router.patch('/me', authenticateJWT, async (req, res) => {
