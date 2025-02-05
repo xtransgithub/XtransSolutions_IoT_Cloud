@@ -44,7 +44,7 @@ function SignUp() {
       setShowAlert(true);
 
       if (response.data.status === 'success') {
-        navigate("/verify");
+        navigate("/verify-email");
       }
     } catch (error) {
       setResponseMessage(error.response ? error.response.data.message : 'Something went wrong');

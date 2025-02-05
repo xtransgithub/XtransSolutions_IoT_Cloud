@@ -7,8 +7,7 @@ const Navbar = () => {
   const navigate = useNavigate();
   const token = localStorage.getItem('token');
   const location = useLocation();
-  const isVerifyPage = location.pathname === '/verify';
-
+  const isVerifyPage = location.pathname === '/verify-email';
   const handleLogout = () => {
     localStorage.removeItem('token');
     localStorage.removeItem('x-api-key');

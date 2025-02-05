@@ -33,8 +33,8 @@ function App() {
           <Route path="/forget-password" element={<ForgotPasswordPage />} />
           <Route path="/update-password/:token" element={<ResetPasswordPage />} />
           <Route path="/documentation" element={<Documentation />} />
-          <Route path="/verify-email" element={<VerifyEmail />} />
-          <Route path="/verify" element={<NotVerified />} />
+          <Route path="/verify" element={<VerifyEmail />} />
+          <Route path="/verify-email" element={<NotVerified />} />
 
           {/* Protected Routes */}
           <Route path="/channels" element={

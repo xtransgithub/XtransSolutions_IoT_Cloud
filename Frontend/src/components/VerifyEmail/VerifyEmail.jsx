@@ -5,54 +5,45 @@ import { server } from "../../config";
 
 export default function VerifyEmail() {
   const [searchParams] = useSearchParams();
-  const uuid = searchParams.get("uuid"); // Get UUID from URL
+  const uuid = searchParams.get("uuid");
   const navigate = useNavigate();
   const [message, setMessage] = useState("Verifying your email...");
-  const [isVerified, setIsVerified] = useState(false); // To track verification status
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // if (!uuid) {
-    //   console.log(uuid)
-    //   setMessage("Invalid verification link.");
-    //   return;
-    // }
-
     const verifyUser = async () => {
-      try {
-        const response = await axios.get(
-          `${server}/verify?uuid=${uuid}`
-        );
+      if (!uuid) {
+        setMessage("❌ Invalid verification link.");
+        setLoading(false);
+        return;
+      }
 
-        if (response.data.status === "success") {
-          setMessage("✅ Email verified successfully!");
-          setIsVerified(true); // Set verification status to true
-        } else {
-          setMessage("❌ Verification failed.");
-        }
-      } catch (error) {
-        setMessage("⚠️ Invalid or expired verification link.");
-      } 
+      const response = await axios.get(`${server}verify?uuid=${uuid}`);
+
+      if (response.data.status === "success") {
+        setMessage("✅ Email verified successfully! Redirecting...");
+        setLoading(false);
+        setTimeout(() => navigate("/signin"), 5000); // Auto redirect in 5 seconds
+      } else {
+        setMessage("❌ Verification failed.");
+        setLoading(false);
+      }
     };
 
     verifyUser();
-  }, [uuid]);
-
-  const handleLoginRedirect = () => {
-    navigate("/login"); // Redirect to login page
-  };
+  }, [uuid, navigate]);
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gray-100">
-      <div className="bg-white p-6 rounded-lg shadow-lg text-center">
-        <h2 className="text-xl font-bold text-gray-700">{message}</h2>
+    <div className="d-flex justify-content-center align-items-center vh-100 bg-light">
+      <div className="card p-4 text-center shadow-lg" style={{ width: "400px" }}>
+        <h2 className="text-dark">{loading ? "Verifying..." : message}</h2>
 
-        {isVerified && (
-          <button
-            onClick={handleLoginRedirect}
-            className="mt-4 px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition"
-          >
-            Go to Login
-          </button>
+        {loading && (
+          <div className="d-flex justify-content-center mt-3">
+            <div className="spinner-border text-primary" role="status">
+              <span className="visually-hidden">Loading...</span>
+            </div>
+          </div>
         )}
       </div>
     </div>

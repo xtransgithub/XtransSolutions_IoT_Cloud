@@ -18,26 +18,34 @@ export const handleChannelUpdate = async (id, updatedChannelName, token, setChan
 
 export const handleFieldUpdate = async (id, updatedFields, token, setChannelData, setIsEditing) => {
     const confirmUpdate = window.confirm('Are you sure you want to update the field names?');
-    if (confirmUpdate) {
-        const invalidField = updatedFields.find(({ newName }) => !/^[a-z0-9]+$/.test(newName));
-        if (invalidField) {
-            alert('Field names can only contain lowercase letters and numbers.');
-            return;
-        }
+    if (!confirmUpdate) return;
 
-        try {
-            const updatedFieldData = updatedFields.map(({ oldName, newName }) => ({ oldName, newName }));
-            const response = await axios.patch(
-                `${server}api/auth/channels/${id}/fields`,
-                { fields: updatedFieldData },
-                { headers: { Authorization: `Bearer ${token}` } }
-            );
-            setChannelData(prevData => ({ ...prevData, fields: response.data.channel.fields }));
-            window.location.reload();
-            setIsEditing(false);
-        } catch (error) {
-            console.error('Error updating field names:', error);
-        }
+    // Validate field names
+    const invalidField = updatedFields.find(({ newName }) => !/^[a-z0-9]+$/.test(newName));
+    if (invalidField) {
+        alert('Field names can only contain lowercase letters and numbers.');
+        return;
+    }
+
+    try {
+        const updatedFieldData = updatedFields.map(({ oldName, newName }) => ({ oldName, newName }));
+
+        const response = await axios.patch(
+            `${server}api/auth/channels/${id}/fields`,
+            { fields: updatedFieldData },
+            { headers: { Authorization: `Bearer ${token}` } }
+        );
+
+        setChannelData(prevData => ({
+            ...prevData,
+            fields: response.data.channel.fields
+        }));
+
+        window.location.reload();
+        setIsEditing(false);
+    } catch (error) {
+        console.error('Error updating field names:', error);
+        alert('An error occurred while updating field names. Please try again.');
     }
 };
 

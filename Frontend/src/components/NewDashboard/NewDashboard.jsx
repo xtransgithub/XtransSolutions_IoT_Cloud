@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import GaugeChartComponent from '../GuageChart/GuageChart';
 import LineChartComponent from '../LineChart/LineChart';
-import './NewDashboard.css'
+import './NewDashboard.css';
 import FieldDisplay from './FieldDisplay';
 import { useParams } from 'react-router-dom';
+import { Formik, Form, Field, ErrorMessage } from 'formik';
+import * as Yup from 'yup';
 
 import { fetchChannelData } from './FetchChannel';
 import { getCSV } from './CsvUtils';
@@ -24,17 +26,13 @@ const ChannelDashboard = () => {
     const [historicalData, setHistoricalData] = useState({});
     const [isEditing, setIsEditing] = useState(false);
     const [isLoading, setIsLoading] = useState(true);
-    const [updatedChannelName, setUpdatedChannelName] = useState('');
-    const [updatedFields, setUpdatedFields] = useState([]);
-    const [fieldToRemove, setFieldToRemove] = useState('');
-    const { id } = useParams();
-    const [newFields, setNewFields] = useState([]);
+    const [newFields] = useState([]);
     const [chartTypes, setChartTypes] = useState({});
+    const [showAlert, setShowAlert] = useState(false);
 
     const token = localStorage.getItem('token');
-    // const fieldPattern = /^[a-z0-9]+$/;
+    const { id } = useParams();
 
-    
     useEffect(() => {
         fetchChannelData(id, token, setFieldData, setHistoricalData, setFieldCounts, setChannelData, setCurrentChannel);
     }, [id, token]);
@@ -42,7 +40,7 @@ const ChannelDashboard = () => {
     useEffect(() => {
         if (channelData.fields) {
             const initialChartTypes = channelData.fields.reduce((acc, field) => {
-                acc[field] = 'line'; // Default to line chart for all fields
+                acc[field] = 'line';
                 return acc;
             }, {});
             setChartTypes(initialChartTypes);
@@ -57,13 +55,7 @@ const ChannelDashboard = () => {
 
     const toggleEdit = () => {
         setIsEditing(!isEditing);
-        setUpdatedChannelName(channelData.name);
-        setUpdatedFields(channelData.fields.map(field => ({ oldName: field, newName: field })));
     };
-
-    const handleAddFieldArray = () => {
-        setNewFields([...newFields, '']);
-    }
 
     const handleChartTypeChange = (field, type) => {
         setChartTypes(prev => ({ ...prev, [field]: type }));
@@ -73,11 +65,26 @@ const ChannelDashboard = () => {
         return <Loading message={"Loading Channel..."} />
     }
 
+    // Validation schema for the Channel Name form
+    const channelNameSchema = Yup.object({
+        channelName: Yup.string().required('Channel name is required'),
+    });
+
+    // Validation schema for the Add New Field form
+    const addNewFieldsSchema = Yup.object({
+        newFields: Yup.array().of(
+            Yup.string().required('New field name is required')
+        ),
+    });
+
+    // Validation schema for the Remove Field form
+    const removeFieldSchema = Yup.object({
+        fieldToRemove: Yup.string().required('Field name is required'),
+    });
 
     return (
         <div className="container">
             <div className="row">
-                {/* Channel Details Section */}
                 <div className="col-md-3">
                     <div className="card mb-3">
                         <div className="card-header text-center border-2 border-dark">
@@ -102,7 +109,6 @@ const ChannelDashboard = () => {
                     </div>
                 </div>
 
-                {/* Charts Section */}
                 <div className="col-md-9">
                     {(!channelData.fields || Object.keys(fieldData).length === 0) ? (
                         <div className="empty-state-message">
@@ -117,7 +123,7 @@ const ChannelDashboard = () => {
 
                                 <select
                                     className="form-select mb-2"
-                                    value={chartTypes[field] || 'line'} // Default to line chart
+                                    value={chartTypes[field] || 'line'}
                                     onChange={(e) => handleChartTypeChange(field, e.target.value)}
                                 >
                                     <option value="all">All Charts</option>
@@ -151,91 +157,160 @@ const ChannelDashboard = () => {
                 </div>
             </div>
 
-            {/* Edit Modal */}
             {isEditing && (
-                <>
-                    <div className="edit-modal">
-                        <div className="d-flex justify-content-between align-items-center mb-3">
-                            <h2 className="mb-0">Edit Channel Details</h2>
-                            <button className="btn-close" onClick={() => setIsEditing(false)} aria-label="Close"></button>
-                        </div>
-                        
-                        <div className="edit-section">
-                            <label>Channel Name:</label>
-                            <input
-                                type="text"
-                                value={updatedChannelName}
-                                onChange={(e) => setUpdatedChannelName(e.target.value)}
-                                className="form-control"
-                            />
-                            <button className="btn btn-primary mt-2" onClick={() => handleChannelUpdate(id, updatedChannelName, token, setChannelData, setIsEditing)}>
-                                Save Channel Name
-                            </button>
-                        </div>
-
-                        <div className="edit-section">
-                            <h3>Update Field Names</h3>
-                            {updatedFields.map((_, index) => (
-                                <div className="field-edit-row" key={index}>
-                                    <label>Field {index + 1}</label>
-                                    <input
-                                        type="text"
-                                        value={updatedFields[index].newName}
-                                        onChange={(e) => {
-                                            const newFields = [...updatedFields];
-                                            newFields[index].newName = e.target.value;
-                                            setUpdatedFields(newFields);
-                                        }}
-                                        className="form-control"
-                                    />
-                                </div>
-                            ))}
-                            <button className="btn btn-primary mt-2" onClick={() => handleFieldUpdate(id, updatedFields, token, setChannelData, setIsEditing)}>
-                                Save Field Names
-                            </button>
-                        </div>
-
-                        <div className="edit-section">
-                            <h3>Add New Field</h3>
-                            {newFields.map((field, index) => (
-                                <div key={index} className="field-input mb-2">
-                                    <input
-                                        type="text"
-                                        value={field}
-                                        onChange={(e) => {
-                                            const updatedFields = [...newFields];
-                                            updatedFields[index] = e.target.value;
-                                            setNewFields(updatedFields);
-                                        }}
-                                        className="form-control"
-                                        placeholder="Enter new field name"
-                                    />
-                                </div>
-                            ))}
-                            <button className='btn btn-primary' onClick={handleAddFieldArray}>
-                                Add Another Field
-                            </button>
-                            <button className="btn btn-primary ms-3" onClick={() => handleAddMultipleFields(id, newFields, token, setChannelData, setIsEditing)}>
-                                Submit
-                            </button>
-                        </div>
-
-                        <div className="edit-section">
-                            <h3>Remove Field</h3>
-                            <input
-                                type="text"
-                                value={fieldToRemove}
-                                onChange={(e) => setFieldToRemove(e.target.value)}
-                                className="form-control"
-                                placeholder="Enter field name to remove"
-                            />
-                            <button className="btn btn-danger mt-2" onClick={() => handleRemoveField(id, fieldToRemove, token, setChannelData, setFieldData, setHistoricalData)}>
-                                Remove Field
-                            </button>
-                        </div>
+                <div className="edit-modal">
+                    <div className="d-flex justify-content-between align-items-center mb-3">
+                        <h2 className="mb-0">Edit Channel Details</h2>
+                        <button className="btn-close" onClick={() => setIsEditing(false)} aria-label="Close"></button>
                     </div>
 
-                </>
+                    {/* Channel Name Form */}
+                    <Formik
+                        initialValues={{ channelName: currentChannel.currentChannelname || '' }}
+                        validationSchema={channelNameSchema}
+                        onSubmit={(values, { setSubmitting }) => {
+                            handleChannelUpdate(id, values.channelName, token, setChannelData, setIsEditing);
+                            setSubmitting(false);
+                        }}
+                    >
+                        {({ isSubmitting }) => (
+                            <Form>
+                                <div className="edit-section">
+                                    <label>Channel Name:</label>
+                                    <Field name="channelName" type="text" className="form-control" />
+                                    <ErrorMessage name="channelName" component="div" className="error-message" />
+                                    <button type="submit" className="btn btn-primary mt-2" disabled={isSubmitting}>
+                                        Save Channel Name
+                                    </button>
+                                </div>
+                            </Form>
+                        )}
+                    </Formik>
+
+                    {/* Update Field Names Form */}
+                    <Formik
+                        initialValues={{
+                            fields: (currentChannel.currentChannelFields || []).map(field => ({
+                                oldName: field.oldName || field,
+                                newName: field.newName || field
+                            }))
+                        }}
+                        validationSchema={Yup.object({
+                            fields: Yup.array().of(
+                                Yup.object({
+                                    oldName: Yup.string().required('Old name is required'),
+                                    newName: Yup.string()
+                                        .matches(/^[a-z0-9]+$/, 'Field names can only contain lowercase letters and numbers')
+                                        .required('New name is required')
+                                })
+                            )
+                        })}
+                        onSubmit={(values, { setSubmitting }) => {
+                            handleFieldUpdate(
+                                id,
+                                values.fields,
+                                token,
+                                setChannelData,
+                                setIsEditing
+                            );
+                            setSubmitting(false);
+                        }}
+                    >
+                        {({ isSubmitting, values }) => (
+                            <Form>
+                                <div className="edit-section">
+                                    <h5>Update Field Names</h5>
+                                    {values.fields.map((field, index) => (
+                                        <div className="field-edit-row" key={index}>
+                                            <label>Field {index + 1}</label>
+                                            <Field
+                                                name={`fields[${index}].newName`}
+                                                type="text"
+                                                className="form-control"
+                                            />
+                                            <ErrorMessage name={`fields[${index}].newName`} component="div" className="error-message" />
+                                        </div>
+                                    ))}
+                                    <button
+                                        type="submit"
+                                        className="btn btn-primary mt-2"
+                                        disabled={isSubmitting}
+                                    >
+                                        Save Field Names
+                                    </button>
+                                </div>
+                            </Form>
+                        )}
+                    </Formik>
+
+                    {/* Add New Field Form */}
+                    <Formik
+                        initialValues={{ newFields: newFields }}
+                        validationSchema={addNewFieldsSchema}
+                        onSubmit={(values, { setSubmitting }) => {
+                            handleAddMultipleFields(id, values.newFields, token, setChannelData, setIsEditing);
+                            setSubmitting(false);
+                        }}
+                    >
+                        {({ values, setFieldValue, isSubmitting }) => (
+                            <Form>
+                                <div className="edit-section">
+                                    <h5>Add New Field</h5>
+                                    {showAlert && (
+                                        <div className="alert alert-warning mt-2" role="alert">
+                                            Each channel can only have 5 fields
+                                        </div>
+                                    )}
+                                    {values.newFields.map((field, index) => (
+                                        <div key={index} className="field-input mb-2">
+                                            <Field name={`newFields[${index}]`} type="text" className="form-control" placeholder="Enter new field name" />
+                                            <ErrorMessage name={`newFields[${index}]`} component="div" className="error-message" />
+                                        </div>
+                                    ))}
+                                    <button type="button" className='btn btn-primary' 
+                                        onClick={() => {
+                                            const totalFields = currentChannel.currentChannelFields.length + values.newFields.length;
+                                            if (totalFields < 5) {
+                                                setFieldValue('newFields', [...values.newFields, '']);
+                                                setShowAlert(false); 
+                                            } else {
+                                                setShowAlert(true); 
+                                            }
+                                        }}
+                                    >
+                                        Add Another Field
+                                    </button>
+                                    <button type="submit" className="btn btn-primary ms-3" disabled={isSubmitting}>
+                                        Submit
+                                    </button>
+                                </div>
+                            </Form>
+                        )}
+                    </Formik>
+
+                    {/* Remove Field Form */}
+                    <Formik
+                        initialValues={{ fieldToRemove: '' }}
+                        validationSchema={removeFieldSchema}
+                        onSubmit={(values, { setSubmitting }) => {
+                            handleRemoveField(id, values.fieldToRemove, token, setChannelData, setFieldData, setHistoricalData);
+                            setSubmitting(false);
+                        }}
+                    >
+                        {({ isSubmitting }) => (
+                            <Form>
+                                <div className="edit-section">
+                                    <h5>Remove Field</h5>
+                                    <Field name="fieldToRemove" type="text" className="form-control" placeholder="Enter field name to remove" />
+                                    <ErrorMessage name="fieldToRemove" component="div" className="error-message" />
+                                    <button type="submit" className="btn btn-danger mt-2" disabled={isSubmitting}>
+                                        Remove Field
+                                    </button>
+                                </div>
+                            </Form>
+                        )}
+                    </Formik>
+                </div>
             )}
         </div>
     );
