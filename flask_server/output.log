@@ -1,0 +1,30 @@
+nohup: ignoring input
+ * Serving Flask app 'app' (lazy loading)
+ * Environment: production
+   WARNING: This is a development server. Do not use it in a production deployment.
+   Use a production WSGI server instead.
+ * Debug mode: on
+ * Running on all addresses.
+   WARNING: This is a development server. Do not use it in a production deployment.
+ * Running on http://162.255.85.191:3001/ (Press CTRL+C to quit)
+ * Restarting with stat
+ * Debugger is active!
+ * Debugger PIN: 121-433-846
+49.37.250.18 - - [06/Feb/2025 17:06:36] "GET / HTTP/1.1" 200 -
+49.37.250.18 - - [06/Feb/2025 17:12:46] "GET / HTTP/1.1" 200 -
+49.37.250.18 - - [06/Feb/2025 17:16:28] "[31m[1mGET /analysis HTTP/1.1[0m" 405 -
+49.37.250.18 - - [06/Feb/2025 17:17:28] "POST /analysis HTTP/1.1" 200 -
+49.37.250.18 - - [06/Feb/2025 17:18:23] "OPTIONS /analysis HTTP/1.1" 200 -
+49.37.250.18 - - [06/Feb/2025 17:18:24] "POST /analysis HTTP/1.1" 200 -
+49.37.250.18 - - [06/Feb/2025 17:18:24] "POST /analysis HTTP/1.1" 200 -
+49.37.250.18 - - [06/Feb/2025 17:19:34] "OPTIONS /analysis HTTP/1.1" 200 -
+49.37.250.18 - - [06/Feb/2025 17:19:34] "POST /analysis HTTP/1.1" 200 -
+49.37.250.18 - - [06/Feb/2025 17:19:39] "POST /analysis HTTP/1.1" 200 -
+49.37.250.18 - - [06/Feb/2025 17:19:44] "OPTIONS /analysis HTTP/1.1" 200 -
+49.37.250.18 - - [06/Feb/2025 17:19:45] "POST /analysis HTTP/1.1" 200 -
+49.37.250.18 - - [06/Feb/2025 17:20:01] "OPTIONS /analysis HTTP/1.1" 200 -
+49.37.250.18 - - [06/Feb/2025 17:20:01] "POST /analysis HTTP/1.1" 200 -
+49.37.250.18 - - [06/Feb/2025 17:20:05] "POST /analysis HTTP/1.1" 200 -
+49.37.250.18 - - [06/Feb/2025 17:20:19] "OPTIONS /prediction HTTP/1.1" 200 -
+49.37.250.18 - - [06/Feb/2025 17:20:19] "[31m[1mPOST /prediction HTTP/1.1[0m" 400 -
+49.37.250.18 - - [06/Feb/2025 17:21:12] "GET / HTTP/1.1" 200 -
