@@ -6,10 +6,12 @@ import FieldDisplay from './FieldDisplay';
 import { useParams } from 'react-router-dom';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
+import axios from 'axios';
 
 import { fetchChannelData } from './FetchChannel';
 import { getCSV } from './CsvUtils';
 import Loading from '../loading';
+import { server } from '../../config';
 
 import {
     handleChannelUpdate,
@@ -29,13 +31,27 @@ const ChannelDashboard = () => {
     const [newFields] = useState([]);
     const [chartTypes, setChartTypes] = useState({});
     const [showAlert, setShowAlert] = useState(false);
+    const [allChannels, setAllChannels] = useState([]);
+    const [duplicateChannelAlert, setDuplicateChannelAlert] = useState(false);
 
     const token = localStorage.getItem('token');
     const { id } = useParams();
 
     useEffect(() => {
         fetchChannelData(id, token, setFieldData, setHistoricalData, setFieldCounts, setChannelData, setCurrentChannel);
+        fetchAllChannels();
     }, [id, token]);
+
+    const fetchAllChannels = async () => {
+        try {
+            const response = await axios.get(`${server}api/auth/channels`, {
+                headers: { Authorization: `Bearer ${token}` }
+            });
+            setAllChannels(response.data.channels);
+        } catch (error) {
+            console.error('Error fetching channels:', error);
+        }
+    };
 
     useEffect(() => {
         if (channelData.fields) {
@@ -169,8 +185,15 @@ const ChannelDashboard = () => {
                         initialValues={{ channelName: currentChannel.currentChannelname || '' }}
                         validationSchema={channelNameSchema}
                         onSubmit={(values, { setSubmitting }) => {
-                            handleChannelUpdate(id, values.channelName, token, setChannelData, setIsEditing);
-                            setSubmitting(false);
+                            const isDuplicate = allChannels.some(channel => channel.name === values.channelName);
+                            if (isDuplicate) {
+                                setDuplicateChannelAlert(true);
+                                setSubmitting(false);
+                            } else {
+                                setDuplicateChannelAlert(false);
+                                handleChannelUpdate(id, values.channelName, token, setChannelData, setIsEditing);
+                                setSubmitting(false);
+                            }
                         }}
                     >
                         {({ isSubmitting }) => (
@@ -179,6 +202,11 @@ const ChannelDashboard = () => {
                                     <label>Channel Name:</label>
                                     <Field name="channelName" type="text" className="form-control" />
                                     <ErrorMessage name="channelName" component="div" className="error-message" />
+                                    {duplicateChannelAlert && (
+                                        <div className="alert alert-danger mt-2" role="alert">
+                                            Channel name already exists. Please choose a different name.
+                                        </div>
+                                    )}
                                     <button type="submit" className="btn btn-primary mt-2" disabled={isSubmitting}>
                                         Save Channel Name
                                     </button>

@@ -1,15 +1,4 @@
 services:
-  flask-app:
-    build:
-      context: ./flask_server    # Point to the flask-docker directory
-    ports:
-      - "5000:5000"
-    environment:
-      - FLASK_APP=app.py
-      - FLASK_RUN_HOST=0.0.0.0
-    volumes:
-      - ./flask_server:/app      # Mount the flask-docker folderservices:
-
   frontend:
     build:
       context: ./Frontend
@@ -20,12 +9,3 @@ services:
       - ./Frontend:/app
       - /app/node_modules
 
-  backend:
-    build:
-      context: ./server
-      dockerfile: Dockerfile
-    ports:
-      - "8000:8000"
-    volumes:
-      - ./server:/app
-      - /app/node_modules
