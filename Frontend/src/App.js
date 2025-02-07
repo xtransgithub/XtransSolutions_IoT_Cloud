@@ -19,6 +19,7 @@ import Analysis from './components/Analytics/Analysis';
 import Prediction from './components/Prediction/Prediction';
 import VerifyEmail from "./components/VerifyEmail/VerifyEmail";
 import NotVerified from './components/VerifyEmail/NotVerified';
+import Tutorial from "./components/tutorial/tutorial";
 
 function App() {
   return (
@@ -33,6 +34,7 @@ function App() {
           <Route path="/forget-password" element={<ForgotPasswordPage />} />
           <Route path="/update-password/:token" element={<ResetPasswordPage />} />
           <Route path="/documentation" element={<Documentation />} />
+          <Route path="/tutorial" element={<Tutorial />} />
           <Route path="/verify" element={<VerifyEmail />} />
           <Route path="/verify-email" element={<NotVerified />} />
 
