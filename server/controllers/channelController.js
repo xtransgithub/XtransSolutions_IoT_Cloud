@@ -7,12 +7,6 @@ exports.setChannel = async (req, res) => {
 
     console.log(myheader);
 
-    const existingChannel = await Channel.findOne({ name: req.body.name });
-
-    if (existingChannel) {
-        return res.status(400).json({ message: 'Channel with same name already exists' });
-    }
-
     if (!name || !fields) {
         return res.status(400).json({ message: 'Channel name and fields are required' });
     }
