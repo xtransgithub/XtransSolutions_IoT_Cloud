@@ -26,7 +26,7 @@ const Tutorials = () => {
       {isLoading ? (
         <Loading message={"Loading Documentation..."} />
       ) : (
-        <div style={{ marginLeft: "2rem", marginTop: "5rem" }}>
+        <div style={{ marginLeft: "2rem", marginTop: "5rem", marginRight: "2rem" }}>
           <h1 style={{ color: "#0e2238" }}>Tutorials</h1>
           <p>
             Welcome to the Tutorial page! Select a tutorial from the dropdown below.
@@ -218,17 +218,17 @@ const Tutorials = () => {
                 <li>
                   1. Go to the home page.
                   <br />
-                  <img src={Home_page} alt="Home Page" width="500px" />
+                  <img src={Home_page} alt="Home Page" width= "100%" maxWidth= "1000px" height= "auto" />
                 </li>
                 <li>
                   2. Click on the <strong>Sign In</strong> button.
                   <br />
-                  <img src={Signin_page} alt="Sign In Page" width="500px" />
+                  <img src={Signin_page} alt="Sign In Page" width= "100%" maxWidth= "1000px" height= "auto" />
                 </li>
                 <li>
                   3. Click on <strong>Sign Up</strong> to create a new account.
                   <br />
-                  <img src={Signup_page} alt="Sign Up Page" width="500px" />
+                  <img src={Signup_page} alt="Sign Up Page" width= "100%" maxWidth= "1000px" height= "auto" />
                 </li>
                 <li>
                   4. Fill in the required details:
@@ -249,12 +249,12 @@ const Tutorials = () => {
                 <li>
                   7. You will see a confirmation message stating that a verification email has been sent.
                   <br />
-                  <img src={Verify1_page} alt="Email Verification Message" width="500px" />
+                  <img src={Verify1_page} alt="Email Verification Message"  width= "100%" maxWidth= "1000px" height= "auto" />
                 </li>
                 <li>
                   8. Open the email you used for registration and find the verification email.
                   <br />
-                  <img src={email_page} alt="Email Verification" width="500px" />
+                  <img src={email_page} alt="Email Verification" width= "100%" maxWidth= "1000px" height= "auto"  />
                 </li>
                 <li>
                   9. Click on the verification link in the email.
@@ -262,12 +262,12 @@ const Tutorials = () => {
                 <li>
                   10. A confirmation message will appear stating that your email has been successfully verified.
                   <br />
-                  <img src={email_verify_page} alt="Email Verified" width="500px" />
+                  <img src={email_verify_page} alt="Email Verified" width= "100%" maxWidth= "1000px" height= "auto" />
                 </li>
                 <li>
                   11. You will be redirected to the <strong>Sign In</strong> page.
                   <br />
-                  <img src={Signin2_page} alt="Sign In Page After Verification" width="500px" />
+                  <img src={Signin2_page} alt="Sign In Page After Verification" width= "100%" maxWidth= "1000px" height= "auto"  />
                 </li>
                 <li>
                   12. Enter your registered email and password to log in and start using the Xtrans IoT Cloud services.
