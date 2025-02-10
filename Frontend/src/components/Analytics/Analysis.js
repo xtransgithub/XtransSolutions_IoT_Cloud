@@ -39,7 +39,7 @@ const Analysis = () => {
     };
 
     fetchChannels();
-  });
+  }, [token]);
 
   const handleChannelChange = async (e) => {
     const channelId = e.target.value;
@@ -77,6 +77,7 @@ const Analysis = () => {
         headers: { Authorization: `Bearer ${token}` },
       });
       setResult(response.data);
+      
     } catch (err) {
       setError(err.response?.data?.error || 'An error occurred.');
     }

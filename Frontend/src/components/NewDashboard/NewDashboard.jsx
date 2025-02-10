@@ -6,10 +6,12 @@ import FieldDisplay from './FieldDisplay';
 import { useParams } from 'react-router-dom';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
+import axios from 'axios';
 
 import { fetchChannelData } from './FetchChannel';
 import { getCSV } from './CsvUtils';
 import Loading from '../loading';
+import { server } from '../../config';
 
 import {
     handleChannelUpdate,
@@ -29,13 +31,27 @@ const ChannelDashboard = () => {
     const [newFields] = useState([]);
     const [chartTypes, setChartTypes] = useState({});
     const [showAlert, setShowAlert] = useState(false);
+    const [allChannels, setAllChannels] = useState([]);
+    const [duplicateChannelAlert, setDuplicateChannelAlert] = useState(false);
 
     const token = localStorage.getItem('token');
     const { id } = useParams();
 
     useEffect(() => {
         fetchChannelData(id, token, setFieldData, setHistoricalData, setFieldCounts, setChannelData, setCurrentChannel);
+        fetchAllChannels();
     }, [id, token]);
+
+    const fetchAllChannels = async () => {
+        try {
+            const response = await axios.get(`${server}api/auth/channels`, {
+                headers: { Authorization: `Bearer ${token}` }
+            });
+            setAllChannels(response.data.channels);
+        } catch (error) {
+            console.error('Error fetching channels:', error);
+        }
+    };
 
     useEffect(() => {
         if (channelData.fields) {
@@ -91,9 +107,9 @@ const ChannelDashboard = () => {
                             <h2>{currentChannel.currentChannelname}</h2>
                         </div>
                         <ul className="list-group list-group-flush">
-                            <li className="list-group-item"><strong>Description:</strong> {currentChannel.currentChannelDesc}</li>
-                            <li className="list-group-item"><strong>Channel ID:</strong> {currentChannel.currentChannelId}</li>
+                            <li className="list-group-item"><strong>Description:</strong> {currentChannel.currentChannelDesc}</li>                            
                             <li className="list-group-item"><strong>User ID:</strong> {currentChannel.currentChannelUserId}</li>
+                            <li className="list-group-item"><strong>Channel ID:</strong> {currentChannel.currentChannelId}</li>
                             <li className="list-group-item"><strong>Fields:</strong> {JSON.stringify(currentChannel.currentChannelFields)}</li>
                         </ul>
                         <div className='card-footer'>
@@ -169,8 +185,15 @@ const ChannelDashboard = () => {
                         initialValues={{ channelName: currentChannel.currentChannelname || '' }}
                         validationSchema={channelNameSchema}
                         onSubmit={(values, { setSubmitting }) => {
-                            handleChannelUpdate(id, values.channelName, token, setChannelData, setIsEditing);
-                            setSubmitting(false);
+                            const isDuplicate = allChannels.some(channel => channel.name === values.channelName);
+                            if (isDuplicate) {
+                                setDuplicateChannelAlert(true);
+                                setSubmitting(false);
+                            } else {
+                                setDuplicateChannelAlert(false);
+                                handleChannelUpdate(id, values.channelName, token, setChannelData, setIsEditing);
+                                setSubmitting(false);
+                            }
                         }}
                     >
                         {({ isSubmitting }) => (
@@ -179,6 +202,11 @@ const ChannelDashboard = () => {
                                     <label>Channel Name:</label>
                                     <Field name="channelName" type="text" className="form-control" />
                                     <ErrorMessage name="channelName" component="div" className="error-message" />
+                                    {duplicateChannelAlert && (
+                                        <div className="alert alert-danger mt-2" role="alert">
+                                            Channel name already exists. Please choose a different name.
+                                        </div>
+                                    )}
                                     <button type="submit" className="btn btn-primary mt-2" disabled={isSubmitting}>
                                         Save Channel Name
                                     </button>
@@ -248,7 +276,15 @@ const ChannelDashboard = () => {
                         initialValues={{ newFields: newFields }}
                         validationSchema={addNewFieldsSchema}
                         onSubmit={(values, { setSubmitting }) => {
-                            handleAddMultipleFields(id, values.newFields, token, setChannelData, setIsEditing);
+                            const existingFields = currentChannel.currentChannelFields.map(field => field.toLowerCase());
+                            const duplicateFields = values.newFields.filter(field => existingFields.includes(field.toLowerCase()));
+
+                            if (duplicateFields.length > 0) {
+                                setShowAlert(true); // Show warning if duplicates exist
+                            } else {
+                                setShowAlert(false); // Hide warning if no duplicates
+                                handleAddMultipleFields(id, values.newFields, token, setChannelData, setIsEditing);
+                            }
                             setSubmitting(false);
                         }}
                     >
@@ -256,30 +292,41 @@ const ChannelDashboard = () => {
                             <Form>
                                 <div className="edit-section">
                                     <h5>Add New Field</h5>
+
                                     {showAlert && (
                                         <div className="alert alert-warning mt-2" role="alert">
-                                            Each channel can only have 5 fields
+                                            Field name already exist in this channel. Please use unique names.
                                         </div>
                                     )}
+
                                     {values.newFields.map((field, index) => (
                                         <div key={index} className="field-input mb-2">
-                                            <Field name={`newFields[${index}]`} type="text" className="form-control" placeholder="Enter new field name" />
+                                            <Field
+                                                name={`newFields[${index}]`}
+                                                type="text"
+                                                className="form-control"
+                                                placeholder="Enter new field name"
+                                            />
                                             <ErrorMessage name={`newFields[${index}]`} component="div" className="error-message" />
                                         </div>
                                     ))}
-                                    <button type="button" className='btn btn-primary' 
+
+                                    <button
+                                        type="button"
+                                        className="btn btn-primary"
                                         onClick={() => {
                                             const totalFields = currentChannel.currentChannelFields.length + values.newFields.length;
                                             if (totalFields < 5) {
                                                 setFieldValue('newFields', [...values.newFields, '']);
-                                                setShowAlert(false); 
+                                                setShowAlert(false);
                                             } else {
-                                                setShowAlert(true); 
+                                                setShowAlert(true);
                                             }
                                         }}
                                     >
                                         Add Another Field
                                     </button>
+
                                     <button type="submit" className="btn btn-primary ms-3" disabled={isSubmitting}>
                                         Submit
                                     </button>

@@ -57,7 +57,7 @@ function Sidebar() {
                         </a> 
                     </li>
                     <li className="sidebar-item">
-                        <a href="/documentation" className="sidebar-link">
+                        <a href="/tutorial" className="sidebar-link">
                             <i className="bi bi-file-earmark-text"></i>
                             <span>Tutorials</span>
                         </a> 

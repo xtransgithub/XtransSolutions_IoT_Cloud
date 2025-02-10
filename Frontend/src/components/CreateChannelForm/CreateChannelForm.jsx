@@ -125,9 +125,8 @@ const CreateChannelForm = () => {
                         <div className="col-md-6">
                             <div className="mb-3">
                                 <label htmlFor="description" className="form-label">Description</label>
-                                <Field
-                                    name="description"
-                                    render={({ field }) => (
+                                <Field name="description"> 
+                                    {({ field }) => (
                                         <TextareaAutosize
                                             {...field}
                                             id="description"
@@ -136,7 +135,7 @@ const CreateChannelForm = () => {
                                             minRows={1}
                                         />
                                     )}
-                                />
+                                </Field>
                                 <ErrorMessage name="description" component="div" className="text-danger" />
                             </div>
                         </div>

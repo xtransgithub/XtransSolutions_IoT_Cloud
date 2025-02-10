@@ -25,7 +25,7 @@ function SignUp() {
     password: Yup.string()
       .matches(/^\S+$/, 'Password cannot contain spaces')
       .matches(
-        /^(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*()?:{}|<>])/,
+        /^(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$_%^&*()?:{}|<>])/,
         'Password must contain capital letter, small letter, and one special character'
       )
       .min(6, 'Password must be at least 6 characters')
