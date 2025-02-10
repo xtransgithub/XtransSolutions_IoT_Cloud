@@ -107,9 +107,9 @@ const ChannelDashboard = () => {
                             <h2>{currentChannel.currentChannelname}</h2>
                         </div>
                         <ul className="list-group list-group-flush">
-                            <li className="list-group-item"><strong>Description:</strong> {currentChannel.currentChannelDesc}</li>
-                            <li className="list-group-item"><strong>Channel ID:</strong> {currentChannel.currentChannelId}</li>
+                            <li className="list-group-item"><strong>Description:</strong> {currentChannel.currentChannelDesc}</li>                            
                             <li className="list-group-item"><strong>User ID:</strong> {currentChannel.currentChannelUserId}</li>
+                            <li className="list-group-item"><strong>Channel ID:</strong> {currentChannel.currentChannelId}</li>
                             <li className="list-group-item"><strong>Fields:</strong> {JSON.stringify(currentChannel.currentChannelFields)}</li>
                         </ul>
                         <div className='card-footer'>
