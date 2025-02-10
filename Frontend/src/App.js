@@ -33,11 +33,14 @@ function App() {
           <Route path="/contact" element={<Contact />} />
           <Route path="/forget-password" element={<ForgotPasswordPage />} />
           <Route path="/update-password/:token" element={<ResetPasswordPage />} />
-          <Route path="/documentation" element={<Documentation />} />
-          <Route path="/tutorial" element={<Tutorial />} />
           <Route path="/verify" element={<VerifyEmail />} />
           <Route path="/verify-email" element={<NotVerified />} />
-
+          <Route path="/documentation" element={<Documentation />} />
+          <Route path="/tutorial" element={
+            <Layout>
+              <Tutorial />
+            </Layout>
+          } />
           {/* Protected Routes */}
           <Route path="/channels" element={
             <PrivateRoute>

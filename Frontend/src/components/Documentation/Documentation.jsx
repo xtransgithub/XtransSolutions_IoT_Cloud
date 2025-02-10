@@ -88,7 +88,7 @@ const Documentation = () => {
     <div style={{ display: "flex", flexDirection: "column", height: "100vh" }}>
       <Navbar />
 
-      Main Content Wrapper
+      {/* Main Content Wrapper */}
       <div style={{ display: "flex", flexGrow: 1 }}>
         {/* Sidebar Toggle Button */}
         <button
@@ -167,7 +167,7 @@ const Documentation = () => {
             padding: "2rem 4rem 0rem 4rem",
             flexGrow: 1,
             overflowY: "auto",
-            marginTop: "1.5rem", // Adjusted to leave space for the navbar
+            marginTop: "2.5rem", // Adjusted to leave space for the navbar
             backgroundColor: "#f8f9fa",
             transition: "margin-left 0.3s",
           }}

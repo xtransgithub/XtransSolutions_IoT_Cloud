@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import Navbar from "../Navbar/Navbar";
+// import Navbar from "../Navbar/Navbar";
 import Loading from "../loading";
 
 import Home_page from "../../assets/tutorial/home.jpg";
@@ -9,6 +9,24 @@ import Signin_page from "../../assets/tutorial/Signin.jpg";
 import Signin2_page from "../../assets/tutorial/Signin2.jpg";
 import Verify1_page from "../../assets/tutorial/Verify1.jpg";
 import Signup_page from "../../assets/tutorial/Signup.jpg";
+import channel_page from "../../assets/tutorial/create_channel/channel_page.png";
+import channel1 from "../../assets/tutorial/create_channel/channel1.png";
+import channel2 from "../../assets/tutorial/create_channel/channel2.png";
+import channel3 from "../../assets/tutorial/create_channel/channel3.png";
+import create_channel from "../../assets/tutorial/create_channel/create_channel.png";
+import create_channel_filled from "../../assets/tutorial/create_channel/create_channel_filled.png";
+import home_create from "../../assets/tutorial/create_channel/home.png";
+import alert_1 from "../../assets/tutorial/alert/1_alert.png";
+import alert_2 from "../../assets/tutorial/alert/2_alert.png";
+import alert_3 from "../../assets/tutorial/alert/3_alert.png";
+import alert_4 from "../../assets/tutorial/alert/4_alert.png";
+import alert_5 from "../../assets/tutorial/alert/5_alert.png";
+import alert_6 from "../../assets/tutorial/alert/6_alert.png";
+import alert_7 from "../../assets/tutorial/alert/7_alert.png";
+import alert_8 from "../../assets/tutorial/alert/8_alert.png";
+import alert_9 from "../../assets/tutorial/alert/9_alert.png";
+import alert_10 from "../../assets/tutorial/alert/10_alert_email.png";
+
 
 const Tutorials = () => {
   const [isLoading, setIsLoading] = useState(true);
@@ -22,11 +40,11 @@ const Tutorials = () => {
 
   return (
     <div style={{ display: "flex", flexDirection: "column", height: "100vh" }}>
-      <Navbar />
+      {/* <Navbar /> */}
       {isLoading ? (
         <Loading message={"Loading Documentation..."} />
       ) : (
-        <div style={{ marginLeft: "2rem", marginTop: "5rem", marginRight: "2rem" }}>
+        <div style={{ marginLeft: "2rem", marginRight: "2rem" }}>
           <h1 style={{ color: "#0e2238" }}>Tutorials</h1>
           <p>
             Welcome to the Tutorial page! Select a tutorial from the dropdown below.
@@ -38,7 +56,9 @@ const Tutorials = () => {
             onChange={(e) => setSelectedTutorial(e.target.value)}
             style={{ padding: "0.5rem", fontSize: "1rem", marginBottom: "1rem" }}
           >
-            <option value="xtrans-signup">Creating an Account on Xtrans IoT Cloud</option>
+            <option value="xtrans-signup">Creating an Account on Xtrans IoT Cloud</option>            
+            <option value="create-channel">Creating a Channel on Xtrans</option>
+            <option value="set-alert">Configuring Event Alerts</option>
             <option value="raspberry-pi">Connecting Raspberry Pi to IoT Cloud</option>
             <option value="dummy-tutorial">Dummy Tutorial: Getting Started with IoT</option>
           </select>
@@ -221,16 +241,19 @@ const Tutorials = () => {
                   <img src={Home_page} alt="Home Page" width= "100%" maxWidth= "1000px" height= "auto" />
                 </li>
                 <li>
+                <br />
                   2. Click on the <strong>Sign In</strong> button.
                   <br />
                   <img src={Signin_page} alt="Sign In Page" width= "100%" maxWidth= "1000px" height= "auto" />
                 </li>
                 <li>
+                <br />
                   3. Click on <strong>Sign Up</strong> to create a new account.
                   <br />
                   <img src={Signup_page} alt="Sign Up Page" width= "100%" maxWidth= "1000px" height= "auto" />
                 </li>
                 <li>
+                <br />
                   4. Fill in the required details:
                   <ul>
                     <li>First Name</li>
@@ -241,30 +264,37 @@ const Tutorials = () => {
                   </ul>
                 </li>
                 <li>
+                <br />
                   5. Check the box to agree to the <strong>Terms of Service</strong>.
                 </li>
                 <li>
+                <br />
                   6. Click the <strong>Register</strong> button to complete your sign-up.
                 </li>
                 <li>
+                <br />
                   7. You will see a confirmation message stating that a verification email has been sent.
                   <br />
                   <img src={Verify1_page} alt="Email Verification Message"  width= "100%" maxWidth= "1000px" height= "auto" />
                 </li>
                 <li>
+                <br />
                   8. Open the email you used for registration and find the verification email.
                   <br />
                   <img src={email_page} alt="Email Verification" width= "100%" maxWidth= "1000px" height= "auto"  />
                 </li>
                 <li>
+                <br />
                   9. Click on the verification link in the email.
                 </li>
                 <li>
+                <br />
                   10. A confirmation message will appear stating that your email has been successfully verified.
                   <br />
                   <img src={email_verify_page} alt="Email Verified" width= "100%" maxWidth= "1000px" height= "auto" />
                 </li>
                 <li>
+                <br />
                   11. You will be redirected to the <strong>Sign In</strong> page.
                   <br />
                   <img src={Signin2_page} alt="Sign In Page After Verification" width= "100%" maxWidth= "1000px" height= "auto"  />
@@ -274,26 +304,125 @@ const Tutorials = () => {
                 </li>
               </ol>
             </section>
-          )}
-
-          {/* Dummy Tutorial */}
-          {selectedTutorial === "dummy-tutorial" && (
-            <section id="dummy-tutorial" style={{ marginBottom: "2rem", scrollMarginTop: "4rem" }}>
-              <h4>Dummy Tutorial: Getting Started with IoT</h4>
+          )}        
+          {selectedTutorial === "create-channel" && (
+            <section id="create-channel" style={{ marginBottom: "2rem", scrollMarginTop: "4rem" }}>
+              <h4>Creating a Channel</h4>
               <p>
-                This is a placeholder tutorial to demonstrate the dropdown functionality. Here, you'll learn the basics of IoT device setup.
+                Follow these steps to create a new channel on the Xtrans IoT Cloud platform.
               </p>
-              <h5>1. Introduction</h5>
-              <p>Internet of Things (IoT) is a network of devices connected to exchange data.</p>
-              <h5>2. Setting Up IoT Devices</h5>
-              <ul>
-                <li>Choose an IoT platform (AWS IoT, Google Cloud IoT, etc.).</li>
-                <li>Connect your device using MQTT or HTTP protocols.</li>
-              </ul>
-              <h5>3. Sending Data to Cloud</h5>
-              <pre>mqtt.publish("iot/topic", "Hello IoT World")</pre>
+
+              <ol>
+                <li>
+                  1. Go to the home page.
+                </li>
+                <li>
+                <br />
+                  2. Click on <strong>Channels</strong> in the navbar.        
+                  <img src={home_create} alt="Home Page" width="100%" maxWidth="1000px" height="auto"  />
+                </li>
+                <li>
+                  <br />
+                  3. Click on the marked icon in the sidebar.
+                  <img src={channel1} alt="Channels in Navbar" width="100%" maxWidth="1000px" height="auto" />
+                </li>
+                <li>
+                  <br />
+                  4. Click on <strong>Channels</strong> in the sidebar.
+                  <img src={channel2} alt="Sidebar Icon" width="100%" maxWidth="1000px" height="auto" />
+                </li>
+                <li>
+                  <br />
+                  5. Click on <strong>Create Channel</strong> in the sidebar.
+                  <img src={channel3} alt="Channels in Sidebar" width="100%" maxWidth="1000px" height="auto" />
+                </li>
+                <li>
+                  <br/>
+                  6. Fill in all the details. To add a field, click on <strong>Add Field</strong> (you can add up to 5 fields).
+                  <img src={create_channel} alt="Create Channel Page" width="100%" maxWidth="1000px" height="auto" />
+                </li>
+                <li>
+                  <br/>
+                  7. Click on <strong>Create Channel</strong> button.        
+                  <img src={create_channel_filled} alt="Create Channel Filled" width="100%" maxWidth="1000px" height="auto" />
+                </li>
+                <li>
+                  <br />
+                  8. Your new channel is now created.
+                  <img src={channel_page} alt="Channel Page" width="100%" maxWidth="1000px" height="auto" />
+                </li>
+              </ol>
             </section>
           )}
+
+          {selectedTutorial === "set-alert" && (
+            <section id="set-alert" style={{ marginBottom: "2rem", scrollMarginTop: "4rem" }}>
+              <h4>Configuring Event Alerts</h4>
+    
+              <p>Follow these steps to set an alert based on a specific field value in your selected channel.</p>
+
+              <ol>
+                <li>
+                  1. Go to the home page.
+                </li>
+
+                <li>
+                  <br />
+                  2. Click on <strong>Channels</strong> in the navbar.
+                  <img src={alert_1} alt="Channel Page" width="100%" maxWidth="1000px" height="auto" />
+                </li>
+                <li>
+                  <br />
+                  3. Click on the red-marked icon in the sidebar.
+                  <img src={alert_2} alt="Channel Page" width="100%" maxWidth="1000px" height="auto" />
+                </li>
+                <li>
+                  <br />
+                  4. Click on <strong>Events</strong>.
+                  <img src={alert_3} alt="Channel Page" width="100%" maxWidth="1000px" height="auto" />
+                </li>
+                <li>
+                  <br />
+                  5. Select the channel from the <strong>Select a Channel</strong> dropdown.
+                  <img src={alert_5} alt="Channel Page" width="100%" maxWidth="1000px" height="auto" />
+                </li>
+                <li>
+                  <br />
+                  6. Select the field of the selected channel from the <strong>Select Field</strong> dropdown.
+                  <img src={alert_6} alt="Channel Page" width="100%" maxWidth="1000px" height="auto" />
+                </li>
+                <li>
+                  <br />
+                  7. Select the operator from the <strong>Operator</strong> dropdown.
+                  <img src={alert_7} alt="Channel Page" width="100%" maxWidth="1000px" height="auto" />
+                </li>
+                <li>
+                  <br />
+                  8. Set the <strong>Trigger Value</strong> and enter the <strong>Email Address</strong> to receive alerts.
+                </li>
+                <li>
+                  <br />
+                  9. Click on the <strong>Set Event</strong> button
+                  <img src={alert_8} alt="Channel Page" width="100%" maxWidth="1000px" height="auto" />
+                </li>
+                <li>
+                  <br />
+                  10. A pop-up message will appear: <em>"Alert message will be sent at intervals."</em>
+                </li>
+                <li>
+                  <br />
+                  11. Click <strong>OK</strong>.
+                  <img src={alert_9} alt="Channel Page" width="100%" maxWidth="1000px" height="auto" />
+                </li>
+                <li>
+                  <br />
+                  12. Open the email inbox that you provided. If the trigger value is crossed, an alert email will be sent <strong>three times at intervals</strong>.
+                  <img src={alert_10} alt="Channel Page" width="100%" maxWidth="1000px" height="auto" />
+                </li>
+              </ol>
+            </section>
+          )}
+
         </div>
       )}
     </div>
