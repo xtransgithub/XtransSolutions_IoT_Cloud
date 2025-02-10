@@ -295,7 +295,7 @@ const ChannelDashboard = () => {
 
                                     {showAlert && (
                                         <div className="alert alert-warning mt-2" role="alert">
-                                            One or more field names already exist in this channel. Please use unique names.
+                                            Field name already exist in this channel. Please use unique names.
                                         </div>
                                     )}
 

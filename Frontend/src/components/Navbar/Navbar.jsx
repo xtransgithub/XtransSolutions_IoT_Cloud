@@ -11,7 +11,7 @@ const Navbar = () => {
   const handleLogout = () => {
     localStorage.removeItem('token');
     localStorage.removeItem('x-api-key');
-    localStorage.removeItem('user');
+    localStorage.removeItem('userId');
     navigate('/signin');
   };
 
