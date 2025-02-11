@@ -39,7 +39,7 @@ exports.signup = async (req, res, next) => {
         //     }
         // })
 
-        const verificationLink = `http://162.255.85.191:3000/verify?uuid=${newUser.uuid}`;
+        const verificationLink = `http://${process.env.FRONTEND_URI}/verify?uuid=${newUser.uuid}`;
         // await transporter.sendMail({
         //     from: process.env.EMAIL_ADDRESS,
         //     to: newUser.email,
@@ -187,7 +187,7 @@ exports.forgetPassword = async(req, res, next) => {
 
         const to = email;
         const subject = 'Reset Account Password Link';
-        const text = `Please click the link below to reset your password http://cloud.xtranssolutions.com/update-password/${token}`
+        const text = `Please click the link below to reset your password http://${process.env.FRONTEND_URI}/update-password/${token}`
         // const html = '<p>This is an <strong>HTML</strong> email body.</p>';
         const emailionos = process.env.EMAIL_ADDRESS
         await createTransporter(emailionos, to, subject, text);

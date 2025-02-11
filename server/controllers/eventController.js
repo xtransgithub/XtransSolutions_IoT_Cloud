@@ -3,7 +3,7 @@ const User = require('../models/userModel');
 const createTransporter = require('../utils/nodeMailer');
 require('dotenv').config();
 
-const MAX_ALERT_COUNT = 5;  // Maximum number of alerts to send
+const MAX_ALERT_COUNT = 2;  // Maximum number of alerts to send
 const ALERT_INTERVAL = 1 * 60 * 1000;  // 10 minutes in milliseconds
 
 const alertTracker = {};  // Temporary object to store alert counts and timeouts
