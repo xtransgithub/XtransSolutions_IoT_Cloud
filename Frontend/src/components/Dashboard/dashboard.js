@@ -1,106 +1,99 @@
-import React, { useState, useEffect } from "react";
-import { Container, Row, Col, Card, Button, Table, Dropdown } from "react-bootstrap";
-import { LineChart, Line, XAxis, YAxis, Tooltip, Legend, ResponsiveContainer } from "recharts";
-import axios from "axios";
+import React, { useState, useEffect } from 'react';
+import GaugeChartComponent from '../GuageChart/GuageChart';
+import LineChartComponent from '../LineChart/LineChart';
+import FieldDisplay from '../NewDashboard/FieldDisplay';
+import axios from 'axios';
+import Loading from '../loading';
+import { server } from '../../config';
 
-const Dashboard = () => {
-  const [channels, setChannels] = useState([]);
-  const [selectedChannel, setSelectedChannel] = useState(null);
-  const [chartType, setChartType] = useState("line");
-  const [alerts, setAlerts] = useState([]);
 
-  // Fetch channels from API
-  useEffect(() => {
-    axios.get("/api/channels").then((response) => {
-      setChannels(response.data);
-      if (response.data.length > 0) setSelectedChannel(response.data[0]);
-    });
-  }, []);
+const GlobalDashboard = () => {
+    const [allChannels, setAllChannels] = useState([]);
+    const [fieldData] = useState({});
+    const [historicalData] = useState({});
+    const [chartTypes, setChartTypes] = useState({});
+    const [isLoading, setIsLoading] = useState(true);
 
-  // Dummy data for visualization
-  const data = [
-    { time: "10:00", value: 24 },
-    { time: "10:05", value: 26 },
-    { time: "10:10", value: 25 },
-  ];
+    const token = localStorage.getItem('token');
 
-  return (
-    <Container fluid className="mt-4">
-      <Row>
-        {/* Left Panel - Channels & Actions */}
-        <Col md={4}>
-          <Card className="p-3">
-            <h5>📡 Channels</h5>
-            <Table striped bordered hover>
-              <thead>
-                <tr>
-                  <th>Name</th>
-                  <th>ID</th>
-                  <th>Actions</th>
-                </tr>
-              </thead>
-              <tbody>
-                {channels.map((ch) => (
-                  <tr key={ch.id}>
-                    <td>{ch.name}</td>
-                    <td>{ch.id}</td>
-                    <td>
-                      <Button
-                        size="sm"
-                        variant="primary"
-                        onClick={() => setSelectedChannel(ch)}
-                      >
-                        View
-                      </Button>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </Table>
-            <Button variant="success">➕ Create Channel</Button>
-          </Card>
-        </Col>
+    useEffect(() => {
+        fetchAllChannels();
+    }, []);
 
-        {/* Right Panel - Data & Visualization */}
-        <Col md={8}>
-          <Card className="p-3">
-            {selectedChannel && (
-              <>
-                <h5>📊 {selectedChannel.name} - Data Visualization</h5>
-                <Dropdown className="mb-3">
-                  <Dropdown.Toggle variant="info">Chart Type: {chartType}</Dropdown.Toggle>
-                  <Dropdown.Menu>
-                    <Dropdown.Item onClick={() => setChartType("line")}>📈 Line Chart</Dropdown.Item>
-                    <Dropdown.Item onClick={() => setChartType("gauge")}>🎯 Gauge Chart</Dropdown.Item>
-                  </Dropdown.Menu>
-                </Dropdown>
+    const fetchAllChannels = async () => {
+        try {
+            const response = await axios.get(`${server}api/auth/channels`, {
+                headers: { Authorization: `Bearer ${token}` }
+            });
+            setAllChannels(response.data.channels);
+            setIsLoading(false);
+        } catch (error) {
+            console.error('Error fetching channels:', error);
+        }
+    };
 
-                {/* Chart Display */}
-                <ResponsiveContainer width="100%" height={300}>
-                  <LineChart data={data}>
-                    <XAxis dataKey="time" />
-                    <YAxis />
-                    <Tooltip />
-                    <Legend />
-                    <Line type="monotone" dataKey="value" stroke="#007bff" />
-                  </LineChart>
-                </ResponsiveContainer>
-              </>
+    const handleChartTypeChange = (channelId, field, type) => {
+        setChartTypes(prev => ({
+            ...prev,
+            [channelId]: { ...(prev[channelId] || {}), [field]: type }
+        }));
+    };
+
+    if (isLoading) {
+        return <Loading message="Loading Channels..." />;
+    }
+
+    return (
+        <div className="container">
+            <h2 className="text-center my-3">Global Channel Dashboard</h2>
+            {allChannels.length === 0 ? (
+                <div className="empty-state-message">
+                    <h2>No Channels Available</h2>
+                    <p>Please add channels to view data.</p>
+                </div>
+            ) : (
+                allChannels.map(channel => (
+                    <div key={channel.channelId} className="channel-card mb-4 p-3 border rounded">
+                        <h3>{channel.name}</h3>
+
+                        <div className="charts-container">
+                        {channel.fields.map((field) => (
+                          <div className="chart mb-4" key={`${channel.channelId}-${field}`}>
+                                    <FieldDisplay name={field} value={fieldData[field]} />
+
+                                    <select
+                                        className="form-select mb-2"
+                                        value={chartTypes[channel.channelId]?.[field] || 'line'}
+                                        onChange={(e) => handleChartTypeChange(channel.channelId, field, e.target.value)}
+                                    >
+                                        <option value="all">All Charts</option>
+                                        <option value="gauge">Gauge Chart</option>
+                                        <option value="line">Line Chart</option>
+                                    </select>
+
+                                    {(chartTypes[channel.channelId]?.[field] === 'all' || chartTypes[channel.channelId]?.[field] === 'gauge') && (
+                                        <GaugeChartComponent value={fieldData[field]} />
+                                    )}
+
+                                    {(chartTypes[channel.channelId]?.[field] === 'all' || chartTypes[channel.channelId]?.[field] === 'line') && (
+                                        <LineChartComponent
+                                            data={{
+                                                series1: historicalData[field]?.map(entry => entry.value) || [],
+                                            }}
+                                            timeLabels={historicalData[field]?.map(entry => {
+                                                const date = new Date(entry.timestamp);
+                                                return date.toLocaleTimeString([], { day: 'numeric', month: 'numeric', hour: '2-digit', minute: '2-digit' });
+                                            }) || []}
+                                        />
+                                    )}
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+                ))
             )}
-          </Card>
-
-          {/* Alerts Section */}
-          <Card className="mt-3 p-3">
-            <h5>🚨 Event Alerts</h5>
-            <ul>
-              {alerts.length === 0 ? <li>No active alerts</li> : alerts.map((alert, i) => <li key={i}>{alert}</li>)}
-            </ul>
-            <Button variant="warning">⚙️ Manage Alerts</Button>
-          </Card>
-        </Col>
-      </Row>
-    </Container>
-  );
+        </div>
+    );
 };
 
-export default Dashboard;
+export default GlobalDashboard;

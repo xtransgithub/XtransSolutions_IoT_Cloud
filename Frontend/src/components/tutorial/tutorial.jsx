@@ -19,7 +19,6 @@ import home_create from "../../assets/tutorial/create_channel/home.png";
 import alert_1 from "../../assets/tutorial/alert/1_alert.png";
 import alert_2 from "../../assets/tutorial/alert/2_alert.png";
 import alert_3 from "../../assets/tutorial/alert/3_alert.png";
-import alert_4 from "../../assets/tutorial/alert/4_alert.png";
 import alert_5 from "../../assets/tutorial/alert/5_alert.png";
 import alert_6 from "../../assets/tutorial/alert/6_alert.png";
 import alert_7 from "../../assets/tutorial/alert/7_alert.png";
@@ -30,7 +29,7 @@ import alert_10 from "../../assets/tutorial/alert/10_alert_email.png";
 
 const Tutorials = () => {
   const [isLoading, setIsLoading] = useState(true);
-  const [selectedTutorial, setSelectedTutorial] = useState("raspberry-pi");
+  const [selectedTutorial, setSelectedTutorial] = useState("create-channel");
 
   useEffect(() => {
     setTimeout(() => {
@@ -60,7 +59,7 @@ const Tutorials = () => {
             <option value="create-channel">Creating a Channel on Xtrans</option>
             <option value="set-alert">Configuring Event Alerts</option>
             <option value="raspberry-pi">Connecting Raspberry Pi to IoT Cloud</option>
-            <option value="dummy-tutorial">Dummy Tutorial: Getting Started with IoT</option>
+            {/* <option value="dummy-tutorial">Dummy Tutorial: Getting Started with IoT</option> */}
           </select>
 
           {/* Connecting Raspberry Pi to IoT Cloud */}
@@ -73,12 +72,12 @@ const Tutorials = () => {
                 sensor data dynamically.
               </p>
 
-              <h5>1 Hardware Requirements</h5>
+              <h5>1. Hardware Requirements</h5>
               <ul>
                 <li>Xtrans AIOT Kit</li>
               </ul>
 
-              <h5>2 Software Requirements</h5>
+              <h5>2. Software Requirements</h5>
               <ol>
                 <li>
                   <strong>2.1 Python Libraries:</strong>
@@ -115,7 +114,7 @@ const Tutorials = () => {
                 </li>
               </ol>
 
-              <h5>3 Python Script Explanation</h5>
+              <h5>3. Python Script Explanation</h5>
               <ol>
                 <li>
                   <strong>3.1 Sensor Configuration:</strong>
@@ -162,7 +161,7 @@ const Tutorials = () => {
                 </li>
               </ol>
 
-              <h5>4 Running the Script on Raspberry Pi</h5>
+              <h5>4. Running the Script on Raspberry Pi</h5>
               <ol>
                 <li>
                   <strong>4.1 Enable SPI and GPIO:</strong>
@@ -203,7 +202,7 @@ const Tutorials = () => {
                 </li>
               </ol>
 
-              <h5>5 Example Channel Setup</h5>
+              <h5>5. Example Channel Setup</h5>
               <ul>
                 <li>
                   <strong>5.1 Channel Name:</strong> Environmental Monitoring
