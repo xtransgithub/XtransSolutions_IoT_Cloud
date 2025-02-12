@@ -1,20 +1,21 @@
-import React, { useState, useEffect } from 'react';
-import GaugeChartComponent from '../GuageChart/GuageChart';
-import LineChartComponent from '../LineChart/LineChart';
-import FieldDisplay from '../NewDashboard/FieldDisplay';
-import axios from 'axios';
-import Loading from '../loading';
-import { server } from '../../config';
+import React, { useEffect, useState } from "react";
+import axios from "axios";
+import { Modal, Button, Card, Spinner } from "react-bootstrap";
+import GaugeChart from "react-gauge-chart";
+import LineChart from "../LineChart/LineChart"; // Import your existing LineChart component
+import "bootstrap/dist/css/bootstrap.min.css"; // Ensure Bootstrap is imported
 
+const server = "http://162.255.85.191:8000/";
 
-const GlobalDashboard = () => {
-    const [allChannels, setAllChannels] = useState([]);
-    const [fieldData] = useState({});
-    const [historicalData] = useState({});
-    const [chartTypes, setChartTypes] = useState({});
-    const [isLoading, setIsLoading] = useState(true);
-
-    const token = localStorage.getItem('token');
+const Dashboard = () => {
+    const [channels, setChannels] = useState([]);
+    const [fieldData, setFieldData] = useState({});
+    const [historicalData, setHistoricalData] = useState({});
+    const [selectedField, setSelectedField] = useState(null);
+    const [selectedChannel, setSelectedChannel] = useState(null);
+    const [showModal, setShowModal] = useState(false);
+    const [loading, setLoading] = useState(true);
+    const token = localStorage.getItem("token"); // Retrieve token from localStorage
 
     useEffect(() => {
         fetchAllChannels();
@@ -25,75 +26,127 @@ const GlobalDashboard = () => {
             const response = await axios.get(`${server}api/auth/channels`, {
                 headers: { Authorization: `Bearer ${token}` }
             });
-            setAllChannels(response.data.channels);
-            setIsLoading(false);
+
+            setChannels(response.data.channels);
+            response.data.channels.forEach(channel => fetchChannelData(channel._id));
         } catch (error) {
-            console.error('Error fetching channels:', error);
+            console.error("Error fetching channels:", error);
+        } finally {
+            setLoading(false);
         }
     };
 
-    const handleChartTypeChange = (channelId, field, type) => {
-        setChartTypes(prev => ({
-            ...prev,
-            [channelId]: { ...(prev[channelId] || {}), [field]: type }
-        }));
+    const fetchChannelData = async (channelId) => {
+        try {
+            const response = await axios.get(`${server}api/channels/${channelId}/entries/read`);
+            const entries = response.data.entries;
+            const channelFields = {};
+
+            const fieldHistory = {};
+            entries.forEach(entry => {
+                entry.fieldData.forEach(field => {
+                    channelFields[field.name] = field.value;
+
+                    if (!fieldHistory[field.name]) {
+                        fieldHistory[field.name] = [];
+                    }
+                    fieldHistory[field.name].push({ timestamp: entry.timestamp, value: field.value });
+                });
+            });
+
+            setFieldData(prevData => ({ ...prevData, [channelId]: channelFields }));
+            setHistoricalData(prevData => ({ ...prevData, [channelId]: fieldHistory }));
+        } catch (error) {
+            console.error(`Error fetching data for channel ${channelId}:`, error);
+        }
     };
 
-    if (isLoading) {
-        return <Loading message="Loading Channels..." />;
-    }
+    const handleFieldClick = (channel, fieldName) => {
+        setSelectedChannel(channel);
+        setSelectedField(fieldName);
+        setShowModal(true);
+    };
 
     return (
-        <div className="container">
-            <h2 className="text-center my-3">Global Channel Dashboard</h2>
-            {allChannels.length === 0 ? (
-                <div className="empty-state-message">
-                    <h2>No Channels Available</h2>
-                    <p>Please add channels to view data.</p>
+        <div className="container mt-4">
+            <h2 className="text-center mb-4">Dashboard</h2>
+
+            {loading ? (
+                <div className="text-center">
+                    <Spinner animation="border" variant="primary" />
                 </div>
             ) : (
-                allChannels.map(channel => (
-                    <div key={channel.channelId} className="channel-card mb-4 p-3 border rounded">
-                        <h3>{channel.name}</h3>
+                <div className="row">
+                    {channels.map((channel) => (
+                        <div key={channel._id} className="col-md-6">
+                            <Card className="mb-4">
+                                <Card.Body>
+                                    <Card.Title className="text-center">{channel.name}</Card.Title>
+                                    <Card.Text className="text-muted">{channel.description}</Card.Text>
 
-                        <div className="charts-container">
-                        {channel.fields.map((field) => (
-                          <div className="chart mb-4" key={`${channel.channelId}-${field}`}>
-                                    <FieldDisplay name={field} value={fieldData[field]} />
-
-                                    <select
-                                        className="form-select mb-2"
-                                        value={chartTypes[channel.channelId]?.[field] || 'line'}
-                                        onChange={(e) => handleChartTypeChange(channel.channelId, field, e.target.value)}
-                                    >
-                                        <option value="all">All Charts</option>
-                                        <option value="gauge">Gauge Chart</option>
-                                        <option value="line">Line Chart</option>
-                                    </select>
-
-                                    {(chartTypes[channel.channelId]?.[field] === 'all' || chartTypes[channel.channelId]?.[field] === 'gauge') && (
-                                        <GaugeChartComponent value={fieldData[field]} />
-                                    )}
-
-                                    {(chartTypes[channel.channelId]?.[field] === 'all' || chartTypes[channel.channelId]?.[field] === 'line') && (
-                                        <LineChartComponent
-                                            data={{
-                                                series1: historicalData[field]?.map(entry => entry.value) || [],
-                                            }}
-                                            timeLabels={historicalData[field]?.map(entry => {
-                                                const date = new Date(entry.timestamp);
-                                                return date.toLocaleTimeString([], { day: 'numeric', month: 'numeric', hour: '2-digit', minute: '2-digit' });
-                                            }) || []}
-                                        />
-                                    )}
-                                </div>
-                            ))}
+                                    <div className="row">
+                                        {channel.fields.map((fieldName) => (
+                                            <div key={fieldName} className="col-md-6">
+                                                <Card
+                                                    className="mb-2 p-2 text-center border"
+                                                    style={{ cursor: "pointer" }}
+                                                    onClick={() => handleFieldClick(channel, fieldName)}
+                                                >
+                                                    <Card.Body>
+                                                        <Card.Title className="h6 mb-1">{fieldName}</Card.Title>
+                                                        <Card.Text className="text-primary">
+                                                            {fieldData[channel._id]?.[fieldName] || "N/A"}
+                                                        </Card.Text>
+                                                    </Card.Body>
+                                                </Card>
+                                            </div>
+                                        ))}
+                                    </div>
+                                </Card.Body>
+                            </Card>
                         </div>
-                    </div>
-                ))
+                    ))}
+                </div>
             )}
+
+            {/* Modal for Field Data Visualization */}
+            <Modal show={showModal} onHide={() => setShowModal(false)} size="lg">
+                <Modal.Header closeButton>
+                    <Modal.Title>
+                        {selectedChannel?.name} - {selectedField}
+                    </Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                    {selectedField && (
+                        <>
+                            <h5 className="text-center">Gauge Chart</h5>
+                            <GaugeChart
+                                id="gauge-chart"
+                                nrOfLevels={20}
+                                percent={
+                                    fieldData[selectedChannel._id]?.[selectedField]
+                                        ? fieldData[selectedChannel._id][selectedField] / 100
+                                        : 0
+                                }
+                                textColor="black"
+                            />
+
+                            <h5 className="text-center mt-4">Line Chart</h5>
+                            <LineChart
+                                data={{
+                                    series1: historicalData[selectedChannel._id]?.[selectedField]?.map(d => d.value) || []
+                                }}
+                                timeLabels={historicalData[selectedChannel._id]?.[selectedField]?.map(d => new Date(d.timestamp).toLocaleTimeString()) || []}
+                            />
+                        </>
+                    )}
+                </Modal.Body>
+                <Modal.Footer>
+                    <Button variant="secondary" onClick={() => setShowModal(false)}>Close</Button>
+                </Modal.Footer>
+            </Modal>
         </div>
     );
 };
 
-export default GlobalDashboard;
+export default Dashboard;
