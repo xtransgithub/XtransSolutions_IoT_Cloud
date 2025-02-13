@@ -9,7 +9,7 @@ app = Flask(__name__)
 CORS(app)
 
 # Sample Node.js API URL
-NODEJS_API_URL = 'http://162.255.85.191:8000/api/channels/{channel_id}/entries/read'
+NODEJS_API_URL = 'http://cloud.xtranssolutions.com/node/api/channels/{channel_id}/entries/read'
 
 @app.route('/')
 def home():
@@ -67,7 +67,7 @@ def prediction():
         required_entries = prediction_hours * 12
 
         if test_csv:
-            data = clean_temperature_data(test_csv, required_entries)
+            data = 0
         else:
             nodejs_response = requests.get(
                 NODEJS_API_URL.format(channel_id=channel_id),
@@ -175,4 +175,4 @@ def perform_prediction_with_timestamps(data, prediction_hours):
         raise ValueError("Error during prediction: {}".format(str(e)))
 
 if __name__ == '__main__':
-    app.run(debug=True, host='0.0.0.0', port=3001)
+    app.run(debug=False, host='0.0.0.0', port=5001)
