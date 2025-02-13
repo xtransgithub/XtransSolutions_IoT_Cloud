@@ -1,3 +1,41 @@
 **/node_modules
 
 **/venv
+# Python bytecode files
+__pycache__/
+*.pyc
+*.pyo
+
+# Virtual environment directories
+venv/
+env/
+.venv/
+
+# IDE/editor specific files
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Flask specific files
+instance/
+*.db
+*.sqlite3
+
+# Gunicorn logs
+gunicorn-error.log
+gunicorn-access.log
+
+# Apache logs (if locally stored)
+logs/
+*.log
+
+# OS generated files
+.DS_Store
+Thumbs.db
+
+# Miscellaneous
+*.bak
+*.swp
+*.swo
+
