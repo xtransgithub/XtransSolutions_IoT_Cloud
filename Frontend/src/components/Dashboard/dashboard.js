@@ -43,7 +43,9 @@ const GlobalDashboard = () => {
             }
             setIsLoading(false);
         } catch (error) {
-            console.error('Error fetching channels:', error);
+            console.error("Error fetching channels:", error);
+        } finally {
+            setLoading(false);
         }
     };
 
