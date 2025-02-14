@@ -1,0 +1,23 @@
+.dashboardChartContainer {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: start;
+    gap: 5%;
+}
+
+.dashboardChart {
+    width: 30%; 
+    min-width: 280px; 
+}
+
+@media screen and (max-width: 1200px) {
+    .dashboardChart {
+        width: 45%; 
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .dashboardChart {
+        width: 100%; 
+    }
+}
