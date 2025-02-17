@@ -6,7 +6,8 @@
   display: block;
   top: 0px;
   position: relative;
-  max-width: 100%;
+  max-width: 95%;
+  margin: auto;
   background-color: white;
   border-radius: 10px;
   text-decoration: none;

@@ -1,12 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-// import GaugeChartComponent from '../GuageChart/GuageChart';
 import LineChartComponent from '../LineChart/LineChart';
 import FieldDisplay from '../NewDashboard/FieldDisplay';
 import Loading from '../loading';
 import { server } from '../../config';
 import { fetchDataEntries } from './FetchEntrieslDashboard';
-import './dashboard.css'
+import './dashboard.css';
 
 const GlobalDashboard = () => {
     const [allChannels, setAllChannels] = useState([]);
@@ -54,8 +53,8 @@ const GlobalDashboard = () => {
     }
 
     return (
-        <div className="container mt-4 mx-0">
-            <h2 className="text-start mb-4">User Dashboard</h2>
+        <div className="container vi mt-4 mx-0">
+            <h2 className="text-center mb-4">User Dashboard</h2>
 
             {allChannels.length === 0 ? (
                 <div className="empty-state-message text-center">
@@ -92,12 +91,6 @@ const GlobalDashboard = () => {
                                             {channelData.fields?.map((field) => (
                                                 <div className="chart mb-4 dashboardChart" key={`${channel._id}-${field}`}>
                                                     <center><FieldDisplay name={field} value={fieldData[field]} count={fieldCounts[field] || 0}/></center>
-
-                                                    {/* Gauge Chart */}
-                                                    {/* <div className="mb-4">
-                                                        <h5>Gauge Chart</h5>
-                                                        <GaugeChartComponent value={fieldData[field]} />
-                                                    </div> */}
 
                                                     {/* Line Chart */}
                                                     <div className="mb-4">

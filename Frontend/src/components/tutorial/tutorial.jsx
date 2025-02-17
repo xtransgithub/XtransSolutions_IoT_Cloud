@@ -25,7 +25,15 @@ import alert_7 from "../../assets/tutorial/alert/7_alert.png";
 import alert_8 from "../../assets/tutorial/alert/8_alert.png";
 import alert_9 from "../../assets/tutorial/alert/9_alert.png";
 import alert_10 from "../../assets/tutorial/alert/10_alert_email.png";
-
+import analysis_1 from "../../assets/tutorial/analysis/analysis_1.png";
+import analysis_2 from "../../assets/tutorial/analysis/analysis_2.png";
+import analysis_3 from "../../assets/tutorial/analysis/analysis_3.png";
+import analysis_4 from "../../assets/tutorial/analysis/analysis_4.png";
+import analysis_5 from "../../assets/tutorial/analysis/analysis_5.png";
+import analysis_6 from "../../assets/tutorial/analysis/analysis_6.png";
+import analysis_7 from "../../assets/tutorial/analysis/analysis_7.png";
+import analysis_8 from "../../assets/tutorial/analysis/analysis_8.png";
+import analysis_9 from "../../assets/tutorial/analysis/analysis_9.png";
 
 const Tutorials = () => {
   const [isLoading, setIsLoading] = useState(true);
@@ -41,7 +49,7 @@ const Tutorials = () => {
     <div style={{ display: "flex", flexDirection: "column", height: "100vh" }}>
       {/* <Navbar /> */}
       {isLoading ? (
-        <Loading message={"Loading Documentation..."} />
+        <Loading message={"Loading Tutorial..."} />
       ) : (
         <div style={{ marginLeft: "2rem", marginRight: "2rem" }}>
           <h1 style={{ color: "#0e2238" }}>Tutorials</h1>
@@ -58,6 +66,7 @@ const Tutorials = () => {
             <option value="xtrans-signup">Creating an Account on Xtrans IoT Cloud</option>            
             <option value="create-channel">Creating a Channel on Xtrans</option>
             <option value="set-alert">Configuring Event Alerts</option>
+            <option value="data-analysis">Performing Data Analysis</option>
             <option value="raspberry-pi">Connecting Raspberry Pi to IoT Cloud</option>
             {/* <option value="dummy-tutorial">Dummy Tutorial: Getting Started with IoT</option> */}
           </select>
@@ -421,7 +430,64 @@ const Tutorials = () => {
               </ol>
             </section>
           )}
-
+          {/* Data Analysis Tutorial */}
+          {selectedTutorial === "data-analysis" && (
+            <section id="data-analysis" style={{ marginBottom: "2rem", scrollMarginTop: "4rem" }}>
+              <h4>Performing Data Analysis</h4>
+              <p>Follow these steps to analyze data in Xtrans IoT Cloud.</p>
+              <ol>
+                <li>
+                  1. Go to the home page.
+                  {/* <img src={analysis_1} alt="Home Page" width="100%" maxWidth="1000px" height="auto" /> */}
+                </li>
+                <li>
+                  <br />
+                  2. Click on the <strong>Channel</strong> section.
+                  <img src={analysis_1} alt="Channel Page" width="100%" maxWidth="1000px" height="auto" />
+                </li>
+                <li>
+                  <br />
+                  3. Click on the red-marked icon.
+                  <img src={analysis_2} alt="Red Marked Icon" width="100%" maxWidth="1000px" height="auto" />
+                </li>
+                <li>
+                  <br />
+                  4. Click on the <strong>Analytics</strong> section.
+                  <img src={analysis_3} alt="Analytics Section" width="100%" maxWidth="1000px" height="auto" />
+                </li>
+                <li>
+                  <br />
+                  5. Select the channel for analysis.
+                  <img src={analysis_4} alt="Select Channel" width="100%" maxWidth="1000px" height="auto" />
+                </li>
+                <li>
+                  <br />
+                  6. Select the field you want to analyze.
+                  <img src={analysis_5} alt="Select Field" width="100%" maxWidth="1000px" height="auto" />
+                </li>
+                <li>
+                  <br />
+                  7. Choose the analysis type.
+                  <img src={analysis_6} alt="Select Analysis Type" width="100%" maxWidth="1000px" height="auto" />
+                </li>
+                <li>
+                  <br />
+                  8. Input the number of entries you want to analyze.
+                  <img src={analysis_7} alt="Input Number of Entries" width="100%" maxWidth="1000px" height="auto" />
+                </li>
+                <li>
+                  <br />
+                  9. Click the <strong>Analyze</strong> button to view the analysis.
+                  <img src={analysis_8} alt="Input Number of Entries" width="100%" maxWidth="1000px" height="auto" />
+                </li>
+                <li>
+                  <br />
+                  9. Now view the analyzed result.
+                  <img src={analysis_9} alt="Analysis" width="100%" maxWidth="1000px" height="auto" />
+                </li>
+              </ol>
+            </section>
+          )}
         </div>
       )}
     </div>
