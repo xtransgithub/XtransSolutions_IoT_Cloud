@@ -1,8 +1,8 @@
 /* General container improvements */
-.container {
+.vi {
     max-width: 100%;
     margin: auto;
-    background: #cad4de;
+    background: #ffffff;
     padding: 10px;
     border-radius: 10px;
 }
