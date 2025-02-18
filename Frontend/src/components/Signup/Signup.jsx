@@ -61,7 +61,7 @@ function SignUp() {
   return (
     <>
       <Navbar />
-      <div className="row justify-content-center mt-5 bg-light px-3">
+      <div className="row justify-content-center mt-5 bg-light px-3 signupPage">
         <div className="col-md-7 col-lg-5 col-xl-4 order-2 order-lg-1">
           <p className="text-center h2 fw-bold mb-4 mx-1 mt-5">Sign up for Xtrans cloud</p>
           <Formik

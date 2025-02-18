@@ -1,106 +1,122 @@
-import React, { useState, useEffect } from "react";
-import { Container, Row, Col, Card, Button, Table, Dropdown } from "react-bootstrap";
-import { LineChart, Line, XAxis, YAxis, Tooltip, Legend, ResponsiveContainer } from "recharts";
-import axios from "axios";
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
+import LineChartComponent from '../LineChart/LineChart';
+import FieldDisplay from '../NewDashboard/FieldDisplay';
+import Loading from '../loading';
+import { server } from '../../config';
+import { fetchDataEntries } from './FetchEntrieslDashboard';
+import './dashboard.css';
 
-const Dashboard = () => {
-  const [channels, setChannels] = useState([]);
-  const [selectedChannel, setSelectedChannel] = useState(null);
-  const [chartType, setChartType] = useState("line");
-  const [alerts, setAlerts] = useState([]);
+const GlobalDashboard = () => {
+    const [allChannels, setAllChannels] = useState([]);
+    const [fieldData, setFieldData] = useState({});
+    const [historicalData, setHistoricalData] = useState({});
+    const [fieldCounts, setFieldCounts] = useState({});
+    const [channelData, setChannelData] = useState({});
+    const [isLoading, setIsLoading] = useState(true);
+    const [activeTab, setActiveTab] = useState(null);
 
-  // Fetch channels from API
-  useEffect(() => {
-    axios.get("/api/channels").then((response) => {
-      setChannels(response.data);
-      if (response.data.length > 0) setSelectedChannel(response.data[0]);
-    });
-  }, []);
+    const token = localStorage.getItem('token');
 
-  // Dummy data for visualization
-  const data = [
-    { time: "10:00", value: 24 },
-    { time: "10:05", value: 26 },
-    { time: "10:10", value: 25 },
-  ];
+    useEffect(() => {
+        fetchAllChannels();
+    }, []);
 
-  return (
-    <Container fluid className="mt-4">
-      <Row>
-        {/* Left Panel - Channels & Actions */}
-        <Col md={4}>
-          <Card className="p-3">
-            <h5>📡 Channels</h5>
-            <Table striped bordered hover>
-              <thead>
-                <tr>
-                  <th>Name</th>
-                  <th>ID</th>
-                  <th>Actions</th>
-                </tr>
-              </thead>
-              <tbody>
-                {channels.map((ch) => (
-                  <tr key={ch.id}>
-                    <td>{ch.name}</td>
-                    <td>{ch.id}</td>
-                    <td>
-                      <Button
-                        size="sm"
-                        variant="primary"
-                        onClick={() => setSelectedChannel(ch)}
-                      >
-                        View
-                      </Button>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </Table>
-            <Button variant="success">➕ Create Channel</Button>
-          </Card>
-        </Col>
+    useEffect(() => {
+        if (activeTab) {
+            fetchDataEntries(activeTab, setFieldData, setHistoricalData, setFieldCounts, setChannelData);
+        }
+    }, [activeTab]);
 
-        {/* Right Panel - Data & Visualization */}
-        <Col md={8}>
-          <Card className="p-3">
-            {selectedChannel && (
-              <>
-                <h5>📊 {selectedChannel.name} - Data Visualization</h5>
-                <Dropdown className="mb-3">
-                  <Dropdown.Toggle variant="info">Chart Type: {chartType}</Dropdown.Toggle>
-                  <Dropdown.Menu>
-                    <Dropdown.Item onClick={() => setChartType("line")}>📈 Line Chart</Dropdown.Item>
-                    <Dropdown.Item onClick={() => setChartType("gauge")}>🎯 Gauge Chart</Dropdown.Item>
-                  </Dropdown.Menu>
-                </Dropdown>
+    const fetchAllChannels = async () => {
+        try {
+            const response = await axios.get(`${server}api/auth/channels`, {
+                headers: { Authorization: `Bearer ${token}` }
+            });
 
-                {/* Chart Display */}
-                <ResponsiveContainer width="100%" height={300}>
-                  <LineChart data={data}>
-                    <XAxis dataKey="time" />
-                    <YAxis />
-                    <Tooltip />
-                    <Legend />
-                    <Line type="monotone" dataKey="value" stroke="#007bff" />
-                  </LineChart>
-                </ResponsiveContainer>
-              </>
+            const channels = Array.isArray(response.data.channels) ? response.data.channels : [];
+            setAllChannels(channels);
+
+            if (channels.length > 0) {
+                setActiveTab(channels[0]._id);
+            }
+            setIsLoading(false);
+        } catch (error) {
+            console.error("Error fetching channels:", error);
+        } finally {
+            setIsLoading(false);
+        }
+    };
+
+    if (isLoading) {
+        return <Loading message="Loading Channels..." />;
+    }
+
+    return (
+        <div className="container vi mt-4 mx-0">
+            <h2 className="text-center mb-4">User Dashboard</h2>
+
+            {allChannels.length === 0 ? (
+                <div className="empty-state-message text-center">
+                    <h2>No Channels Available</h2>
+                    <p>Please add channels to view data.</p>
+                </div>
+            ) : (
+                <>
+                    {/* Bootstrap Tabs */}
+                    <ul className="nav nav-pills mb-3" role="tablist">
+                        {allChannels.map(channel => (
+                            <li className="nav-item" role="presentation" key={channel._id}>
+                                <button
+                                    className={`nav-link ${activeTab === channel._id ? 'active' : ''}`}
+                                    type="button"
+                                    role="tab"
+                                    onClick={() => setActiveTab(channel._id)}
+                                >
+                                    {channel.name}
+                                </button>
+                            </li>
+                        ))}
+                    </ul>
+
+                    {/* Tab Content */}
+                    <div className="tab-content">
+                        {allChannels.map(channel => (
+                            activeTab === channel._id && (
+                                <div key={channel._id} className="tab-pane fade show active">
+                                    <div className="channel-card p-3 border rounded">
+                                        {/* <h3>{channel.name}</h3> */}
+
+                                        <div className="charts-container dashboardChartContainer">
+                                            {channelData.fields?.map((field) => (
+                                                <div className="chart mb-4 dashboardChart" key={`${channel._id}-${field}`}>
+                                                    <center><FieldDisplay name={field} value={fieldData[field]} count={fieldCounts[field] || 0}/></center>
+
+                                                    {/* Line Chart */}
+                                                    <div className="mb-4">
+                                                        {/* <h5>Line Chart</h5> */}
+                                                        <LineChartComponent
+                                                            data={{
+                                                                series1: historicalData[field]?.map(entry => entry.value) || [],
+                                                            }}
+                                                            timeLabels={historicalData[field]?.map(entry => {
+                                                                const date = new Date(entry.timestamp);
+                                                                return date.toLocaleTimeString([], { day: 'numeric', month: 'numeric', hour: '2-digit', minute: '2-digit' });
+                                                            }) || []}
+                                                        />
+                                                    </div>
+                                                </div>
+                                            ))}
+                                        </div>
+                                    </div>
+                                </div>
+                            )
+                        ))}
+                    </div>
+                </>
             )}
-          </Card>
-
-          {/* Alerts Section */}
-          <Card className="mt-3 p-3">
-            <h5>🚨 Event Alerts</h5>
-            <ul>
-              {alerts.length === 0 ? <li>No active alerts</li> : alerts.map((alert, i) => <li key={i}>{alert}</li>)}
-            </ul>
-            <Button variant="warning">⚙️ Manage Alerts</Button>
-          </Card>
-        </Col>
-      </Row>
-    </Container>
-  );
+        </div>
+    );
 };
 
-export default Dashboard;
+export default GlobalDashboard;

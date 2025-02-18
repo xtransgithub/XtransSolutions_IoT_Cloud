@@ -9,9 +9,7 @@ const Navbar = () => {
   const location = useLocation();
   const isVerifyPage = location.pathname === '/verify-email';
   const handleLogout = () => {
-    localStorage.removeItem('token');
-    localStorage.removeItem('x-api-key');
-    localStorage.removeItem('userId');
+    localStorage.clear();
     navigate('/signin');
   };
 

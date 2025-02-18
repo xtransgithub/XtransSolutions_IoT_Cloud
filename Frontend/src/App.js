@@ -20,6 +20,7 @@ import Prediction from './components/Prediction/Prediction';
 import VerifyEmail from "./components/VerifyEmail/VerifyEmail";
 import NotVerified from './components/VerifyEmail/NotVerified';
 import Tutorial from "./components/tutorial/tutorial";
+import Dashboard from "./components/Dashboard/dashboard"
 
 function App() {
   return (
@@ -46,6 +47,13 @@ function App() {
             <PrivateRoute>
               <Layout>
                 <ChannelPage />
+              </Layout>
+            </PrivateRoute>
+          } />
+          <Route path="/dashboard" element={
+            <PrivateRoute>
+              <Layout>
+                <Dashboard />
               </Layout>
             </PrivateRoute>
           } />
