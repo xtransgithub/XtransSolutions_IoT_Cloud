@@ -43,3 +43,42 @@
 .loader {
   height: 50vh;
 }
+
+.popup-overlay {
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: auto;
+  height: 100%;
+  background: rgba(0, 0, 0, 0);
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+.popup-content {
+  background: white;
+  width: auto;
+  max-width: 600px;
+  height: 100%;
+  padding: 20px;
+  overflow-y: auto;
+  position: relative;
+  border-left: 1px solid #ccc;
+}
+
+.close-btn {
+  position: absolute;
+  top: 10px;
+  right: 20px;
+  font-size: 24px;
+  border: none;
+  background: none;
+  cursor: pointer;
+}
+
+@media (max-width: 768px) {
+  .popup-content {
+    max-width: 90%;
+  }
+}

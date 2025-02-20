@@ -5,12 +5,15 @@ import ChannelCard from "./ChannelCard";
 import "./channel.css";
 import { server } from "../../config";
 import Loading from "../loading"; 
-import { Link } from "react-router-dom";
+import CreateChannelForm from "../CreateChannelForm/CreateChannelForm"; 
+
+const MAX_CHANNELS = 4;
 
 const ChannelPage = () => {
   const navigate = useNavigate();
   const [channels, setChannels] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [showPopup, setShowPopup] = useState(false);
   const token = localStorage.getItem("token");
 
   useEffect(() => {
@@ -67,12 +70,26 @@ const ChannelPage = () => {
             />
           ))
         ) : (
-          <div>
-            <p>No channels found. Create one to get started!</p>
-            <Link to="/newChannel" className="btn btn-secondary mt-2 mb-3">Create Channel</Link>
-          </div>
+          <p>No channels found. Create one to get started!</p>
         )}
       </div>
+      <button
+        className="btn btn-primary mb-3"
+        onClick={() => setShowPopup(true)}
+        disabled={channels.length >= MAX_CHANNELS}
+      >
+        {channels.length >= MAX_CHANNELS ? "Channel Limit Reached" : "Create New Channel"}
+      </button>
+
+      {/* Popup for Creating New Channel */}
+      {showPopup && (
+        <div className="popup-overlay" onClick={() => setShowPopup(false)}>
+          <div className="popup-content" onClick={(e) => e.stopPropagation()}>
+            <button className="close-btn" onClick={() => setShowPopup(false)}>×</button>
+            <CreateChannelForm onClose={() => setShowPopup(false)} />
+          </div>
+        </div>
+      )}
     </div>
   );
 };
