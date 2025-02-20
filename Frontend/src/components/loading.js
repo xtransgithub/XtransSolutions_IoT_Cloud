@@ -1,14 +1,11 @@
-import React from 'react';
+import React from "react";
+import "./Loading.css"; // Import the CSS file
 
 const Loading = ({ message }) => {
   return (
-    <div className="d-flex justify-content-center align-items-center">
-      <div className="d-flex align-items-center">
-        <div className="spinner-border" role="status">
-          <span className="visually-hidden">{message}</span>
-        </div>
-        <p className="mb-0 ms-2">{message}</p>
-      </div>
+    <div className="loading-container">
+      <div className="spinner"></div>
+      <p className="loading-text">{message}</p>
     </div>
   );
 };
