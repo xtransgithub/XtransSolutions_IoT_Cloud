@@ -54,7 +54,7 @@ const GlobalDashboard = () => {
 
     return (
         <div className="container vi mt-4 mx-0">
-            <h2 className="text-center mb-4">User Dashboard</h2>
+            <h2 className="dk text-center mb-4">User Dashboard</h2>
 
             {allChannels.length === 0 ? (
                 <div className="empty-state-message text-center">

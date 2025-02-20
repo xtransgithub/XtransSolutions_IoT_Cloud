@@ -86,12 +86,12 @@ const ChannelDashboard = () => {
                             <li className="list-group-item"><strong>Channel ID:</strong> {currentChannel.currentChannelId}</li>
                             <li className="list-group-item"><strong>Fields:</strong> {JSON.stringify(currentChannel.currentChannelFields)}</li>
                         </ul>
-                        <div className='card-footer'>
+                        <div className='card-footer d-flex justify-content-center'>
                             <button className="btn btn-secondary w-75" onClick={() => getCSV(id, token)}>
                                 Export Data
                             </button>
                         </div>
-                        <div className='card-footer'>
+                        <div className='card-footer d-flex justify-content-center'>
                             <button className="btn btn-secondary w-75" onClick={toggleEdit}>
                                 Edit
                             </button>

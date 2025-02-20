@@ -12,7 +12,7 @@ const FieldDisplay = ({ name, value, count, onRemove }) => {
     <div className="card mb-3 border-1">
       <div className="card-body text-center">
       <div className="d-flex justify-content-between align-items-center mb-2">
-        <h4 className="card-title mb-0 text-center flex-grow-1">Field: {name}</h4>
+        <h4 className="card-title mb-0 text-center flex-grow-1 ms-4">Field: {name}</h4>
         <button
           className="btn btn-sm"
           onClick={handleRemoveClick}

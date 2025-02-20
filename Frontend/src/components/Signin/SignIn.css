@@ -1,0 +1,111 @@
+body {
+    margin: 0;
+    padding: 0;
+  }
+  
+  /* Add semi-transparent background using ::before */
+  body::before {
+    content: "";
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url('../../assets/1_1.jpg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    opacity: 0.5;
+    z-index: -1;
+  }
+  
+
+/* Container */
+.signin-container {
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+  }
+  
+  /* Wrapper */
+  .signin-wrapper {
+    width: 100%;
+    max-width: 900px;
+    display: flex;
+    flex-direction: row;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    overflow: hidden;
+    background-color: white;
+  }
+  
+  /* Left Side: Welcome Section */
+  .left-section {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    color: rgb(0, 0, 0);
+    padding: 40px;
+    background-image: url('../../assets/1.jpeg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    text-align: center;
+  }
+  
+  /* Right Side: Login Form */
+  .right-section {
+    flex: 1;
+    padding: 40px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    width: 100%;
+  }
+  
+  /* Form Inputs */
+  .input-field {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+  }
+  
+  /* Submit Button */
+  .submit-button {
+    width: 100%;
+    padding: 10px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  /* Text Center */
+  .text-center {
+    text-align: center;
+    margin-top: 10px;
+  }
+  
+  /* 📱 HIDE LEFT SECTION ON MOBILE & TABLET */
+  @media (max-width: 1024px) {
+    .left-section {
+      display: none; 
+    }
+  
+    .signin-wrapper {
+      flex-direction: column;
+    }
+  
+    .right-section {
+      width: 100%;
+    }
+  }
+  

@@ -54,7 +54,15 @@ function Contact() {
           {/* Contact Information Section */}
           <div className="col-md-6 mt-5">
             <div className="mb-4">
-              <h3>USA (HQ)</h3>
+              <h3>
+                {/* <i className="bi bi-geo-alt-fill text-danger"></i>  */}
+                <img 
+                  src="https://upload.wikimedia.org/wikipedia/en/a/a4/Flag_of_the_United_States.svg" 
+                  alt="USA Flag" 
+                  width="45" 
+                  className="ms-0"
+                /> USA (HQ)
+              </h3>
               <p>
                 Xtrans Solutions LLC<br />
                 6590 Bollinger Road<br />
@@ -63,7 +71,15 @@ function Contact() {
             </div>
 
             <div className="mb-4">
-              <h3>INDIA</h3>
+              <h3>
+              {/* <i className="bi bi-geo-alt-fill text-danger"></i>  */}
+                <img 
+                  src="https://upload.wikimedia.org/wikipedia/en/4/41/Flag_of_India.svg" 
+                  alt="India Flag" 
+                  width="45" 
+                  className="ms-0"
+                /> INDIA
+              </h3>
               <p>
                 Xtrans Solutions Pvt. Ltd.<br />
                 Hubstairs coworkspace ,No 9, 2nd Floor, 27th Main, 100 Feet Ring Rd, above TATA Motors, BTM 1st Stage, Bengaluru, Karnataka 560068
@@ -71,9 +87,9 @@ function Contact() {
             </div>
 
             <div className="mb-4">
-              <h3>Email Us</h3>
+              <h3><i className="bi bi-envelope-fill text-primary"></i> Email Us</h3>
               <p>info@xtranssolutions.com</p>
-              <h3>Call Us</h3>
+              <h3><i className="bi bi-telephone-fill text-success"></i> Call Us</h3>
               <p>+91-6363812596</p>
             </div>
 
@@ -128,7 +144,7 @@ function Contact() {
                   id="message"
                   name="message"
                   className="form-control"
-                  rows="5"
+                  rows="9"
                   value={formData.message}
                   onChange={handleChange}
                   required
