@@ -6,7 +6,6 @@ import "./channel.css";
 import { server } from "../../config";
 import Loading from "../loading"; 
 import CreateChannelForm from "../CreateChannelForm/CreateChannelForm"; 
-import NO_CHANNEL_IMAGE from "../../assets/no_chh.jpg";
 
 const MAX_CHANNELS = 4;
 
@@ -71,14 +70,9 @@ const ChannelPage = () => {
             />
           ))
         ) : (
-          // <p>No channels found. Create one to get started!</p>
-          <div className="no-channels">
-            {/* <p>No channels found. Create one to get started!</p> */}
-            <img src={NO_CHANNEL_IMAGE} alt="No Channels Available" className="no-channel-img" />
-          </div>
+          <p>No channels found. Create one to get started!</p>
         )}
       </div>
-      <div className="d-flex justify-content-center">
       <button
         className="btn btn-primary mb-3"
         onClick={() => setShowPopup(true)}
@@ -86,7 +80,6 @@ const ChannelPage = () => {
       >
         {channels.length >= MAX_CHANNELS ? "Channel Limit Reached" : "Create New Channel"}
       </button>
-      </div>
 
       {/* Popup for Creating New Channel */}
       {showPopup && (

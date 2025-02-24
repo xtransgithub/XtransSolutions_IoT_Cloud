@@ -25,7 +25,7 @@ import Dashboard from "./components/Dashboard/dashboard"
 function App() {
   return (
     <>
-      <Router> 
+      <Router>
         <Routes>
           {/* Public Routes */}
           <Route path='/' element={<Home />} />
@@ -51,11 +51,11 @@ function App() {
             </PrivateRoute>
           } />
           <Route path="/dashboard" element={
-            // <PrivateRoute>
+            <PrivateRoute>
               <Layout>
                 <Dashboard />
               </Layout>
-            // </PrivateRoute>
+            </PrivateRoute>
           } />
           <Route path="/newChannel" element={
             <PrivateRoute>

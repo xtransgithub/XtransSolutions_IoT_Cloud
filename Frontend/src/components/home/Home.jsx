@@ -95,15 +95,15 @@ const Home = () => {
           </div>
         </section>
       </div>
-      <div className="container">
-        <footer className="py-3 my-4">
+      <div className="container-fluid px-0">
+        <footer className="py-4 my-0 bg-dark text-white">
           <ul className="nav justify-content-center border-bottom pb-3 mb-3">
-            <li className="nav-item"><a href="/" className="nav-link px-2 text-body-secondary">Home</a></li>
-            <li className="nav-item"><a href="/channels" className="nav-link px-2 text-body-secondary">Channels</a></li>
-            <li className="nav-item"><a href="/contact" className="nav-link px-2 text-body-secondary">Contact</a></li>
-            <li className="nav-item"><a href="/documentation" className="nav-link px-2 text-body-secondary">Documentation</a></li>
+            <li className="nav-item mx-2"><a href="/" className="nav-link px-3 py-2 text-white bg-primary rounded">Home</a></li>
+            <li className="nav-item mx-2"><a href="/channels" className="nav-link px-3 py-2 text-white bg-primary rounded">Channels</a></li>
+            <li className="nav-item mx-2"><a href="/contact" className="nav-link px-3 py-2 text-white bg-primary rounded">Contact</a></li>
+            <li className="nav-item mx-2"><a href="/documentation" className="nav-link px-3 py-2 text-white bg-primary rounded">Documentation</a></li>
           </ul>
-          <p className="text-center text-body-secondary">© 2025 Xtrans Solutions</p>
+          <p className="text-center text-white">© 2025 Xtrans Solutions</p>
         </footer>
       </div>
     </>

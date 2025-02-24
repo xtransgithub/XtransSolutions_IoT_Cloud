@@ -82,3 +82,17 @@
     max-width: 90%;
   }
 }
+
+.no-channels {
+  text-align: center;
+  /* margin-top: 20px; */
+}
+
+.no-channel-img {
+  width: 70vw;
+  max-width: 900px;
+  height: auto;
+  margin-bottom: 10px;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
