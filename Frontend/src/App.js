@@ -51,11 +51,11 @@ function App() {
             </PrivateRoute>
           } />
           <Route path="/dashboard" element={
-            // <PrivateRoute>
+            <PrivateRoute>
               <Layout>
                 <Dashboard />
               </Layout>
-            // </PrivateRoute>
+            </PrivateRoute>
           } />
           <Route path="/newChannel" element={
             <PrivateRoute>
