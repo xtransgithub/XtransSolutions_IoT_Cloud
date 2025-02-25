@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { server } from "../../config";
 import { useNavigate } from "react-router-dom";
-import Analysis_IMG from "../../assets/analysis_dashboard.svg";
+import Analysis_IMG from "../../assets/analysis_dashboard.png";
 
 const Analysis = () => {
   const [formData, setFormData] = useState({

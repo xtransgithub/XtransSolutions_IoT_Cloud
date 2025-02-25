@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { server } from "../../config";
-import Prediction_img from "../../assets/analysis_dashboard.jpg";
+import Prediction_img from "../../assets/pred_data.jpeg";
 
 const Prediction = () => {
   const [formData, setFormData] = useState({
