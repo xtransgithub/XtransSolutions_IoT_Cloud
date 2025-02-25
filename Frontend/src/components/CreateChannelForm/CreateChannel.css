@@ -4,15 +4,15 @@
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(0, 0, 0, 0.5); /* Slight dark overlay */
+  background-color: rgba(0, 0, 0, 0.01);;
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 10px; /* Ensures proper spacing on small devices */
+  padding: 10px; 
 }
 
 .popup-content {
-  background: white;
+  background: aliceblue;
   width: 500px;
   max-width: 90%;
   padding: 20px;
