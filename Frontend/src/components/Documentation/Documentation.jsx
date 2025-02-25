@@ -168,7 +168,7 @@ const Documentation = () => {
             flexGrow: 1,
             overflowY: "auto",
             marginTop: "2.5rem", // Adjusted to leave space for the navbar
-            backgroundColor: "#f8f9fa",
+            // backgroundColor: "#f8f9fa",
             transition: "margin-left 0.3s",
           }}
         >
