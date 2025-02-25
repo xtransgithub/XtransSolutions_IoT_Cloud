@@ -16,7 +16,6 @@ import {handleRemoveField} from './EditUtils';
 
 import no_data from "../../assets/empty.webp";
 
-
 const ChannelDashboard = () => {
     const [channelData, setChannelData] = useState({});
     const [currentChannel, setCurrentChannel] = useState({});

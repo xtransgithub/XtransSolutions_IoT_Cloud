@@ -113,12 +113,13 @@ function Contact() {
             <h3>Connect with Us</h3>
             <form onSubmit={handleSubmit}>
               <div className="mb-3">
-                <label htmlFor="name" className="form-label">Your Name</label>
+                <label htmlFor="name" className="form-label">Name</label>
                 <input
                   type="text"
                   id="name"
                   name="name"
                   className="form-control"
+                  placeholder="Type your name here"
                   value={formData.name}
                   onChange={handleChange}
                   required
@@ -126,12 +127,13 @@ function Contact() {
               </div>
 
               <div className="mb-3">
-                <label htmlFor="email" className="form-label">Your Email</label>
+                <label htmlFor="email" className="form-label">Email</label>
                 <input
                   type="email"
                   id="email"
                   name="email"
                   className="form-control"
+                  placeholder="Type your email here"
                   value={formData.email}
                   onChange={handleChange}
                   required
@@ -139,12 +141,13 @@ function Contact() {
               </div>
 
               <div className="mb-3">
-                <label htmlFor="message" className="form-label">Your Message</label>
+                <label htmlFor="message" className="form-label">Message</label>
                 <textarea
                   id="message"
                   name="message"
                   className="form-control"
                   rows="9"
+                  placeholder="Type your message here"
                   value={formData.message}
                   onChange={handleChange}
                   required
