@@ -9,7 +9,10 @@
 
 @media (max-width: 991px) {
     .navbar-nav .nav-link {
-        margin-right: 10px;
+        margin-left: 45px;
+    }
+    .vk12{
+        margin-left: 45px;
     }
 }
 
@@ -19,7 +22,9 @@
 
 .dropdown-menu {
     background: linear-gradient(to right, #0e2238, #0e2238) !important;
-    border-radius: 5px;
+    /* padding: 8px 20px !important; */
+    margin-right: 15px;
+    /* border-radius: 5px; */
     border: none;
     box-shadow: 0px 4px 6px #0e2238;
     text-align: center;
@@ -27,7 +32,8 @@
 
 .dropdown-menu .dropdown-item {
     color: white !important;
-    padding: 8px 15px !important;
+    padding: 8px 20px !important;
+    margin-right: 15px;
     border-radius: 5px !important;
     transition: background-color 0.3s ease;
     text-align: center;

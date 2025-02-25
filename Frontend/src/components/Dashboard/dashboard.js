@@ -86,7 +86,7 @@ const GlobalDashboard = () => {
                         {allChannels.map(channel => (
                             activeTab === channel._id && (
                                 <div key={channel._id} className="tab-pane fade show active">
-                                    <div className="channel-card p-3 border rounded">
+                                    <div className="channel-card p-3 rounded">
                                         {/* <h3>{channel.name}</h3> */}
                                         {channelData.fields?.length > 0 ? (
                                         <div className="charts-container dashboardChartContainer">

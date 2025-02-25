@@ -8,7 +8,7 @@
 .dk {
     display: flex;
     justify-content: center;
-    background: white;
+    /* background: white; */
     padding: 10px;
     border-radius: 8px;    
     font-weight: bold;
@@ -16,7 +16,7 @@
 .nav-pills {
     display: flex;
     justify-content: center;
-    background: white;
+    /* background: white; */
     padding: 10px;
     border-radius: 8px;
 }
@@ -38,9 +38,9 @@
     color: white;
 }
 .channel-card {
-    background: white;
-    border: 1px solid #ddd;
-    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+    /* background: white; */
+    /* border: 1px solid #ddd; */
+    /* box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1); */
     border-radius: 12px;
     padding: 20px;
     transition: 0.3s ease-in-out;
@@ -58,7 +58,7 @@
 .dashboardChart {
     width: 30%; 
     min-width: 280px; 
-    background: white;
+    /* background: white; */
     padding: 15px;
     border-radius: 10px;
     box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.15);
