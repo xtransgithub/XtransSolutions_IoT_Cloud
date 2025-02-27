@@ -5,6 +5,24 @@ import * as Yup from "yup";
 import { useNavigate } from "react-router-dom";
 import { server } from "../../config";
 import AlertModal from "../Alert/Alert";
+import { Carousel } from "react-bootstrap";
+import "bootstrap/dist/css/bootstrap.min.css";
+
+import reminder1 from "../../assets/tutorial/alert/reminder1.jpeg";
+import alert__1 from "../../assets/tutorial/alert/Alert_1.png";
+import alert__2 from "../../assets/tutorial/alert/Alert_2.png";
+import alert__3 from "../../assets/tutorial/alert/Alert_3.png";
+import alert__4 from "../../assets/tutorial/alert/Alert_4.png";
+import alert__5 from "../../assets/tutorial/alert/Alert_5.png";
+
+const tutorialSteps = [
+  { src: reminder1, title: "Home", text: "Event Alerts" },
+  { src: alert__1, title: "Step 1", text: "Select Channel from the dropdown" },
+  { src: alert__2, title: "Step 2", text: "Select Field from the field dropdown" },
+  { src: alert__3, title: "Step 3", text: "Select Operator" },
+  { src: alert__4, title: "Step 4", text: "Input Trigger Value and Email Address then Click on Set Event" },
+  { src: alert__5, title: "Step 5", text: "Click on OK" },
+];
 
 const EventForm = () => {
   const navigate = useNavigate();
@@ -15,6 +33,7 @@ const EventForm = () => {
   const [showAlert, setShowAlert] = useState(false);
   const [alertMessage, setAlertMessage] = useState("");
   const token = localStorage.getItem("token");
+  const [activeIndex, setActiveIndex] = useState(0);
 
   useEffect(() => {
     const fetchChannels = async () => {
@@ -77,9 +96,7 @@ const EventForm = () => {
       fieldName: values.fieldName,
       triggerValue: parseFloat(values.triggerValue),
     };
-  
-    console.log("Request Data:", requestData);
-  
+
     axios
       .post(`${server}api/auth/events`, requestData, {
         headers: {
@@ -103,134 +120,145 @@ const EventForm = () => {
       .finally(() => {
         setSubmitting(false);
       });
-  };  
+  };
 
   const handleCloseAlert = () => {
     setShowAlert(false);
   };
 
+  const handleSelect = (selectedIndex) => {
+    setActiveIndex(selectedIndex);
+  };
+
   return (
-    <div className="container m-0">
-      <h2 className="text-start mb-3">Set Event Alerts</h2>
+    <div className="container mt-4">
+      <h2 className="text-center mb-3">Set Event Alerts</h2>
+      <div className="row">
+        <div className="col-md-6 d-flex flex-column align-items-center">
+          <Carousel fade interval={2000} className="w-100" onSelect={handleSelect}>
+            {tutorialSteps.map((step, index) => (
+              <Carousel.Item key={index}>
+                <img className="carousel-img" src={step.src} alt={step.title} />
+              </Carousel.Item>
+            ))}
+          </Carousel>
 
-      {loading && <div>Loading channels...</div>}
-      {error && <div className="alert alert-danger">{error}</div>}
+          <div className="carousel-caption-below text-center mt-3">
+            <h5 className="fw-bold">{tutorialSteps[activeIndex].title}</h5>
+            <p>{tutorialSteps[activeIndex].text}</p>
+          </div>
+        </div>
 
-      {showAlert && <AlertModal message={alertMessage} onClose={handleCloseAlert} />}
+        <style>{`
+          .carousel-img {
+            max-width: 100%;
+            max-height: 450px; /* Adjust this value as needed */
+            width: auto;
+            height: auto;
+            object-fit: contain;
+            display: block;
+            margin: auto;
+          }
 
-      <Formik
-        initialValues={{
-          channelId: "",
-          fieldName: "",
-          operator: "greater than",
-          triggerValue: "",
-          reciver_email: "",
-        }}
-        validationSchema={validationSchema}
-        onSubmit={handleSubmit}
-      >
-        {({ isSubmitting, values, setFieldValue }) => (
-          <Form className="card p-4 shadow">
-            <div className="mb-3">
-              <label htmlFor="channelId" className="form-label">
-                Select Channel:
-              </label>
-              <Field
-                as="select"
-                name="channelId"
-                id="channelId"
-                className="form-select"
-                onChange={(e) => handleChannelChange(e.target.value, setFieldValue)}
-              >
-                <option value="">Select a Channel</option>
-                {channels.map((channel) => (
-                  <option key={channel._id} value={channel._id}>
-                    {channel.name}
-                  </option>
-                ))}
-              </Field>
-              <ErrorMessage name="channelId" component="div" className="text-danger" />
-            </div>
+          .carousel-control-prev-icon,
+          .carousel-control-next-icon {
+            filter: invert(100%); /* Turns arrows black */
+          }
+        `}</style>
 
-            <div className="mb-3">
-              <label htmlFor="fieldName" className="form-label">
-                Select Field:
-              </label>
-              <Field
-                as="select"
-                name="fieldName"
-                id="fieldName"
-                className="form-select"
-                disabled={!values.channelId}
-              >
-                <option value="">Select a Field</option>
-                {fields && fields.length > 0 ? (
-                  fields.map((field, index) => (
-                    <option key={index} value={field}>
-                      {field}
-                    </option>
-                  ))
-                ) : (
-                  <option value="">No fields available</option>
-                )}
-              </Field>
-              <ErrorMessage name="fieldName" component="div" className="text-danger" />
-            </div>
+        <div className="col-md-6">
+          {loading && <div>Loading channels...</div>}
+          {error && <div className="alert alert-danger">{error}</div>}
 
-            <div className="mb-3">
-              <label htmlFor="operator" className="form-label">
-                Operator:
-              </label>
-              <Field
-                as="select"
-                name="operator"
-                id="operator"
-                className="form-select"
-              >
-                <option value="less than">Less Than</option>
-                <option value="greater than">Greater Than</option>
-                <option value="equal to">Equal To</option>
-                <option value="less than equal to">Less Than Equal To</option>
-                <option value="greater than equal to">Greater Than Equal To</option>
-                <option value="not equal to">Not Equal To</option>
-              </Field>
-              <ErrorMessage name="operator" component="div" className="text-danger" />
-            </div>
+          {showAlert && <AlertModal message={alertMessage} onClose={handleCloseAlert} />}
 
-            <div className="mb-3">
-              <label htmlFor="triggerValue" className="form-label">
-                Trigger Value:
-              </label>
-              <Field
-                type="text"
-                name="triggerValue"
-                id="triggerValue"
-                className="form-control"
-              />
-              <ErrorMessage name="triggerValue" component="div" className="text-danger" />
-            </div>
+          <Formik
+            initialValues={{
+              channelId: "",
+              fieldName: "",
+              operator: "greater than",
+              triggerValue: "",
+              reciver_email: "",
+            }}
+            validationSchema={validationSchema}
+            onSubmit={handleSubmit}
+          >
+            {({ isSubmitting, values, setFieldValue }) => (
+              <Form className="card p-4 shadow">
+                <div className="mb-3">
+                  <label className="form-label">Select Channel:</label>
+                  <Field as="select" name="channelId" className="form-select" onChange={(e) => handleChannelChange(e.target.value, setFieldValue)}>
+                    <option value="">Select a Channel</option>
+                    {channels.map((channel) => (
+                      <option key={channel._id} value={channel._id}>
+                        {channel.name}
+                      </option>
+                    ))}
+                  </Field>
+                  <ErrorMessage name="channelId" component="div" className="text-danger" />
+                </div>
 
-            <div className="mb-3">
-              <label htmlFor="email" className="form-label">
-                Email Address:
-              </label>
-              <Field
-                type="email"
-                name="email"
-                id="reciver_email"
-                className="form-control"
-              />
-              <ErrorMessage name="email" component="div" className="text-danger" />
-            </div>
+                <div className="mb-3">
+                  <label className="form-label">Select Field:</label>
+                  <Field as="select" name="fieldName" className="form-select" disabled={!values.channelId}>
+                    <option value="">Select a Field</option>
+                    {fields.map((field, index) => (
+                      <option key={index} value={field}>{field}</option>
+                    ))}
+                  </Field>
+                  <ErrorMessage name="fieldName" component="div" className="text-danger" />
+                </div>
 
-            <div className="d-grid">
-              <button type="submit" className="btn btn-primary" disabled={isSubmitting}>
-                {isSubmitting ? "Setting Event..." : "Set Event"}
-              </button>
-            </div>
-          </Form>
-        )}
-      </Formik>
+                {/* Operator Selection */}
+                <div className="mb-3">
+                  <label className="form-label">Operator:</label>
+                  <Field as="select" name="operator" className="form-select">
+                    <option value="less than">Less Than</option>
+                    <option value="greater than">Greater Than</option>
+                    <option value="equal to">Equal To</option>
+                    <option value="less than equal to">Less Than Equal To</option>
+                    <option value="greater than equal to">Greater Than Equal To</option>
+                    <option value="not equal to">Not Equal To</option>
+                  </Field>
+                  <ErrorMessage name="operator" component="div" className="text-danger" />
+                </div>
+
+                <div className="mb-3">
+                  <label htmlFor="triggerValue" className="form-label">
+                    Trigger Value:
+                  </label>
+                  <Field
+                    type="text"
+                    name="triggerValue"
+                    id="triggerValue"
+                    className="form-control"
+                  />
+                  <ErrorMessage name="triggerValue" component="div" className="text-danger" />
+                </div>
+
+                <div className="mb-3">
+                  <label htmlFor="email" className="form-label">
+                    Email Address:
+                  </label>
+                  <Field
+                    type="email"
+                    name="email"
+                    id="reciver_email"
+                    className="form-control"
+                  />
+                  <ErrorMessage name="email" component="div" className="text-danger" />
+                </div>
+
+                <div className="d-grid">
+                  <button type="submit" className="btn btn-primary" disabled={isSubmitting}>
+                    {isSubmitting ? "Setting Event..." : "Set Event"}
+                  </button>
+                </div>
+              </Form>
+            )}
+          </Formik>
+        </div>
+      </div>
     </div>
   );
 };
