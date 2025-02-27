@@ -199,7 +199,7 @@ def perform_prediction_with_timestamps(data, prediction_hours):
         start_datetime = pd.Timestamp.combine(start_date.date(), start_time).tz_localize('UTC')
         
         frequency = time_diffs.iloc[0]
-        timestamps = pd.date_range(start=start_datetime, periods=forecast_steps, freq=frequency)
+        timestamps = pd.date_range(start=start_datetime, periods=forecast_steps, freq='5T')
 
         ist = pytz.timezone('Asia/Kolkata')
         formatted_timestamps = [ts.tz_convert(ist).strftime('%A, %B %d, %Y, %I:%M:%S %p (IST)') for ts in timestamps]
