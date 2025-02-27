@@ -14,6 +14,8 @@ import { server } from '../../config';
 import EditModal from './EditModal'; 
 import {handleRemoveField} from './EditUtils';
 
+import no_data from "../../assets/empty.webp";
+
 const ChannelDashboard = () => {
     const [channelData, setChannelData] = useState({});
     const [currentChannel, setCurrentChannel] = useState({});
@@ -86,12 +88,12 @@ const ChannelDashboard = () => {
                             <li className="list-group-item"><strong>Channel ID:</strong> {currentChannel.currentChannelId}</li>
                             <li className="list-group-item"><strong>Fields:</strong> {JSON.stringify(currentChannel.currentChannelFields)}</li>
                         </ul>
-                        <div className='card-footer'>
+                        <div className='card-footer d-flex justify-content-center'>
                             <button className="btn btn-secondary w-75" onClick={() => getCSV(id, token)}>
                                 Export Data
                             </button>
                         </div>
-                        <div className='card-footer'>
+                        <div className='card-footer d-flex justify-content-center'>
                             <button className="btn btn-secondary w-75" onClick={toggleEdit}>
                                 Edit
                             </button>
@@ -102,7 +104,8 @@ const ChannelDashboard = () => {
                 <div className="col-md-9">
                     {(!channelData.fields || Object.keys(fieldData).length === 0) ? (
                         <div className="empty-state-message">
-                            <h2>No Data Available</h2>
+                            {/* <h2>No Data Available</h2> */}
+                            <img src={no_data} alt="No Data Available" className="img-fluid mb-3" style={{ maxWidth: '800px' }} />
                             <p>This channel currently has no entries. Please add data to view the charts.</p>
                         </div>
                     ) : (

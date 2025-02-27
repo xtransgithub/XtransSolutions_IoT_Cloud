@@ -55,7 +55,7 @@ const Navbar = () => {
             </li>
 
             {token ? (
-              <li className="nav-item dropdown">
+              <li className="nav-item dropdown vk12">
                 <button 
                   className="btn btn-secondary dropdown-toggle" 
                   type="button" 

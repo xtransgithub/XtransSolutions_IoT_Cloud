@@ -133,7 +133,7 @@ const UserProfile = () => {
             <div className="row g-3">
               <div className="col-md-6 col-sm-12">
                 <div className="p-3 bg-light rounded">
-                  <label className="form-label">First Name</label>
+                  <label className="form-label"><i className="bi bi-person-circle text-secondary" style={{ fontSize: '1rem' }}></i> First Name</label>
                   {editMode ? (
                     <input
                       type="text"
@@ -148,7 +148,7 @@ const UserProfile = () => {
               </div>
               <div className="col-md-6 col-sm-12">
                 <div className="p-3 bg-light rounded">
-                  <label className="form-label">Last Name</label>
+                  <label className="form-label"><i className="bi bi-person-circle text-secondary" style={{ fontSize: '1rem' }}></i> Last Name</label>
                   {editMode ? (
                     <input
                       type="text"
@@ -170,13 +170,13 @@ const UserProfile = () => {
             <div className="row g-3">
               <div className="col-md-6 col-sm-12">
                 <div className="p-3 bg-light rounded">
-                  <label className="form-label">Email</label>
+                  <label className="form-label"><i className="bi bi-envelope-fill text-primary"></i> Email</label>
                   <p className="mb-0">{user.email}</p>
                 </div>
               </div>
               <div className="col-md-6 col-sm-12">
                 <div className="p-3 bg-light rounded">
-                  <label className="form-label">Mobile Number</label>
+                  <label className="form-label"><i className="bi bi-telephone-fill text-success"></i> Mobile Number</label>
                   <p className="mb-0">{user.mobileNumber}</p>
                 </div>
               </div>

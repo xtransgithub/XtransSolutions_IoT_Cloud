@@ -1,12 +1,13 @@
-import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import React, { useState, useEffect } from "react";
+import axios from "axios";
 import { server } from "../../config";
+import Prediction_img from "../../assets/pred_data.jpeg";
 
 const Prediction = () => {
   const [formData, setFormData] = useState({
-    channel_id: '',
-    field: '',
-    prediction_hours: '',
+    channel_id: "",
+    field: "",
+    prediction_hours: "",
   });
 
   const [channels, setChannels] = useState([]);
@@ -15,12 +16,12 @@ const Prediction = () => {
   const [error, setError] = useState(null);
   const [loadingChannels, setLoadingChannels] = useState(true);
 
-  const token = localStorage.getItem('token'); // Retrieve the token from localStorage
+  const token = localStorage.getItem("token"); // Retrieve the token from localStorage
 
   // Fetch channels when the component is mounted
   useEffect(() => {
     if (!token) {
-      setError('Authorization token is missing.');
+      setError("Authorization token is missing.");
       return;
     }
 
@@ -32,7 +33,7 @@ const Prediction = () => {
         setChannels(response.data.channels);
         setLoadingChannels(false);
       } catch (err) {
-        setError('Error fetching channels.');
+        setError("Error fetching channels.");
       }
     };
 
@@ -47,10 +48,10 @@ const Prediction = () => {
     // Fetch fields based on selected channel
     if (channelId) {
       try {
-        const selectedChannel = channels.find(channel => channel._id === channelId);
+        const selectedChannel = channels.find((channel) => channel._id === channelId);
         setFields(selectedChannel?.fields || []);
       } catch (err) {
-        setError('Error fetching fields for this channel.');
+        setError("Error fetching fields for this channel.");
       }
     } else {
       setFields([]);
@@ -98,99 +99,115 @@ const Prediction = () => {
 
   return (
     <div className="container mt-5">
+      <div className="row align-items-center">
+        
       <h2 className="text-center text-primary mb-4">Data Prediction</h2>
-
-      {loadingChannels ? (
-        <div>Loading channels...</div>
-      ) : (
-        <form onSubmit={handleSubmit}>
-          <div className="mb-3">
-            <label htmlFor="channel_id" className="form-label">Channel ID:</label>
-            <select
-              id="channel_id"
-              name="channel_id"
-              value={formData.channel_id}
-              onChange={handleChannelChange}
-              className="form-select"
-              required
-            >
-              <option value="">Select a Channel</option>
-              {channels.map((channel) => (
-                <option key={channel._id} value={channel._id}>
-                  {channel.name}
-                </option>
-              ))}
-            </select>
-          </div>
-
-          <div className="mb-3">
-            <label htmlFor="field" className="form-label">Field:</label>
-            <select
-              id="field"
-              name="field"
-              value={formData.field}
-              onChange={handleChange}
-              className="form-select"
-              required
-              disabled={!formData.channel_id}
-            >
-              <option value="">Select a Field</option>
-              {fields.length > 0 ? (
-                fields.map((field, index) => (
-                  <option key={index} value={field}>
-                    {field}
-                  </option>
-                ))
-              ) : (
-                <option value="">No fields available</option>
-              )}
-            </select>
-          </div>
-
-          <div className="mb-3">
-            <label htmlFor="prediction_hours" className="form-label">Prediction Hours:</label>
-            <input
-              type="number"
-              id="prediction_hours"
-              name="prediction_hours"
-              value={formData.prediction_hours}
-              onChange={handleChange}
-              className="form-control"
-              required
-            />
-          </div>
-
-          <button type="submit" className="btn btn-primary w-100">Predict</button>
-        </form>
-      )}
-
-      {result && result.forecast && (
-        <div className="mt-4">
-          <h3 className="text-success">Forecast Results</h3>
-          <table className="table table-bordered table-striped">
-            <thead>
-              <tr>
-                <th>Timestamp</th>
-                <th>Value</th>
-              </tr>
-            </thead>
-            <tbody>
-              {result.forecast.map((item, index) => (
-                <tr key={index}>
-                  <td>{formatTimestamp(item.timestamp)}</td>
-                  <td>{item.value.toFixed(4)}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+        {/* Left side: Image */}
+        <div className="col-md-6 text-center">
+          <img
+            src={Prediction_img} // Replace with your image path
+            alt="Prediction Illustration"
+            className="img-fluid"
+            style={{ maxHeight: "450px", borderRadius: "10px" }}
+          />
         </div>
-      )}
 
-      {error && (
-        <div className="alert alert-danger mt-4">
-          <strong>Error:</strong> {error}
+        {/* Right side: Form */}
+        <div className="col-md-6">
+
+          {loadingChannels ? (
+            <div>Loading channels...</div>
+          ) : (
+            <form onSubmit={handleSubmit}>
+              <div className="mb-3">
+                <label htmlFor="channel_id" className="form-label">Channel ID:</label>
+                <select
+                  id="channel_id"
+                  name="channel_id"
+                  value={formData.channel_id}
+                  onChange={handleChannelChange}
+                  className="form-select"
+                  required
+                >
+                  <option value="">Select a Channel</option>
+                  {channels.map((channel) => (
+                    <option key={channel._id} value={channel._id}>
+                      {channel.name}
+                    </option>
+                  ))}
+                </select>
+              </div>
+
+              <div className="mb-3">
+                <label htmlFor="field" className="form-label">Field:</label>
+                <select
+                  id="field"
+                  name="field"
+                  value={formData.field}
+                  onChange={handleChange}
+                  className="form-select"
+                  required
+                  disabled={!formData.channel_id}
+                >
+                  <option value="">Select a Field</option>
+                  {fields.length > 0 ? (
+                    fields.map((field, index) => (
+                      <option key={index} value={field}>
+                        {field}
+                      </option>
+                    ))
+                  ) : (
+                    <option value="">No fields available</option>
+                  )}
+                </select>
+              </div>
+
+              <div className="mb-3">
+                <label htmlFor="prediction_hours" className="form-label">Prediction Hours:</label>
+                <input
+                  type="number"
+                  id="prediction_hours"
+                  name="prediction_hours"
+                  value={formData.prediction_hours}
+                  onChange={handleChange}
+                  className="form-control"
+                  required
+                />
+              </div>
+
+              <button type="submit" className="btn btn-primary w-100">Predict</button>
+            </form>
+          )}
+
+          {result && result.forecast && (
+            <div className="mt-4">
+              <h3 className="text-success">Forecast Results</h3>
+              <table className="table table-bordered table-striped">
+                <thead>
+                  <tr>
+                    <th>Timestamp</th>
+                    <th>Value</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {result.forecast.map((item, index) => (
+                    <tr key={index}>
+                      <td>{formatTimestamp(item.timestamp)}</td>
+                      <td>{item.value.toFixed(4)}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          )}
+
+          {error && (
+            <div className="alert alert-danger mt-4">
+              <strong>Error:</strong> {error}
+            </div>
+          )}
         </div>
-      )}
+      </div>
     </div>
   );
 };

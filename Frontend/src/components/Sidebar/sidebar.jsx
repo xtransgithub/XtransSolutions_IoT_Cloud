@@ -30,20 +30,12 @@ function Sidebar() {
                         </a>
                     </li>
                     <li className="sidebar-item">
-                        <a href="/channels" className="sidebar-link collapsed has-dropdown" data-bs-toggle="collapse"
-                            data-bs-target="#channel-list" aria-expanded="false" aria-controls="channel-list">
+                        <a href="/channels" className="sidebar-link">
                             <i className="bi bi-card-list"></i>
                             <span>Channels</span>
                         </a>
-                        <ul id="channel-list" className="sidebar-dropdown list-unstyled collapse" data-bs-parent="#sidebar">
-                            <li className="sidebar-item">
-                                <a href="/channels" className="sidebar-link">All channels</a>
-                            </li>
-                            <li className="sidebar-item">
-                                <a href="/newChannel" className="sidebar-link">Create channel</a>
-                            </li>
-                        </ul>
                     </li>
+
                     <li className="sidebar-item">
                         <a href="/dashboard" className="sidebar-link">
                             <i className="bi bi-display"></i>

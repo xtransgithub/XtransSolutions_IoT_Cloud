@@ -98,7 +98,7 @@ const Documentation = () => {
             top: "3.7rem",
             left: isSidebarVisible ? "250px" : "0px",
             zIndex: 1000,
-            backgroundColor: "#0e2238",
+            backgroundColor: "#212529",
             color: "white",
             border: "none",
             padding: "10px 10px",
@@ -116,8 +116,8 @@ const Documentation = () => {
           <nav
             style={{
               width: "250px",
-              backgroundColor: "#0e2238",
-              borderRight: "1px solid #dee2e6",
+              backgroundColor: "#212529",
+              borderRight: "1px solidrgb(255, 255, 255)",
               padding: "1rem",
               position: "fixed",
               top: "3.5rem",
@@ -126,7 +126,7 @@ const Documentation = () => {
               transition: "transform 0.3s",
             }}
           >
-            <h5 style={{ marginBottom: "1.5rem", color: "rgb(169, 201, 233)" }}>
+            <h5 style={{ marginBottom: "1.5rem", color: "rgb(251, 251, 251)" }}>
               Documentation
             </h5>
             <ul className="nav flex-column">
@@ -136,7 +136,7 @@ const Documentation = () => {
                     className="nav-link"
                     href={`#${section.id}`}
                     style={{
-                      color: "rgb(169, 201, 233)",
+                      color: "rgb(255, 255, 255)",
                       textDecoration: "none",
                       padding: "10px 0",
                     }}
@@ -144,7 +144,7 @@ const Documentation = () => {
                     {`${index + 1}. ${section.title}`}
                   </a>
                   {section.subsections && (
-                    <ol style={{ color: "rgb(169, 201, 233)", paddingLeft: "0px" }}>
+                    <ol style={{ color: "rgb(255, 255, 255)", paddingLeft: "0px" }}>
                       {section.subsections.map((subsection, subIndex) => (
                         <li key={subIndex} style={{ paddingLeft: "20px" }}>
                           <strong>
@@ -168,7 +168,7 @@ const Documentation = () => {
             flexGrow: 1,
             overflowY: "auto",
             marginTop: "2.5rem", // Adjusted to leave space for the navbar
-            backgroundColor: "#f8f9fa",
+            // backgroundColor: "#f8f9fa",
             transition: "margin-left 0.3s",
           }}
         >
@@ -176,7 +176,7 @@ const Documentation = () => {
             <Loading message={"Loading Documentation..."} />
           ) : (
             <div>
-              <h1 style={{ color: "#0e2238" }}>Documentation</h1>
+              <h1 style={{ color: "#212529" }}>Documentation</h1>
               <p>
                 Welcome to the documentation page! Here you'll find guidance on how to navigate and use the website effectively.
               </p>
@@ -464,7 +464,7 @@ const Documentation = () => {
                 If you’ve forgotten your password or need to reset it, follow these steps:
               </p>
               <ol>
-                <li><strong>8.1</strong> Navigate to the <Link to="/reset-password">Reset Password</Link>{" "} page.</li>
+                <li><strong>8.1</strong> Navigate to the <Link to="/forget-password">Reset Password</Link>{" "} page.</li>
                 <li><strong>8.2</strong> Enter the reset token sent to your email.</li>
                 <li><strong>8.3</strong> Provide and confirm your new password.</li>
                 <li><strong>8.4</strong> Click "Reset Password" to submit.</li>

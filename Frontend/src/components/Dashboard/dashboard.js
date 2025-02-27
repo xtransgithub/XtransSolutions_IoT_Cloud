@@ -6,6 +6,7 @@ import Loading from '../loading';
 import { server } from '../../config';
 import { fetchDataEntries } from './FetchEntrieslDashboard';
 import './dashboard.css';
+import no_data from "../../assets/empty.webp";
 
 const GlobalDashboard = () => {
     const [allChannels, setAllChannels] = useState([]);
@@ -54,11 +55,12 @@ const GlobalDashboard = () => {
 
     return (
         <div className="container vi mt-4 mx-0">
-            <h2 className="text-center mb-4">User Dashboard</h2>
+            <h2 className="dk text-center mb-4">User Dashboard</h2>
 
             {allChannels.length === 0 ? (
                 <div className="empty-state-message text-center">
-                    <h2>No Channels Available</h2>
+                    <img src={no_data} alt="No Data Available" className="img-fluid mb-3" style={{ maxWidth: '800px' }} />
+                    {/* <h2>No Channels Available</h2> */}
                     <p>Please add channels to view data.</p>
                 </div>
             ) : (
@@ -84,9 +86,9 @@ const GlobalDashboard = () => {
                         {allChannels.map(channel => (
                             activeTab === channel._id && (
                                 <div key={channel._id} className="tab-pane fade show active">
-                                    <div className="channel-card p-3 border rounded">
+                                    <div className="channel-card p-3 rounded">
                                         {/* <h3>{channel.name}</h3> */}
-
+                                        {channelData.fields?.length > 0 ? (
                                         <div className="charts-container dashboardChartContainer">
                                             {channelData.fields?.map((field) => (
                                                 <div className="chart mb-4 dashboardChart" key={`${channel._id}-${field}`}>
@@ -108,6 +110,12 @@ const GlobalDashboard = () => {
                                                 </div>
                                             ))}
                                         </div>
+                                    ) : (
+                                            <div className="empty-state-message text-center">
+                                                <img src={no_data} alt="No Data Available" className="img-fluid mb-3" style={{ maxWidth: '600px' }} />
+                                                <p>No data available for this channel.</p>
+                                            </div>
+                                        )}
                                     </div>
                                 </div>
                             )

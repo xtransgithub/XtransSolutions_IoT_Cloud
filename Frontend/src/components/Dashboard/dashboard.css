@@ -1,16 +1,22 @@
-/* General container improvements */
-.vi {
+/* .vi {
     max-width: 100%;
     margin: auto;
     background: #cad4de;
     padding: 10px;
     border-radius: 10px;
+} */
+.dk {
+    display: flex;
+    justify-content: center;
+    /* background: white; */
+    padding: 10px;
+    border-radius: 8px;    
+    font-weight: bold;
 }
-/* Styling for Bootstrap Tabs */
 .nav-pills {
     display: flex;
     justify-content: center;
-    background: white;
+    /* background: white; */
     padding: 10px;
     border-radius: 8px;
 }
@@ -21,21 +27,20 @@
     padding: 10px 20px;
     transition: 0.3s ease-in-out;
     margin-right: 10px;
+    margin-right: 10px;
 }
 .nav-pills .nav-link.active {
     background: #007bff;
     color: white;
 }
-/* Tab button hover effect */
 .nav-pills .nav-link:hover {
     background: #0056b3;
     color: white;
 }
-/* Dashboard Card Styling */
 .channel-card {
-    background: white;
-    border: 1px solid #ddd;
-    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+    /* background: white; */
+    /* border: 1px solid #ddd; */
+    /* box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1); */
     border-radius: 12px;
     padding: 20px;
     transition: 0.3s ease-in-out;
@@ -43,7 +48,6 @@
 .channel-card:hover {
     transform: translateY(-5px);
 }
-/* Chart Layout */
 .dashboardChartContainer {
     display: flex;
     flex-wrap: wrap;
@@ -54,13 +58,12 @@
 .dashboardChart {
     width: 30%; 
     min-width: 280px; 
-    background: white;
+    /* background: white; */
     padding: 15px;
     border-radius: 10px;
     box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.15);
 }
 
-/* Responsive adjustments */
 @media screen and (max-width: 1200px) {
     .dashboardChart {
         width: 45%; 

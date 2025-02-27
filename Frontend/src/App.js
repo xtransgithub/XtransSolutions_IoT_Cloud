@@ -25,7 +25,7 @@ import Dashboard from "./components/Dashboard/dashboard"
 function App() {
   return (
     <>
-      <Router>
+      <Router> 
         <Routes>
           {/* Public Routes */}
           <Route path='/' element={<Home />} />
