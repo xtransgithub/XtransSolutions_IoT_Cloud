@@ -4,6 +4,7 @@ import pandas as pd
 import numpy as np
 from statsmodels.tsa.arima.model import ARIMA
 from flask_cors import CORS
+import pytz
 
 app = Flask(__name__)
 CORS(app)
@@ -172,10 +173,15 @@ def perform_analysis(data, analysis_type):
     except Exception as e:
         raise ValueError("Error performing analysis: {}".format(str(e)))
 
+
 def perform_prediction_with_timestamps(data, prediction_hours):
     try:
         if data is None or data.empty:
             raise ValueError("Insufficient data for prediction.")
+
+        time_diffs = data.index.to_series().diff().dropna()
+        # if not time_diffs.nunique() == 1:
+        #     raise ValueError("Data is inconsistent. Time intervals must be evenly spaced.")
 
         model = ARIMA(data['value'], order=(2, 0, 1))
         model_fit = model.fit()
@@ -186,23 +192,53 @@ def perform_prediction_with_timestamps(data, prediction_hours):
         
         forecast = model_fit.forecast(steps=forecast_steps)
 
-        if len(data.index) < 2:
-            raise ValueError("Not enough timestamps to calculate frequency.")
-
+        first_timestamp = data.index[0]
         last_timestamp = data.index[-1]
-        frequency = max((data.index[1] - data.index[0]).seconds // 60, 1) if len(data.index) > 1 else 5
-        timestamps = pd.date_range(start=last_timestamp, periods=forecast_steps + 1, freq="{}T".format(frequency))[1:]
+        start_date = last_timestamp + pd.Timedelta(days=1)
+        start_time = first_timestamp.time()
+        start_datetime = pd.Timestamp.combine(start_date.date(), start_time).tz_localize('UTC')
+        
+        frequency = time_diffs.iloc[0]
+        timestamps = pd.date_range(start=start_datetime, periods=forecast_steps, freq=frequency)
 
-        # formatted_timestamps = [
-        #     "{}.{{:03d}}Z".format(ts.strftime('%Y-%m-%dT%H:%M:%S'), int(ts.microsecond / 1000))
-        #     for ts in timestamps
-        # ]
-        formatted_timestamps = [
-            ts.strftime('%A, %B %d, %Y, %I:%M:%S %p (UTC)') for ts in timestamps
-        ]
-        return forecast, formatted_timestamps
+        ist = pytz.timezone('Asia/Kolkata')
+        formatted_timestamps = [ts.tz_convert(ist).strftime('%A, %B %d, %Y, %I:%M:%S %p (IST)') for ts in timestamps]
+        
+        return forecast.round(2), formatted_timestamps
     except Exception as e:
         raise ValueError("Error during prediction: {}".format(str(e)))
+    
+# def perform_prediction_with_timestamps(data, prediction_hours):
+#     try:
+#         if data is None or data.empty:
+#             raise ValueError("Insufficient data for prediction.")
+
+#         model = ARIMA(data['value'], order=(2, 0, 1))
+#         model_fit = model.fit()
+
+#         forecast_steps = prediction_hours * 12
+#         if forecast_steps <= 0:
+#             raise ValueError("Invalid number of forecast steps.")
+        
+#         forecast = model_fit.forecast(steps=forecast_steps)
+
+#         if len(data.index) < 2:
+#             raise ValueError("Not enough timestamps to calculate frequency.")
+
+#         last_timestamp = data.index[-1]
+#         frequency = max((data.index[1] - data.index[0]).seconds // 60, 1) if len(data.index) > 1 else 5
+#         timestamps = pd.date_range(start=last_timestamp, periods=forecast_steps + 1, freq="{}T".format(frequency))[1:]
+
+#         # formatted_timestamps = [
+#         #     "{}.{{:03d}}Z".format(ts.strftime('%Y-%m-%dT%H:%M:%S'), int(ts.microsecond / 1000))
+#         #     for ts in timestamps
+#         # ]
+#         formatted_timestamps = [
+#             ts.strftime('%A, %B %d, %Y, %I:%M:%S %p (UTC)') for ts in timestamps
+#         ]
+#         return forecast, formatted_timestamps
+#     except Exception as e:
+#         raise ValueError("Error during prediction: {}".format(str(e)))
     
 if __name__ == '__main__':
     app.run(debug=False, host='0.0.0.0', port=5001)
