@@ -48,7 +48,7 @@ def analysis():
         else:
             num_entries = int(num_entries)
             if num_entries == 0:
-                return jsonify({'error': 'num_entries must be greater than 0'}), 400
+                return jsonify({'error': 'Number of Entries must be more than 0'}), 400
 
 
 
