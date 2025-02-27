@@ -193,9 +193,12 @@ def perform_prediction_with_timestamps(data, prediction_hours):
         frequency = max((data.index[1] - data.index[0]).seconds // 60, 1) if len(data.index) > 1 else 5
         timestamps = pd.date_range(start=last_timestamp, periods=forecast_steps + 1, freq="{}T".format(frequency))[1:]
 
+        # formatted_timestamps = [
+        #     "{}.{{:03d}}Z".format(ts.strftime('%Y-%m-%dT%H:%M:%S'), int(ts.microsecond / 1000))
+        #     for ts in timestamps
+        # ]
         formatted_timestamps = [
-            "{}.{{:03d}}Z".format(ts.strftime('%Y-%m-%dT%H:%M:%S'), int(ts.microsecond / 1000))
-            for ts in timestamps
+            ts.strftime('%A, %B %d, %Y, %I:%M:%S %p (UTC)') for ts in timestamps
         ]
         return forecast, formatted_timestamps
     except Exception as e:
