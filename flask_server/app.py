@@ -4,6 +4,7 @@ import pandas as pd
 import numpy as np
 from statsmodels.tsa.arima.model import ARIMA
 from flask_cors import CORS
+import pytz
 
 app = Flask(__name__)
 CORS(app)
@@ -25,10 +26,11 @@ def analysis():
         num_entries = request_data.get('num_entries')
         token = request.headers.get('Authorization')
 
-        if not all([channel_id, field, analysis_type, num_entries]):
-            return jsonify({'error': 'channel_id, field, analysis_type, and num_entries are required'}), 400
-
-        num_entries = int(num_entries)
+        # if not all([channel_id, field, analysis_type, num_entries]):
+        #     return jsonify({'error': 'channel_id, field, analysis_type, and num_entries are required'}), 400
+        if not all([channel_id, field, analysis_type]):
+            return jsonify({'error': 'channel_id, field, and analysis_type are required'}), 400
+        
 
         nodejs_response = requests.get(
             NODEJS_API_URL.format(channel_id=channel_id),
@@ -40,6 +42,16 @@ def analysis():
 
         nodejs_data = nodejs_response.json()
         data = clean_data(nodejs_data['entries'], field)
+        
+        
+        if num_entries is None:
+            num_entries = len(data)
+        else:
+            num_entries = int(num_entries)
+            if num_entries == 0:
+                return jsonify({'error': 'Number of Entries must be more than 0'}), 400
+
+
 
         if len(data) < num_entries:
             return jsonify({'error': 'Requested {} entries, but only {} available'.format(num_entries, len(data))}), 400
@@ -60,14 +72,21 @@ def prediction():
         request_data = request.get_json()
         channel_id = request_data.get('channel_id')
         field = request_data.get('field')
-        prediction_hours = int(request_data.get('prediction_hours', 1))
+        prediction_hours = request_data.get('prediction_hours')
         test_csv = request_data.get('test_csv')
         token = request.headers.get('Authorization')
+
+        if prediction_hours is None or prediction_hours == "":
+            return jsonify({'error': 'Prediction Hours is a mandatory field'}), 400
+        
+        prediction_hours = int(prediction_hours)
+        if prediction_hours <= 0:
+            return jsonify({'error': 'Prediction Hours must be greater than 0'}), 400
 
         required_entries = prediction_hours * 12
 
         if test_csv:
-            data = 0
+            data = None
         else:
             nodejs_response = requests.get(
                 NODEJS_API_URL.format(channel_id=channel_id),
@@ -154,25 +173,72 @@ def perform_analysis(data, analysis_type):
     except Exception as e:
         raise ValueError("Error performing analysis: {}".format(str(e)))
 
+
 def perform_prediction_with_timestamps(data, prediction_hours):
     try:
+        if data is None or data.empty:
+            raise ValueError("Insufficient data for prediction.")
+
+        time_diffs = data.index.to_series().diff().dropna()
+        # if not time_diffs.nunique() == 1:
+        #     raise ValueError("Data is inconsistent. Time intervals must be evenly spaced.")
+
         model = ARIMA(data['value'], order=(2, 0, 1))
         model_fit = model.fit()
 
         forecast_steps = prediction_hours * 12
+        if forecast_steps <= 0:
+            raise ValueError("Invalid number of forecast steps.")
+        
         forecast = model_fit.forecast(steps=forecast_steps)
 
+        first_timestamp = data.index[0]
         last_timestamp = data.index[-1]
-        frequency = (data.index[1] - data.index[0]).seconds // 60
-        timestamps = pd.date_range(start=last_timestamp, periods=forecast_steps + 1, freq="{}T".format(frequency))[1:]
+        start_date = last_timestamp + pd.Timedelta(days=1)
+        start_time = first_timestamp.time()
+        start_datetime = pd.Timestamp.combine(start_date.date(), start_time).tz_localize('UTC')
+        
+        frequency = time_diffs.iloc[0]
+        timestamps = pd.date_range(start=start_datetime, periods=forecast_steps, freq='5T')
 
-        formatted_timestamps = [
-            "{}.{:03d}Z".format(ts.strftime('%Y-%m-%dT%H:%M:%S'), int(ts.microsecond / 1000))
-            for ts in timestamps
-        ]
-        return forecast, formatted_timestamps
+        ist = pytz.timezone('Asia/Kolkata')
+        formatted_timestamps = [ts.tz_convert(ist).strftime('%A, %B %d, %Y, %I:%M:%S %p (IST)') for ts in timestamps]
+        
+        return forecast.round(2), formatted_timestamps
     except Exception as e:
         raise ValueError("Error during prediction: {}".format(str(e)))
+    
+# def perform_prediction_with_timestamps(data, prediction_hours):
+#     try:
+#         if data is None or data.empty:
+#             raise ValueError("Insufficient data for prediction.")
 
+#         model = ARIMA(data['value'], order=(2, 0, 1))
+#         model_fit = model.fit()
+
+#         forecast_steps = prediction_hours * 12
+#         if forecast_steps <= 0:
+#             raise ValueError("Invalid number of forecast steps.")
+        
+#         forecast = model_fit.forecast(steps=forecast_steps)
+
+#         if len(data.index) < 2:
+#             raise ValueError("Not enough timestamps to calculate frequency.")
+
+#         last_timestamp = data.index[-1]
+#         frequency = max((data.index[1] - data.index[0]).seconds // 60, 1) if len(data.index) > 1 else 5
+#         timestamps = pd.date_range(start=last_timestamp, periods=forecast_steps + 1, freq="{}T".format(frequency))[1:]
+
+#         # formatted_timestamps = [
+#         #     "{}.{{:03d}}Z".format(ts.strftime('%Y-%m-%dT%H:%M:%S'), int(ts.microsecond / 1000))
+#         #     for ts in timestamps
+#         # ]
+#         formatted_timestamps = [
+#             ts.strftime('%A, %B %d, %Y, %I:%M:%S %p (UTC)') for ts in timestamps
+#         ]
+#         return forecast, formatted_timestamps
+#     except Exception as e:
+#         raise ValueError("Error during prediction: {}".format(str(e)))
+    
 if __name__ == '__main__':
     app.run(debug=False, host='0.0.0.0', port=5001)
