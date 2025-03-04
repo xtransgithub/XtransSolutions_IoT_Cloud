@@ -44,7 +44,7 @@ def analysis():
         data = clean_data(nodejs_data['entries'], field)
         
         
-        if num_entries is None:
+        if num_entries is "" or num_entries==None:
             num_entries = len(data)
         else:
             num_entries = int(num_entries)
