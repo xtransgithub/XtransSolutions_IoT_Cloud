@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { server } from "../../config";
 import Prediction_img from "../../assets/pred_data.jpeg";
+import { Modal, Button } from "react-bootstrap";
+import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from "recharts";
 
 const Prediction = () => {
   const [formData, setFormData] = useState({
@@ -15,10 +17,10 @@ const Prediction = () => {
   const [result, setResult] = useState(null);
   const [error, setError] = useState(null);
   const [loadingChannels, setLoadingChannels] = useState(true);
+  const [showModal, setShowModal] = useState(false);
 
-  const token = localStorage.getItem("token"); // Retrieve the token from localStorage
+  const token = localStorage.getItem("token"); 
 
-  // Fetch channels when the component is mounted
   useEffect(() => {
     if (!token) {
       setError("Authorization token is missing.");
@@ -40,12 +42,10 @@ const Prediction = () => {
     fetchChannels();
   }, [token]);
 
-  // Handle channel selection and fetch corresponding fields
   const handleChannelChange = async (e) => {
     const channelId = e.target.value;
     setFormData((prevState) => ({ ...prevState, channel_id: channelId }));
 
-    // Fetch fields based on selected channel
     if (channelId) {
       try {
         const selectedChannel = channels.find((channel) => channel._id === channelId);
@@ -77,12 +77,12 @@ const Prediction = () => {
         headers: { Authorization: `Bearer ${token}` },
       });
       setResult(response.data);
+      setShowModal(true);
     } catch (err) {
       setError(err.response?.data?.error || 'An error occurred.');
     }
   };
 
-  // Function to format timestamp to a more human-readable format
   const formatTimestamp = (timestamp) => {
     const date = new Date(timestamp);
     return date.toLocaleString('en-US', {
@@ -102,17 +102,15 @@ const Prediction = () => {
       <div className="row align-items-center">
         
       <h2 className="text-center text-primary mb-4">Data Prediction</h2>
-        {/* Left side: Image */}
         <div className="col-md-6 text-center">
           <img
-            src={Prediction_img} // Replace with your image path
+            src={Prediction_img}
             alt="Prediction Illustration"
             className="img-fluid"
             style={{ maxHeight: "450px", borderRadius: "10px" }}
           />
         </div>
 
-        {/* Right side: Form */}
         <div className="col-md-6">
 
           {loadingChannels ? (
@@ -179,9 +177,34 @@ const Prediction = () => {
             </form>
           )}
 
-          {result && result.forecast && (
-            <div className="mt-4">
-              <h3 className="text-success">Forecast Results</h3>
+          {error && (
+            <div className="alert alert-danger mt-4">
+              <strong>Error:</strong> {error}
+            </div>
+          )}
+        </div>
+      </div>
+
+      <Modal show={showModal} onHide={() => setShowModal(false)} centered size="lg">
+        <Modal.Header closeButton>
+          <Modal.Title>Prediction Results</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          {result && result.forecast ? (
+            <>
+              {/* Graph */}
+              <h5 className="text-center text-primary">Forecast Graph</h5>
+              <ResponsiveContainer width="100%" height={300}>
+                <LineChart data={result.forecast}>
+                  <CartesianGrid strokeDasharray="3 3" />
+                  <XAxis dataKey="timestamp" tickFormatter={formatTimestamp} />
+                  <YAxis />
+                  <Tooltip />
+                  <Line type="monotone" dataKey="value" stroke="#8884d8" />
+                </LineChart>
+              </ResponsiveContainer>
+
+              <h5 className="text-center text-success mt-4">Forecast Data</h5>
               <table className="table table-bordered table-striped">
                 <thead>
                   <tr>
@@ -198,16 +221,15 @@ const Prediction = () => {
                   ))}
                 </tbody>
               </table>
-            </div>
+            </>
+          ) : (
+            <p>No data available.</p>
           )}
-
-          {error && (
-            <div className="alert alert-danger mt-4">
-              <strong>Error:</strong> {error}
-            </div>
-          )}
-        </div>
-      </div>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={() => setShowModal(false)}>Close</Button>
+        </Modal.Footer>
+      </Modal>
     </div>
   );
 };
