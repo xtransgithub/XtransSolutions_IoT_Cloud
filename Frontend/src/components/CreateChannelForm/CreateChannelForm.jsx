@@ -17,13 +17,14 @@ const CreateChannelForm = ({ onClose }) => {
 
   const validationSchema = Yup.object({
     name: Yup.string().required("Channel name is required"),
-    description: Yup.string().required("Description is required"),
+    description: Yup.string().required("Description is required")
+    .max(120, "Description cannot exceed 100 characters"),
     fields: Yup.array()
       .of(
         Yup.string()
           .required("Field name is required")
           .matches(
-            /^[a-z0-9]+$/,
+            /^[a-zA-Z0-9]+$/,
             "Field name can only contain lowercase letters and numbers"
           )
       )
@@ -105,7 +106,7 @@ const CreateChannelForm = ({ onClose }) => {
                 <label htmlFor="description" className="form-label">Description</label>
                 <Field name="description">
                   {({ field }) => (
-                    <TextareaAutosize {...field} id="description" placeholder="Enter description" className="form-control" minRows={2} />
+                    <TextareaAutosize {...field} id="description" placeholder="Enter description (Max 100)" className="form-control" minRows={2} />
                   )}
                 </Field>
                 <ErrorMessage name="description" component="div" className="text-danger" />
