@@ -44,11 +44,11 @@ def analysis():
         data = clean_data(nodejs_data['entries'], field)
         
         
-        if num_entries is None:
+        if num_entries is None or num_entries == "":
             num_entries = len(data)
         else:
             num_entries = int(num_entries)
-            if num_entries == 0:
+            if num_entries <= 0:
                 return jsonify({'error': 'Number of Entries must be more than 0'}), 400
 
 
