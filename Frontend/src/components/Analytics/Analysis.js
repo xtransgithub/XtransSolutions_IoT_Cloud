@@ -173,6 +173,7 @@ const Analysis = () => {
                   value={formData.num_entries}
                   onChange={handleChange}
                   className="form-control"
+                  placeholder='Optional'
                   // required
                 />
               </div>
