@@ -28,6 +28,7 @@
     "react-router-dom": "^7.1.4",
     "react-scripts": "5.0.1",
     "react-textarea-autosize": "^8.5.6",
+    "recharts": "^2.15.1",
     "sass": "^1.79.4",
     "sass-loader": "^16.0.2",
     "style-loader": "^4.0.0",
