@@ -13,7 +13,7 @@ logs/
 Thumbs.db
 
 # NPM package lock file (optional, depending on your workflow)
-# package-lock.json
+package-lock.json
 
 # IDE and editor specific files
 .vscode/
