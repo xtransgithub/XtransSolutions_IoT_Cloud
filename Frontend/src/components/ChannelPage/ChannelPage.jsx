@@ -71,9 +71,7 @@ const ChannelPage = () => {
             />
           ))
         ) : (
-          // <p>No channels found. Create one to get started!</p>
           <div className="no-channels">
-            {/* <p>No channels found. Create one to get started!</p> */}
             <img src={NO_CHANNEL_IMAGE} alt="No Channels Available" className="no-channel-img" />
           </div>
         )}
@@ -88,7 +86,6 @@ const ChannelPage = () => {
       </button>
       </div>
 
-      {/* Popup for Creating New Channel */}
       {showPopup && (
         <div className="popup-overlay" onClick={() => setShowPopup(false)}>
           <div className="popup-content" onClick={(e) => e.stopPropagation()}>

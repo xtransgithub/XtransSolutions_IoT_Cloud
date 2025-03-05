@@ -13,8 +13,7 @@ import channel_page from "../../assets/tutorial/create_channel/channel_page.png"
 import channel1 from "../../assets/tutorial/create_channel/channel1.png";
 import channel2 from "../../assets/tutorial/create_channel/channel2.png";
 import channel3 from "../../assets/tutorial/create_channel/channel3.png";
-import create_channel from "../../assets/tutorial/create_channel/create_channel.png";
-import create_channel_filled from "../../assets/tutorial/create_channel/create_channel_filled.png";
+import create_channel from "../../assets/tutorial/create_channel/channel4.png";
 import home_create from "../../assets/tutorial/create_channel/home.png";
 import alert_1 from "../../assets/tutorial/alert/1_alert.png";
 import alert_2 from "../../assets/tutorial/alert/2_alert.png";
@@ -279,12 +278,11 @@ const Tutorials = () => {
               <ol>
                 <li>1. Go to the home page.</li>
                 <li><br />2. Click on <strong>Channels</strong> in the navbar.<img src={home_create} alt="Home Page" width="100%" maxWidth="1000px" height="auto"  /></li>
-                <li><br />3. Click on the marked icon in the sidebar.<img src={channel1} alt="Channels in Navbar" width="100%" maxWidth="1000px" height="auto" /></li>
-                <li><br />4. Click on <strong>Channels</strong> in the sidebar.<img src={channel2} alt="Sidebar Icon" width="100%" maxWidth="1000px" height="auto" /></li>
-                <li><br />5. Click on <strong>Create Channel</strong> in the sidebar.<img src={channel3} alt="Channels in Sidebar" width="100%" maxWidth="1000px" height="auto" /></li>
-                <li><br />6. Fill in all the details. To add a field, click on <strong>Add Field</strong> (you can add up to 5 fields).<img src={create_channel} alt="Create Channel Page" width="100%" maxWidth="1000px" height="auto" /></li>
-                <li><br />7. Click on <strong>Create Channel</strong> button.<img src={create_channel_filled} alt="Create Channel Filled" width="100%" maxWidth="1000px" height="auto" /></li>
-                <li><br />8. Your new channel is now created.<img src={channel_page} alt="Channel Page" width="100%" maxWidth="1000px" height="auto" /></li>
+                <li><br />3. Click on <strong>Create New Channel</strong> button.<img src={channel1} alt="Sidebar Icon" width="100%" maxWidth="1000px" height="auto" /></li>
+                <li><br />4. Fill in all the details. To add a field, click on <strong>Add Field</strong> (you can add up to 5 fields).<img src={channel2} alt="Create Channel Page" width="100%" maxWidth="1000px" height="auto" /></li>
+                <li><br />5. Click on <strong>Create Channel</strong> button.<img src={channel3} alt="Channels in Sidebar" width="100%" maxWidth="1000px" height="auto" /></li>
+                <li><br />6. Your new channel is now created.<img src={create_channel} alt="Channel Page" width="100%" maxWidth="1000px" height="auto" /></li>
+                <li><br />7. It will look like this after fetching data through API.<img src={channel_page} alt="Channel Page" width="100%" maxWidth="1000px" height="auto" /></li>
               </ol>
             </section>
           )}
