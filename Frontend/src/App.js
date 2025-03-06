@@ -21,6 +21,8 @@ import VerifyEmail from "./components/VerifyEmail/VerifyEmail";
 import NotVerified from './components/VerifyEmail/NotVerified';
 import Tutorial from "./components/tutorial/tutorial";
 import Dashboard from "./components/Dashboard/dashboard"
+import CodeEditor from './components/CodeEditor/CodeEditor';
+import NotebookPage from './components/Notebook/Notebook';
 
 function App() {
   return (
@@ -78,11 +80,24 @@ function App() {
               </Layout>
             </PrivateRoute>
           } />
-          {/* New Route for Event Form */}
           <Route path="/events" element={
             <PrivateRoute>
               <Layout>
                 <EventForm />
+              </Layout>
+            </PrivateRoute>
+          } />
+          <Route path="/codeEditor" element={
+            <PrivateRoute>
+              <Layout>
+                <CodeEditor />
+              </Layout>
+            </PrivateRoute>
+          } />
+          <Route path="/notebook" element={
+            <PrivateRoute>
+              <Layout>
+                <NotebookPage />
               </Layout>
             </PrivateRoute>
           } />

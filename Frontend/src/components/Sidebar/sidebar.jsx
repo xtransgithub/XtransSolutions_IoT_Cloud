@@ -55,6 +55,18 @@ function Sidebar() {
                         </a> 
                     </li>
                     <li className="sidebar-item">
+                        <a href="/codeEditor" className="sidebar-link" data-tooltip="Code Editor">
+                            <i className="bi bi-code-slash"></i>
+                            <span>Code Editor</span>
+                        </a> 
+                    </li>
+                    <li className="sidebar-item">
+                        <a href="/notebook" className="sidebar-link" data-tooltip="Code Editor">
+                            <i className="bi bi-code-slash"></i>
+                            <span>Notebook</span>
+                        </a> 
+                    </li>
+                    <li className="sidebar-item">
                         <a href="/analysis" className="sidebar-link" data-tooltip="Analytics">
                             <i className="bi bi-bar-chart-line"></i>
                             <span>Analytics</span>
