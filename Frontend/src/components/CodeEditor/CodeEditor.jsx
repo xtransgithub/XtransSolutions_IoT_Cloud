@@ -105,8 +105,8 @@ export default function App() {
 
   return (
     <div className="container py-4">
-      <header className="bg-dark text-white py-2 px-3 rounded text-center fw-bold d-block mx-auto w-fit">        
-        <h1>Interactive Python Notebook</h1>
+      <header>    
+      <h2 className="text-center text-primary mb-4">Interactive Python Notebook</h2>
       </header>
       <main className="mt-4">
         {cells.map((cell) => (

@@ -2,9 +2,11 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import NotebookCard from "./NotebookCard";
-import { server } from "../../config";
+
 import Loading from "../loading";
 import NO_NOTEBOOK_IMAGE from "../../assets/no_chh.jpg";
+
+const server = "http://localhost:3000";
 
 const NotebookPage = () => {
   const navigate = useNavigate();
@@ -20,9 +22,7 @@ const NotebookPage = () => {
       }
       setIsLoading(true);
       try {
-        const response = await axios.get(`${server}api/auth/notebooks`, {
-          headers: { Authorization: `Bearer ${token}` },
-        });
+        const response = await axios.get(`${server}/${token}`);
         setNotebooks(response.data.notebooks);
       } catch (error) {
         console.error("Error fetching notebooks:", error);
@@ -36,10 +36,10 @@ const NotebookPage = () => {
 
   const handleDeleteNotebook = async (notebookId) => {
     try {
-      await axios.delete(`${server}api/auth/notebooks/${notebookId}`, {
-        headers: { Authorization: `Bearer ${token}` },
+      await axios.post(`${server}/${token}/delete_notebook`, {
+        notebookId,
       });
-      setNotebooks(notebooks.filter((notebook) => notebook._id !== notebookId));
+      setNotebooks(notebooks.filter((notebook) => notebook.notebook_id !== notebookId));
     } catch (error) {
       console.error("Error deleting notebook:", error);
     }
@@ -49,8 +49,14 @@ const NotebookPage = () => {
     navigate(`/dashboard/${notebookId}`);
   };
 
-  const handleNewNotebook = () => {
-    navigate("/codeEditor"); // Redirects to a new Code Editor
+  const handleNewNotebook = async () => {
+    try {
+      const response = await axios.post(`${server}/${token}/create_notebook`, {});
+      const newNotebook = response.data;
+      setNotebooks([...notebooks, { notebook_id: newNotebook.notebookId, notebook_name: newNotebook.name }]);
+    } catch (error) {
+      console.error("Error creating new notebook:", error);
+    }
   };
 
   return (
@@ -63,7 +69,7 @@ const NotebookPage = () => {
         ) : notebooks.length > 0 ? (
           notebooks.map((notebook) => (
             <NotebookCard
-              key={notebook._id}
+              key={notebook.notebook_id}
               notebook={notebook}
               onNotebookClick={handleNotebookClick}
               onDelete={handleDeleteNotebook}
@@ -77,7 +83,7 @@ const NotebookPage = () => {
       </div>
       <div className="d-flex justify-content-center">
         <button className="btn btn-primary mb-3" onClick={handleNewNotebook}>
-          Open New Notebook
+          Create New Notebook
         </button>
       </div>
     </div>

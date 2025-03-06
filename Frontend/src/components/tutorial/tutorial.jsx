@@ -59,7 +59,7 @@ const Tutorials = () => {
         <Loading message={"Loading Tutorial..."} />
       ) : (
         <div style={{ marginLeft: "2rem", marginRight: "2rem" }}>
-          <h1 style={{ color: "#0e2238" }}>Tutorials</h1>
+          <h1 classname =" text-center text-primary mb-4" >Tutorials</h1>
           <p>
             Welcome to the Tutorial page! Select a tutorial from the dropdown below.
           </p>

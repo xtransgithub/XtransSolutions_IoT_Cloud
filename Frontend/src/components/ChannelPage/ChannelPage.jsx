@@ -56,7 +56,7 @@ const ChannelPage = () => {
 
   return (
     <div className="container m-0">
-      <h2 className="mb-2">Manage Channels</h2>
+      <h2 className="text-center text-primary mb-4">Manage Channels</h2>
       <br />
       <div className="row">
         {isLoading ? (
