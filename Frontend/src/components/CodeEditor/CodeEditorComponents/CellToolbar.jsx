@@ -1,4 +1,4 @@
-export default function CellToolbar({ type, onTypeChange, onDelete, onExecute }) {
+function CellToolbar({ type, onTypeChange, onDelete, onExecute }) {
     return (
       <div className="d-flex justify-content-between">
         <div>
@@ -21,3 +21,4 @@ export default function CellToolbar({ type, onTypeChange, onDelete, onExecute })
     );
   }
   
+  export default CellToolbar;

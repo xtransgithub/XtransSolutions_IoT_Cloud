@@ -1,10 +1,23 @@
+.company{
+    color: #f1f1f1;
+}
+
 .navbar-nav .nav-link {
     color: white !important;
     padding: 8px 20px !important;
     margin-right: 15px;
     border-radius: 5px !important;
     text-align: center;
-    background: linear-gradient(to right, #0e2238, #0e2238) !important;
+    background: linear-gradient(to right, #272727, #272727) !important;
+}
+
+.mainNavbar {
+    background-color: #0f0f0f !important;
+}
+
+.navDrop{
+    background: #272727 !important;
+    color: #f1f1f1;
 }
 
 @media (max-width: 991px) {
@@ -17,7 +30,13 @@
 }
 
 .navbar-nav .nav-link:hover {
-    background: linear-gradient(to right, #2c5282, #1e3c72) !important;
+    background: #f1f1f1 !important;
+    color: #0f0f0f !important;
+}
+
+.navDrop:hover{
+    background: #f1f1f1 !important;
+    color: #0f0f0f !important;
 }
 
 .dropdown-menu {
@@ -46,5 +65,5 @@
 }
 
 .dropdown-menu .dropdown-divider {
-    background-color: #0e2238;
+    background-color: #0f0f0f;
 }

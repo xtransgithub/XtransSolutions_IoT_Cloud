@@ -1,7 +1,7 @@
 import { useRef } from "react";
 import Editor from "@monaco-editor/react";
 
-export default function CodeEditor({ code, onChange, onRun }) {
+function CodeEditor({ code, onChange, onRun }) {
   const editorRef = useRef(null);
 
   return (
@@ -21,3 +21,5 @@ export default function CodeEditor({ code, onChange, onRun }) {
     </div>
   );
 }
+
+export default CodeEditor;

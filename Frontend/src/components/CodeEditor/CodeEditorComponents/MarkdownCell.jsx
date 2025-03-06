@@ -1,7 +1,7 @@
 import { useState } from "react";
 import MDEditor from "@uiw/react-md-editor";
 
-export default function MarkdownCell({ content, isEditing, onChange, onDoubleClick, onBlur }) {
+function MarkdownCell({ content, isEditing, onChange, onDoubleClick, onBlur }) {
   return isEditing ? (
     <MDEditor
       value={content}
@@ -15,3 +15,5 @@ export default function MarkdownCell({ content, isEditing, onChange, onDoubleCli
     </div>
   );
 }
+
+export default MarkdownCell;

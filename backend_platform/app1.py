@@ -1,5 +1,5 @@
 from flask import Flask, request, jsonify
-from flask_cors import CORS
+from flask_cors import CORS  # Import CORS
 import sys
 import io
 import os
@@ -18,14 +18,16 @@ from dotenv import load_dotenv
 load_dotenv()
 
 app = Flask(__name__)
-CORS(app)
+
+# Allow all origins in CORS
+CORS(app, resources={r"/*": {"origins": "*"}})  # Allow all origins for all routes
 
 # Connect to MongoDB Atlas
-MONGO_URI = os.getenv("MONGO_URI")
-if not MONGO_URI:
-    raise ValueError("MONGO_URI is not set in .env file")
+MONGO_URI_2 = os.getenv("MONGO_URI_2")
+if not MONGO_URI_2:
+    raise ValueError("MONGO_URI_2 is not set in .env file")
 
-client = MongoClient(MONGO_URI)
+client = MongoClient(MONGO_URI_2)
 db = client["NotebookDB"]
 user_sessions = db["user_sessions"]
 

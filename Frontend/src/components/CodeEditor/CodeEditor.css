@@ -1,9 +1,3 @@
-@import "bootstrap/dist/css/bootstrap.min.css";
-
-.container {
-  max-width: 800px;
-}
-
 pre {
   white-space: pre-wrap;
   word-wrap: break-word;

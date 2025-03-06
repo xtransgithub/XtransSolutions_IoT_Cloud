@@ -1,14 +1,20 @@
-import React, { useState } from "react";
-import "bootstrap/dist/css/bootstrap.min.css";
+import React, { useState, useEffect } from 'react';
 import "./sidebar.css";
 import Navbar from "../Navbar/Navbar";
 
 function Sidebar() {
   const [isExpanded, setIsExpanded] = useState(false);
+  const [userId, setUserId] = useState(null);
 
   const handleToggle = () => {
     setIsExpanded(!isExpanded);
   };
+  useEffect(() => {
+    const UserID = localStorage.getItem('userId');
+    if (UserID) {
+      setUserId(UserID);
+    }
+  }, []);
 
   return(
     <>
@@ -55,7 +61,9 @@ function Sidebar() {
                         </a> 
                     </li>
                     <li className="sidebar-item">
-                        <a href="/codeEditor" className="sidebar-link" data-tooltip="Code Editor">
+                        <a href={userId ? `/codeEditor/${userId}` : "/codeEditor"} 
+                            className="sidebar-link" data-tooltip="Code Editor"
+                        >
                             <i className="bi bi-code-slash"></i>
                             <span>Code Editor</span>
                         </a> 

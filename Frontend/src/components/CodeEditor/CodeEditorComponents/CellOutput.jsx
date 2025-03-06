@@ -1,4 +1,4 @@
-export default function CellOutput({ output, error, images }) {
+function CellOutput({ output, error, images }) {
     return (
       <div>
         {error && <div className="alert alert-danger">{error}</div>}
@@ -10,3 +10,4 @@ export default function CellOutput({ output, error, images }) {
     );
   }
   
+  export default CellOutput;

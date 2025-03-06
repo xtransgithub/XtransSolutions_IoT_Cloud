@@ -5,7 +5,7 @@ import CellToolbar from "./CellToolbar";
 import CellOutput from "./CellOutput";
 // import InputCell from "./InputCell";
 
-export default function Cell({ cell, onUpdate, onDelete, onExecute, onTypeChange }) {
+function Cell({ cell, onUpdate, onDelete, onExecute, onTypeChange }) {
   const [isEditing, setIsEditing] = useState(cell.type === "code");
 
   return (
@@ -37,3 +37,5 @@ export default function Cell({ cell, onUpdate, onDelete, onExecute, onTypeChange
     </div>
   );
 }
+
+export default Cell;

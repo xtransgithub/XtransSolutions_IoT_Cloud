@@ -1,6 +1,6 @@
 import Editor from "@monaco-editor/react";
 
-export default function CodeEditor({ code, onChange }) {
+function CodeEditor({ code, onChange }) {
   return (
     <Editor
       height="200px"
@@ -11,3 +11,5 @@ export default function CodeEditor({ code, onChange }) {
     />
   );
 }
+
+export default CodeEditor;

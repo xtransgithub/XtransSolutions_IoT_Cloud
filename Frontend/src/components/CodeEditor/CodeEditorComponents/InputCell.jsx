@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-export default function InputCell({ prompt, onSubmit }) {
+function InputCell({ prompt, onSubmit }) {
   const [userInput, setUserInput] = useState("");
 
   const handleSubmit = () => {
@@ -26,3 +26,5 @@ export default function InputCell({ prompt, onSubmit }) {
     </div>
   );
 }
+
+export default InputCell;

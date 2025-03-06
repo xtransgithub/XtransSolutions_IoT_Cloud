@@ -1,4 +1,4 @@
-export default function Output({ output }) {
+function Output({ output }) {
     return (
       <div className="border p-3 bg-light">
         <h5>Output</h5>
@@ -6,4 +6,5 @@ export default function Output({ output }) {
       </div>
     );
   }
-  
+
+export default Output;
