@@ -87,7 +87,8 @@ function App() {
               </Layout>
             </PrivateRoute>
           } />
-          <Route path="/codeEditor" element={
+          {/* <Route path="/codeEditor/:notebookId"  element={ */}
+          <Route path="/codeEditor"  element={ 
             <PrivateRoute>
               <Layout>
                 <CodeEditor />

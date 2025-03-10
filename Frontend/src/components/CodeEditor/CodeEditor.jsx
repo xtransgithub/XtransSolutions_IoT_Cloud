@@ -1,87 +1,75 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { nanoid } from "nanoid";
 import Cell from "./CodeEditorComponents/Cell";
-import { executeCode } from "./CodeEditorApi";
+import { executeCode, listFiles, uploadFile, deleteFile } from "./Api/CodeEditorApi";
 import "bootstrap/dist/css/bootstrap.min.css";
+import { useNavigate } from "react-router-dom";
 
-const DEFAULT_CELLS = [
-  {
-    id: nanoid(),
-    type: "markdown",
-    content: "# Welcome to the Interactive Python Notebook\nTry running the code below!",
-  },
-  {
-    id: nanoid(),
-    type: "code",
-    content: `# Example: Data visualization with matplotlib
-import numpy as np
-import matplotlib.pyplot as plt
-
-x = np.linspace(0, 10, 100)
-y = np.sin(x)
-
-plt.plot(x, y)
-plt.title('Sine Wave')
-plt.xlabel('x')
-plt.ylabel('sin(x)')
-plt.grid(True)
-plt.show()`,
-  },
-];
-
-export default function App() {
-  const [cells, setCells] = useState(DEFAULT_CELLS);
+export default function CodeEditor() {
+  const [cells, setCells] = useState([]);
   const [executingCellId, setExecutingCellId] = useState(null);
+  const [files, setFiles] = useState([]);
+  const navigate = useNavigate();
 
-  // Add a new cell
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (!token) {
+      alert("User is not authenticated. Redirecting to login.");
+      navigate("/login");
+      return;
+    }
+
+    setCells([
+      {
+        id: nanoid(),
+        type: "markdown",
+        content: "# Welcome to the Python Notebook!\nTry executing the code below.",
+      },
+      {
+        id: nanoid(),
+        type: "code",
+        content: `import numpy as np\nimport matplotlib.pyplot as plt\nx = np.linspace(0, 10, 100)\ny = np.sin(x)\nplt.plot(x, y)\nplt.show()`,
+      },
+    ]);
+
+    loadFiles();
+  }, []);
+
+  const loadFiles = async () => {
+    const fetchedFiles = await listFiles();
+    setFiles(fetchedFiles);
+  };
+
   const handleAddCell = (type) => {
-    const newCell = { id: nanoid(), type, content: "" };
-    setCells([...cells, newCell]);
+    setCells([...cells, { id: nanoid(), type, content: "" }]);
   };
 
-  // Update cell content
   const handleUpdateCell = (id, content) => {
-    setCells((prevCells) =>
-      prevCells.map((cell) => (cell.id === id ? { ...cell, content } : cell))
-    );
+    setCells(cells.map((cell) => (cell.id === id ? { ...cell, content } : cell)));
   };
 
-  // Delete a cell
   const handleDeleteCell = (id) => {
-    setCells((prevCells) => prevCells.filter((cell) => cell.id !== id));
+    setCells(cells.filter((cell) => cell.id !== id));
   };
 
-  // Execute code in a cell
-  const handleExecuteCell = async (id, userInput) => {
+  const handleExecuteCell = async (id) => {
     const cell = cells.find((c) => c.id === id);
     if (!cell || cell.type !== "code") return;
 
     setExecutingCellId(id);
     setCells((prevCells) =>
       prevCells.map((c) =>
-        c.id === id
-          ? { ...c, isExecuting: true, output: "", error: undefined, images: undefined, requiresInput: false, inputPrompt: "" }
-          : c
+        c.id === id ? { ...c, isExecuting: true, output: "", error: undefined } : c
       )
     );
 
     try {
-      let result = await executeCode(cell.content, userInput);
-
-      // If backend requests input, update state to show InputCell
-      if (result.requiresInput) {
-        setCells((prevCells) =>
-          prevCells.map((c) =>
-            c.id === id ? { ...c, requiresInput: true, inputPrompt: result.inputPrompt } : c
-          )
-        );
-        return;
-      }
+      let result = await executeCode(cell.content);
 
       setCells((prevCells) =>
         prevCells.map((c) =>
           c.id === id
-            ? { ...c, isExecuting: false, output: result.text, error: result.error, images: result.images }
+            ? { ...c, isExecuting: false, output: result.output, error: result.error }
             : c
         )
       );
@@ -96,19 +84,13 @@ export default function App() {
     setExecutingCellId(null);
   };
 
-  // Change cell type (code or markdown)
-  const handleTypeChange = (id, type) => {
-    setCells((prevCells) =>
-      prevCells.map((cell) => (cell.id === id ? { ...cell, type } : cell))
-    );
-  };
-
   return (
     <div className="container py-4">
-      <header>    
-      <h2 className="text-center text-primary mb-4">Interactive Python Notebook</h2>
+      <header>
+        <h2 className="text-center text-primary mb-4">Interactive Python Notebook</h2>
       </header>
-      <main className="mt-4">
+
+      <main>
         {cells.map((cell) => (
           <Cell
             key={cell.id}
@@ -116,7 +98,6 @@ export default function App() {
             onUpdate={handleUpdateCell}
             onDelete={handleDeleteCell}
             onExecute={handleExecuteCell}
-            onTypeChange={handleTypeChange}
           />
         ))}
         <div className="text-center mt-4">
@@ -128,6 +109,22 @@ export default function App() {
           </button>
         </div>
       </main>
+
+      {/* File Upload Section */}
+      <div className="mt-4">
+        <h4>Manage Files</h4>
+        <input type="file" onChange={(e) => uploadFile(e.target.files[0]).then(loadFiles)} />
+        <ul>
+          {files.map((file) => (
+            <li key={file}>
+              {file}{" "}
+              <button className="btn btn-sm btn-danger" onClick={() => deleteFile(file).then(loadFiles)}>
+                Delete
+              </button>
+            </li>
+          ))}
+        </ul>
+      </div>
     </div>
   );
 }

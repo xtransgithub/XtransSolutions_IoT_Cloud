@@ -3,9 +3,8 @@ import CodeEditor from "./CodeEditor";
 import MarkdownCell from "./MarkdownCell";
 import CellToolbar from "./CellToolbar";
 import CellOutput from "./CellOutput";
-// import InputCell from "./InputCell";
 
-export default function Cell({ cell, onUpdate, onDelete, onExecute, onTypeChange }) {
+export default function Cell({ cell, onUpdate, onDelete, onExecute }) {
   const [isEditing, setIsEditing] = useState(cell.type === "code");
 
   return (
@@ -13,7 +12,6 @@ export default function Cell({ cell, onUpdate, onDelete, onExecute, onTypeChange
       <div className="card-header">
         <CellToolbar
           type={cell.type}
-          onTypeChange={(type) => onTypeChange(cell.id, type)}
           onDelete={() => onDelete(cell.id)}
           onExecute={() => cell.type === "code" && onExecute(cell.id)}
         />
@@ -22,17 +20,11 @@ export default function Cell({ cell, onUpdate, onDelete, onExecute, onTypeChange
         {cell.type === "code" ? (
           <CodeEditor code={cell.content} onChange={(value) => onUpdate(cell.id, value)} />
         ) : (
-          <MarkdownCell
-            content={cell.content}
-            isEditing={isEditing}
-            onChange={(value) => onUpdate(cell.id, value)}
-            onDoubleClick={() => setIsEditing(true)}
-            onBlur={() => setIsEditing(false)}
-          />
+          <MarkdownCell content={cell.content} isEditing={isEditing} onChange={onUpdate} />
         )}
       </div>
       <div className="card-footer">
-        <CellOutput output={cell.output} error={cell.error} images={cell.images} />
+        <CellOutput output={cell.output} error={cell.error} />
       </div>
     </div>
   );

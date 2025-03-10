@@ -1,93 +1,95 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import NotebookCard from "./NotebookCard";
 
-import Loading from "../loading";
-import NO_NOTEBOOK_IMAGE from "../../assets/no_chh.jpg";
-
-const server = "http://localhost:3000";
-
-const NotebookPage = () => {
-  const navigate = useNavigate();
+const Notebook = () => {
   const [notebooks, setNotebooks] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
+  const [newNotebookName, setNewNotebookName] = useState("");
+  const navigate = useNavigate();
   const token = localStorage.getItem("token");
 
   useEffect(() => {
-    const fetchNotebooks = async () => {
-      if (!token) {
-        navigate("/signin");
-        return;
-      }
-      setIsLoading(true);
-      try {
-        const response = await axios.get(`${server}/${token}`);
-        setNotebooks(response.data.notebooks);
-      } catch (error) {
-        console.error("Error fetching notebooks:", error);
-      } finally {
-        setIsLoading(false);
-      }
-    };
+    if (token) {
+      fetchNotebooks();
+    }
+  }, [token]);
 
-    fetchNotebooks();
-  }, [navigate, token]);
-
-  const handleDeleteNotebook = async (notebookId) => {
+  const fetchNotebooks = async () => {
+    if (!token) {
+      console.error("No authentication token found.");
+      return;
+    }
     try {
-      await axios.post(`${server}/${token}/delete_notebook`, {
-        notebookId,
+      const response = await axios.get(`http://localhost:5000/${token}`, {
+        headers: { Authorization: `Bearer ${token}` },
       });
-      setNotebooks(notebooks.filter((notebook) => notebook.notebook_id !== notebookId));
+      setNotebooks(Array.isArray(response.data.notebooks) ? response.data.notebooks : []);
     } catch (error) {
-      console.error("Error deleting notebook:", error);
+      console.error("Error fetching notebooks:", error);
+      setNotebooks([]);
     }
   };
 
-  const handleNotebookClick = (notebookId) => {
-    navigate(`/dashboard/${notebookId}`);
-  };
-
-  const handleNewNotebook = async () => {
+  const createNotebook = async () => {
+    if (!newNotebookName || !token) {
+      console.error("Notebook name or token missing.");
+      return;
+    }
     try {
-      const response = await axios.post(`${server}/${token}/create_notebook`, {});
-      const newNotebook = response.data;
-      setNotebooks([...notebooks, { notebook_id: newNotebook.notebookId, notebook_name: newNotebook.name }]);
+      const response = await axios.post(
+        `http://localhost:5000/${token}/create_notebook`,
+        { name: newNotebookName },
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+      setNewNotebookName("");
+      fetchNotebooks();
+      navigate(`/codeEditor/${response.data.notebookId}`);
     } catch (error) {
-      console.error("Error creating new notebook:", error);
+      console.error("Error creating notebook:", error);
     }
+  };
+
+  const selectNotebook = (notebook) => {
+    if (!notebook.notebook_id) {
+      console.error("Invalid notebook selection.");
+      return;
+    }
+    navigate(`/codeEditor/${notebook.notebook_id}`);
   };
 
   return (
-    <div className="container m-0">
-      <h2 className="mb-2">Manage Notebooks</h2>
-      <br />
-      <div className="row">
-        {isLoading ? (
-          <Loading message={"Loading notebooks..."} />
-        ) : notebooks.length > 0 ? (
-          notebooks.map((notebook) => (
-            <NotebookCard
-              key={notebook.notebook_id}
-              notebook={notebook}
-              onNotebookClick={handleNotebookClick}
-              onDelete={handleDeleteNotebook}
-            />
-          ))
-        ) : (
-          <div className="no-notebooks">
-            <img src={NO_NOTEBOOK_IMAGE} alt="No Notebooks Available" className="no-notebook-img" />
-          </div>
-        )}
-      </div>
-      <div className="d-flex justify-content-center">
-        <button className="btn btn-primary mb-3" onClick={handleNewNotebook}>
-          Create New Notebook
-        </button>
-      </div>
+    <div>
+      <h1>Python Notebook</h1>
+      {token ? (
+        <>
+          <input
+            type="text"
+            placeholder="Notebook Name"
+            value={newNotebookName}
+            onChange={(e) => setNewNotebookName(e.target.value)}
+          />
+          <button onClick={createNotebook} disabled={!newNotebookName}>
+            Create Notebook
+          </button>
+
+          <h2>Notebooks</h2>
+          {notebooks.length === 0 ? (
+            <p>No notebooks found.</p>
+          ) : (
+            <ul>
+              {notebooks.map((nb) => (
+                <li key={nb.notebook_id} onClick={() => selectNotebook(nb)}>
+                  {nb.notebook_name}
+                </li>
+              ))}
+            </ul>
+          )}
+        </>
+      ) : (
+        <p>Loading user data...</p>
+      )}
     </div>
   );
 };
 
-export default NotebookPage;
+export default Notebook;

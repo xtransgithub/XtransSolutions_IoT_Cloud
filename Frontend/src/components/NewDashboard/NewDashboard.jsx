@@ -13,7 +13,7 @@ import { server } from '../../config';
 
 import EditModal from './EditModal'; 
 import {handleRemoveField} from './EditUtils';
-
+import { handleDeviceToggle, handleCreateDevice, handleDeleteDevice } from './ToggleUtils';
 import no_data from "../../assets/empty.webp";
 
 const ChannelDashboard = () => {
@@ -26,6 +26,8 @@ const ChannelDashboard = () => {
     const [isLoading, setIsLoading] = useState(true);
     const [chartTypes, setChartTypes] = useState({});
     const [allChannels, setAllChannels] = useState([]);
+    const [deviceStatus, setDeviceStatus] = useState({});
+    const [isToggleControllerVisible, setIsToggleControllerVisible] = useState(false);
 
     const token = localStorage.getItem('token');
     const { id } = useParams();
@@ -70,6 +72,18 @@ const ChannelDashboard = () => {
         setChartTypes(prev => ({ ...prev, [field]: type }));
     };
 
+    const handleToggle = (deviceName, value) => {
+        handleDeviceToggle(currentChannel.currentChannelId, deviceName, value, token, setDeviceStatus);
+    };
+
+    const handleCreateToggleDevice = (deviceName) => {
+        handleCreateDevice(currentChannel.currentChannelId, deviceName, token, setDeviceStatus);
+    };
+
+    const handleDeleteToggleDevice = (deviceName) => {
+        handleDeleteDevice(currentChannel.currentChannelId, deviceName, token, setDeviceStatus);
+    };
+    
     if(isLoading){
         return <Loading message={"Loading Channel..."} />
     }
@@ -96,6 +110,11 @@ const ChannelDashboard = () => {
                         <div className='card-footer d-flex justify-content-center'>
                             <button className="btn btn-secondary w-75" onClick={toggleEdit}>
                                 Edit
+                            </button>
+                        </div>
+                        <div className='card-footer d-flex justify-content-center'>
+                            <button className="btn btn-secondary w-75" onClick={() => setIsToggleControllerVisible(!isToggleControllerVisible)}>
+                                Toggle Controller
                             </button>
                         </div>
                     </div>
@@ -143,6 +162,13 @@ const ChannelDashboard = () => {
                                         />  
                                     </div>
                                 )}
+                                {/* Toggle Buttons */}
+                                <button className="btn btn-secondary" onClick={() => handleToggle(field, 1)}>
+                                    Turn On {field}
+                                </button>
+                                <button className="btn btn-secondary" onClick={() => handleToggle(field, 0)}>
+                                    Turn Off {field}
+                                </button>
                             </div>
                         ))}
                         </div>
