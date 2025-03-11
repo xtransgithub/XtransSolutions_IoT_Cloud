@@ -122,7 +122,7 @@ const Analysis = () => {
                   <option value="">Select a Channel</option>
                   {channels.map((channel) => (
                     <option key={channel._id} value={channel._id}>
-                      {channel.name}
+                      {channel.name} 
                     </option>
                   ))}
                 </select>

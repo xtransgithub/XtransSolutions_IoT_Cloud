@@ -162,13 +162,6 @@ const ChannelDashboard = () => {
                                         />  
                                     </div>
                                 )}
-                                {/* Toggle Buttons */}
-                                <button className="btn btn-secondary" onClick={() => handleToggle(field, 1)}>
-                                    Turn On {field}
-                                </button>
-                                <button className="btn btn-secondary" onClick={() => handleToggle(field, 0)}>
-                                    Turn Off {field}
-                                </button>
                             </div>
                         ))}
                         </div>
