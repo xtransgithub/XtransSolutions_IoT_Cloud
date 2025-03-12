@@ -13,8 +13,9 @@ import { server } from '../../config';
 
 import EditModal from './EditModal'; 
 import {handleRemoveField} from './EditUtils';
-import { handleDeviceToggle, handleCreateDevice, handleDeleteDevice } from './ToggleUtils';
+import { handleCreateDevice, handleDeleteDevice } from './ToggleUtils';
 import no_data from "../../assets/empty.webp";
+import ToggleControllerModal from './ToggleControllerModal';
 
 const ChannelDashboard = () => {
     const [channelData, setChannelData] = useState({});
@@ -26,8 +27,8 @@ const ChannelDashboard = () => {
     const [isLoading, setIsLoading] = useState(true);
     const [chartTypes, setChartTypes] = useState({});
     const [allChannels, setAllChannels] = useState([]);
-    const [deviceStatus, setDeviceStatus] = useState({});
-    const [isToggleControllerVisible, setIsToggleControllerVisible] = useState(false);
+    const [isToggleModalOpen, setIsToggleModalOpen] = useState(false);
+    const [deviceData, setDeviceData] = useState(null);
 
     const token = localStorage.getItem('token');
     const { id } = useParams();
@@ -71,18 +72,6 @@ const ChannelDashboard = () => {
     const handleChartTypeChange = (field, type) => {
         setChartTypes(prev => ({ ...prev, [field]: type }));
     };
-
-    const handleToggle = (deviceName, value) => {
-        handleDeviceToggle(currentChannel.currentChannelId, deviceName, value, token, setDeviceStatus);
-    };
-
-    const handleCreateToggleDevice = (deviceName) => {
-        handleCreateDevice(currentChannel.currentChannelId, deviceName, token, setDeviceStatus);
-    };
-
-    const handleDeleteToggleDevice = (deviceName) => {
-        handleDeleteDevice(currentChannel.currentChannelId, deviceName, token, setDeviceStatus);
-    };
     
     if(isLoading){
         return <Loading message={"Loading Channel..."} />
@@ -113,10 +102,16 @@ const ChannelDashboard = () => {
                             </button>
                         </div>
                         <div className='card-footer d-flex justify-content-center'>
-                            <button className="btn btn-secondary w-75" onClick={() => setIsToggleControllerVisible(!isToggleControllerVisible)}>
+                            <button className="btn btn-secondary w-75" onClick={() => setIsToggleModalOpen(true)}>
                                 Toggle Controller
                             </button>
                         </div>
+                        <ToggleControllerModal 
+                            isOpen={isToggleModalOpen} 
+                            onClose={() => setIsToggleModalOpen(false)}
+                            token={token}
+                            setDeviceData={setDeviceData}
+                        />
                     </div>
                 </div>
 
