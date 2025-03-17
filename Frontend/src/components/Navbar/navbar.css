@@ -4,6 +4,7 @@
 
 .mainNavbar {
     z-index: 9999 !important;
+    background-color: #0f0f0f !important;
 }
 
 .navbar-nav .nav-link {
@@ -12,25 +13,21 @@
     margin-right: 15px;
     border-radius: 5px !important;
     text-align: center;
-    background: linear-gradient(to right, #272727, #272727) !important;
-}
-
-.mainNavbar{
-    background-color: #0f0f0f !important;
+    background: linear-gradient(to right, #0f0f0f, #0f0f0f) !important;
 }
 
 .navbarNav{
-    background: #272727 !important;
+    background: #0f0f0f !important;
     color: #f1f1f1;
 }
 
 .navbar-toggler{
-    background: #272727 !important;
+    background: #0f0f0f !important;
     color: #f1f1f1;
 }
 
 .navDrop{
-    background: #272727 !important;
+    background: #0f0f0f !important;
     color: #f1f1f1;
 }
 
@@ -80,24 +77,20 @@
     background-color: #0f0f0f;
 }
 
+
 .navbar-toggler {
-    background: #272727 !important;
+    background: #0f0f0f !important;
     color: #f1f1f1 !important;
     border: none !important;
 }
 
 .navDrop {
-    background: #272727 !important;
+    background: #0f0f0f !important;
     color: #f1f1f1 !important;
     border: none !important;
 }
 
-.navbar-toggler-icon {
-    background-color: #f1f1f1 !important;
-}
-
 .navbar-toggler:hover {
-    background: #f1f1f1 !important;
     color: #0f0f0f !important;
 }
 
