@@ -5,7 +5,7 @@ exports.setChannel = async (req, res) => {
     const { name, description, fields } = req.body;
     const myheader = req.header;
 
-    console.log(myheader);
+    // console.log(myheader);
 
     if (!name || !fields) {
         return res.status(400).json({ message: 'Channel name and fields are required' });
@@ -20,7 +20,7 @@ exports.setChannel = async (req, res) => {
         const apiKey = uuidv4(); 
 
         let channelCount = await Channel.countDocuments({ userId });
-        console.log(channelCount)
+        // console.log(channelCount)
         if (channelCount >= 4) {
             return res.status(400).json({ message: 'User cannot have more than 4 channels.' });
         }

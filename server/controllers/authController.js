@@ -245,7 +245,7 @@ exports.forgetPassword = async(req, res, next) => {
 // creating update password
 exports.updatePassword = async (req, res, next)=>{
     const {token} = req.params
-    console.log(token);
+    // console.log(token);
     const {password} = req.body
     if (token) {
         jwt.verify(token, 'secretkey321', async function(error, decodedData) {
