@@ -12,7 +12,8 @@ const FileList = ({ token }) => {
     const fetchFiles = async () => {
         try {
             const response = await listFiles(token);
-            setFiles(response.data.files);
+            const aryan = setFiles(response.data.files[0].files);
+            console.log(response.data.files[0].files)
         } catch (error) {
             toast.error("Failed to fetch files.");
         }

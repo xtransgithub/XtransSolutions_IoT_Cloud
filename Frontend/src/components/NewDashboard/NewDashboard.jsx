@@ -89,6 +89,7 @@ const ChannelDashboard = () => {
                 { field, value: newValue },
                 { headers: { Authorization: `Bearer ${token}` } }
             );
+            // fetchChannelData(id, token, setFieldData, setHistoricalData, setFieldCounts, setChannelData, setCurrentChannel);
         } catch (error) {
             console.error(`Error updating field ${field}:`, error);
         }

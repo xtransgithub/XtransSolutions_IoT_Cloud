@@ -55,7 +55,7 @@ function Sidebar() {
                         </a> 
                     </li>
                     <li className="sidebar-item">
-                        <a href="/code" className="sidebar-link" data-tooltip="Code Editor">
+                        <a href="/code-playground" className="sidebar-link" data-tooltip="Code Editor">
                             <i className="bi bi-code-slash"></i>
                             <span>Code Editor</span>
                         </a> 

@@ -23,8 +23,9 @@ import VerifyEmail from "./components/VerifyEmail/VerifyEmail";
 import NotVerified from './components/VerifyEmail/NotVerified';
 import Tutorial from "./components/tutorial/tutorial";
 import Dashboard from "./components/Dashboard/dashboard"
-import CodeExecution from './components/CodeEditor/pages/CodeExecution';
-import FileManagement from './components/CodeEditor/pages/FileManagement';
+// import CodeExecution from './components/CodeEditor/pages/CodeExecution';
+// import FileManagement from './components/CodeEditor/pages/FileManagement';
+import CodePlayground from './components/CodeEditor/CodePlayground';
 
 function App() {
   const [token, setToken] = useState("your_bearer_token_here");
@@ -90,7 +91,7 @@ function App() {
               </Layout>
             </PrivateRoute>
           } />
-          <Route path="/code"  element={ 
+          {/* <Route path="/code"  element={ 
             <PrivateRoute>
               <Layout>
                 <ToastContainer />
@@ -103,6 +104,14 @@ function App() {
               <Layout>
                 <ToastContainer />
                 <FileManagement token={token}/>
+              </Layout>
+            </PrivateRoute>
+          } /> */}
+          <Route path="/code-playground" element={ 
+            <PrivateRoute>
+              <Layout>
+                <ToastContainer />
+                <CodePlayground token={token} />
               </Layout>
             </PrivateRoute>
           } />

@@ -21,6 +21,7 @@ const EditModal = ({
     setHistoricalData,
 }) => {
     const [showAlert, setShowAlert] = useState(false);
+    const [showAlert1, setShowAlert1] = useState(false);
     const [duplicateChannelAlert, setDuplicateChannelAlert] = useState(false);
 
     // Validation schema for the Channel Name form
@@ -147,9 +148,9 @@ const EditModal = ({
                     const duplicateFields = values.newFields.filter(field => existingFields.includes(field.toLowerCase()));
 
                     if (duplicateFields.length > 0) {
-                        setShowAlert(true); // Show warning if duplicates exist
+                        setShowAlert1(true); // Show warning if duplicates exist
                     } else {
-                        setShowAlert(false); // Hide warning if no duplicates
+                        setShowAlert1(false); // Hide warning if no duplicates
                         handleAddMultipleFields(id, values.newFields, token, setChannelData, setIsEditing);
                     }
                     setSubmitting(false);
@@ -160,7 +161,7 @@ const EditModal = ({
                         <div className="edit-section">
                             <h5>Add New Field</h5>
 
-                            {showAlert && (
+                            {showAlert1 && (
                                 <div className="alert alert-warning mt-2" role="alert">
                                     Field name already exist in this channel. Please use unique names.
                                 </div>
@@ -193,6 +194,12 @@ const EditModal = ({
                             >
                                 Add Another Field
                             </button>
+
+                            {showAlert && values.newFields.length + currentChannel.currentChannelFields.length >= 5 && (
+                                <div className="alert alert-danger mt-2" role="alert">
+                                    You can add a maximum of 5 fields only.
+                                </div>
+                            )}
 
                             <button type="submit" className="btn btn-primary ms-3" disabled={isSubmitting}>
                                 Submit
