@@ -1,32 +1,3 @@
-.channel-row:hover{
-  transform: translateY(-5px);
-}
-
-.channel-row {
-  display: block;
-  top: 0px;
-  position: relative;
-  max-width: 100%;
-  background-color: white;
-  border-radius: 10px;
-  text-decoration: none;
-  z-index: 0;
-  overflow: hidden;
-  border: 1px solid white;
-}
-
-.channel-row:hover {
-  transition: all 0.25s ease-in-out;
-  box-shadow: 0px 4px 8px rgba(38, 38, 38, 0.2);
-  top: -4px;
-  border: 1px solid #cccccc;
-  background-color: #f2f8f9;
-}
-
-.channel-row:hover:before {
-  transform: scale(2.15);
-}
-
 .create-channel{
   position: fixed;
   top: 0;
@@ -38,10 +9,6 @@
   justify-content: center;
   align-items: center;
   z-index: 1000;
-}
-
-.loader {
-  height: 50vh;
 }
 
 .popup-overlay {
@@ -85,7 +52,12 @@
 
 .no-channels {
   text-align: center;
-  /* margin-top: 20px; */
+}
+
+.pageHeading {
+  font-family: 'Google Sans', sans-serif;
+  font-size: 2.5rem;
+  color: #0f0f0f !important;
 }
 
 .no-channel-img {
@@ -95,4 +67,61 @@
   margin-bottom: 10px;
   border-radius: 8px;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+} 
+
+.channels {
+  cursor: pointer;
+  border-radius: 10px;
+  transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+}
+
+.channel-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.15);
+}
+
+.channel-avatar {
+  width: 100px;
+  height: 100px;
+  background-color: #435e9f;
+  color: white;
+  font-size: 40px;
+  font-weight: bold;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.delete-btn {
+  border: none;
+  background: none;
+  color: red;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.delete-btn:hover {
+  color: rgb(223, 137, 137);
+}
+
+.channelDesc {
+  font-size: 14px;
+  height: 100px;
+  overflow: hidden;
+}
+
+.help-section {
+  background-color: #f8f9fa; /* Light gray background */
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.1);
+}
+.help-section h4 {
+  font-weight: bold;
+  margin-bottom: 15px;
+}
+.help-section p {
+  font-size: 14px;
+  margin-bottom: 10px;
 }

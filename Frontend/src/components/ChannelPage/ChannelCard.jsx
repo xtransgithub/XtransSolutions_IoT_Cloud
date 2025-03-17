@@ -1,45 +1,42 @@
 import React from "react";
 import PropTypes from "prop-types";
-import "bootstrap/dist/css/bootstrap.min.css";
-import "./channel.css"
+import { FaTrash } from "react-icons/fa";
+import "./channel.css";
 
 const ChannelCard = ({ channel, onChannelClick, onDelete }) => {
+  const handleCardClick = (e) => {
+    if (!e.target.closest(".delete-btn")) {
+      onChannelClick(channel._id);
+    }
+  };
+
   return (
-    <div
-      className="card shadow-sm p-3 mb-4 channel-row"
-    >
-      <div className="row align-items-center">
-        {/* Channel Name Section */}
-        <div className="col-md-2 text-center">
-          <h5 className="fw-bold">{channel.name}</h5>
-        </div>
-
-        {/* Description Section */}
-        <div className="col-md-7 p-3 border-start border-end border-2 border-dark">
-          <p className="mb-1 fw-bold">Description</p>
-          <p className="text-muted mb-0">{channel.description || "No description provided."}</p>
-        </div>
-
-        {/* Buttons Section */}
-        <div className="col-md-3 d-flex flex-column align-items-center">
-          <button
-            className="btn btn-primary mb-2 w-100"
-            onClick={() => onChannelClick(channel._id)}
-            aria-label={`Go to channel ${channel.name}`}
-          >
-            Go to Channel
-          </button>
-          <button
-            className="btn btn-danger w-100"
-            onClick={() =>
-              window.confirm("Are you sure you want to delete this channel?") &&
-              onDelete(channel._id)
+    <div className="card shadow-sm channel-card channels" onClick={handleCardClick}>
+      {/* Card Header */}
+      <div className="card-header d-flex justify-content-between align-items-center channelHeader">
+        <h5 className="mb-0">{channel.name}</h5>
+        <button
+          className="btn btn-sm btn-danger delete-btn"
+          onClick={(e) => {
+            e.stopPropagation();
+            if (window.confirm("Are you sure you want to delete this channel?")) {
+              onDelete(channel._id);
             }
-            aria-label={`Delete channel ${channel.name}`}
-          >
-            Delete Channel
-          </button>
-        </div>
+          }}
+          aria-label={`Delete channel ${channel.name}`}
+        >
+          <FaTrash />
+        </button>
+      </div>
+
+      {/* Middle Section (Avatar) */}
+      <div className="card-body d-flex justify-content-center align-items-center">
+        <div className="channel-avatar">{channel.name.charAt(0).toUpperCase()}</div>
+      </div>
+
+      {/* Footer with Description */}
+      <div className="card-footer text-muted small text-center channelDesc">
+        {channel.description || "No description provided."}
       </div>
     </div>
   );

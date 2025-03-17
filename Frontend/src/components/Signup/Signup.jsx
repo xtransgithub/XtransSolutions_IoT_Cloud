@@ -108,7 +108,7 @@ function SignUp() {
                   <ErrorMessage name="avatar" component="div" className="text-danger small" />
                 </div>
                 <div className="form-check d-flex justify-content-center mb-5">
-                  <Field type="checkbox" className="form-check-input" name="terms" id="terms" required/>
+                  <Field type="checkbox" className="form-check-input border-dark me-2" name="terms" id="terms" required/>
                   <label htmlFor="terms" className="form-check-label">
                     I agree to the Terms of Services
                   </label>

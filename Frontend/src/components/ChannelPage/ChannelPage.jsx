@@ -1,3 +1,4 @@
+//ChannelPage.jsx
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
@@ -56,36 +57,53 @@ const ChannelPage = () => {
 
   return (
     <div className="container m-0">
-      <h2 className="text-center text-primary mb-4">Manage Channels</h2>
+      <h2 className="text-center text-primary mb-0 pageHeading">Manage Channels</h2>
       <br />
+      
       <div className="row">
-        {isLoading ? (
-          <Loading message={"Loading channels..."} />
-        ) : channels.length > 0 ? (
-          channels.map((channel) => (
-            <ChannelCard
-              key={channel._id}
-              channel={channel}
-              onChannelClick={handleChannelClick}
-              onDelete={handleDeleteChannel}
-            />
-          ))
-        ) : (
-          <div className="no-channels">
-            <img src={NO_CHANNEL_IMAGE} alt="No Channels Available" className="no-channel-img" />
+        <div className="col-md-8">
+          <div className="row row-cols-1 row-cols-md-2 g-2">
+            {isLoading ? (
+              <Loading message={"Loading channels..."} />
+            ) : channels.length > 0 ? (
+              channels.map((channel) => (
+                <div className="col" key={channel._id}>
+                  <ChannelCard
+                    channel={channel}
+                    onChannelClick={handleChannelClick}
+                    onDelete={handleDeleteChannel}
+                  />
+                </div>
+              ))
+            ) : (
+              <div className="no-channels text-center">
+                <img src={NO_CHANNEL_IMAGE} alt="No Channels Available" className="no-channel-img" />
+                <p>No channels available. Create one to get started!</p>
+              </div>
+            )}
           </div>
-        )}
-      </div>
-      <div className="d-flex justify-content-center">
-      <button
-        className="btn btn-primary mb-3"
-        onClick={() => setShowPopup(true)}
-        disabled={channels.length >= MAX_CHANNELS}
-      >
-        {channels.length >= MAX_CHANNELS ? "Channel Limit Reached" : "Create New Channel"}
-      </button>
+        </div>
+
+        {/* Right Section - 1/3 Width for Help Section */}
+        <div className="col-md-4 help-section sticky">
+          <h4 className="text-primary">Help & Instructions</h4>
+          <p>💡 Click on a channel to view its dashboard.</p>
+          <p>🗑️ Click the delete button to remove a channel.</p>
+          <p>➕ Use the "Create New Channel" button to add a new channel.</p>
+          <p>📊 The dashboard shows real-time data for your channel.</p>
+          <p>📌 Maximum {MAX_CHANNELS} channels are allowed.</p>
+
+          <button
+              className="btn btn-primary mb-3"
+              onClick={() => setShowPopup(true)}
+              disabled={channels.length >= MAX_CHANNELS}
+            >
+              {channels.length >= MAX_CHANNELS ? "Channel Limit Reached" : "Create New Channel"}
+            </button>
+        </div>
       </div>
 
+      {/* Popup for Creating a New Channel */}
       {showPopup && (
         <div className="popup-overlay" onClick={() => setShowPopup(false)}>
           <div className="popup-content" onClick={(e) => e.stopPropagation()}>
