@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const API_BASE_URL = "http://localhost:5000"; // Change if deployed
+const API_BASE_URL = "http://cloud.xtranssolutions.com/tem/"; // Change if deployed
 
 // Run User Code
 export const runCode = async (code, token) => {
@@ -32,4 +32,13 @@ export const deleteFile = async (filename, token) => {
         headers: { Authorization: `Bearer ${token}`, "Content-Type": "application/json" },
         data: { filename },
     });
+};
+
+export const renameFile = async (oldFilename, newFilename, token) => {
+    return axios.post(`${API_BASE_URL}file/rename`, 
+        { old_filename: oldFilename, new_filename: newFilename },
+        {
+            headers: { Authorization: `Bearer ${token}`, "Content-Type": "application/json"},
+        }
+    );
 };
