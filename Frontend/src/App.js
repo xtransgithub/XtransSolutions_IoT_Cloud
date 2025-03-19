@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './App.css';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
@@ -23,14 +23,23 @@ import VerifyEmail from "./components/VerifyEmail/VerifyEmail";
 import NotVerified from './components/VerifyEmail/NotVerified';
 import Tutorial from "./components/tutorial/tutorial";
 import Dashboard from "./components/Dashboard/dashboard"
-// import CodeExecution from './components/CodeEditor/pages/CodeExecution';
-// import FileManagement from './components/CodeEditor/pages/FileManagement';
 import CodePlayground from './components/CodeEditor/CodePlayground';
 
 function App() {
-  const [token, setToken] = useState("your_bearer_token_here");
+  const [token, setToken] = useState(localStorage.getItem("token") || "");
+
+  useEffect(() => {
+    const handleStorageChange = () => {
+      setToken(localStorage.getItem("token") || "");
+    };
+
+    window.addEventListener("storage", handleStorageChange);
+    return () => window.removeEventListener("storage", handleStorageChange);
+  }, []);
+
   return (
     <>
+    <ToastContainer />
       <Router> 
         <Routes>
           {/* Public Routes */}
@@ -91,27 +100,11 @@ function App() {
               </Layout>
             </PrivateRoute>
           } />
-          {/* <Route path="/code"  element={ 
-            <PrivateRoute>
-              <Layout>
-                <ToastContainer />
-                <CodeExecution token={token} />
-              </Layout>
-            </PrivateRoute>
-          } />
-          <Route path="/files"  element={ 
-            <PrivateRoute>
-              <Layout>
-                <ToastContainer />
-                <FileManagement token={token}/>
-              </Layout>
-            </PrivateRoute>
-          } /> */}
           <Route path="/code-playground" element={ 
             <PrivateRoute>
               <Layout>
                 <ToastContainer />
-                <CodePlayground token={token} />
+                <CodePlayground token={token}/>
               </Layout>
             </PrivateRoute>
           } />

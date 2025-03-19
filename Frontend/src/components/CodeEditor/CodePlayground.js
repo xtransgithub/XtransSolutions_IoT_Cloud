@@ -3,22 +3,28 @@ import { listFiles, deleteFile, uploadFile, runCode } from "./api/api";
 import { toast } from "react-toastify";
 import CodeMirror from "@uiw/react-codemirror";
 import { python } from "@codemirror/lang-python";
-import { vscodeLight } from "@uiw/codemirror-theme-vscode";
-import { ThemeProvider, createTheme } from "@mui/material/styles";
+import { vscodeDark } from "@uiw/codemirror-theme-vscode";
 import {
     Box,
     Button,
     Typography,
     Paper,
     IconButton,
+    Dialog,
+    DialogTitle,
+    DialogContent,
+    DialogActions,
 } from "@mui/material";
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 import PlayArrowIcon from "@mui/icons-material/PlayArrow";
 import DeleteIcon from "@mui/icons-material/Delete";
+import FolderIcon from "@mui/icons-material/Folder";
+import InsertDriveFileIcon from "@mui/icons-material/InsertDriveFile";
 
 const CodePlayground = ({ token }) => {
     const [code, setCode] = useState("");
     const [output, setOutput] = useState("");
+    const [isPopupOpen, setPopupOpen] = useState(false);
     const [files, setFiles] = useState([]);
     const [file, setFile] = useState(null);
 
@@ -29,7 +35,7 @@ const CodePlayground = ({ token }) => {
     const fetchFiles = async () => {
         try {
             const response = await listFiles(token);
-            setFiles(response.data.files[0].files);
+            setFiles(response.data.files || []);
         } catch (error) {
             toast.error("Failed to fetch files.");
         }
@@ -42,6 +48,13 @@ const CodePlayground = ({ token }) => {
             toast.success("Code executed successfully!");
         } catch (error) {
             toast.error("Error executing code");
+        }
+    };
+
+    const handleFileChange = (event) => {
+        const selectedFile = event.target.files[0];
+        if (selectedFile) {
+            setFile(selectedFile);
         }
     };
 
@@ -62,83 +75,120 @@ const CodePlayground = ({ token }) => {
 
     const handleDelete = async (filename) => {
         try {
-            const response = await deleteFile(filename, token);
-            
-            if (response.data.status === "success") {
-                toast.success(response.data.message || "File deleted successfully!");
-                fetchFiles(); // Fetch updated file list after deletion
-            } else {
-                toast.error(response.data.message || "Failed to delete file.");
-            }
+            await deleteFile(filename, token);
+            toast.success("File deleted successfully!");
+            fetchFiles();
         } catch (error) {
-            toast.error(error.response?.data?.message || "Error deleting file.");
+            toast.error("Error deleting file.");
         }
-    };     
+    };
 
-    // Light Theme
-    const theme = createTheme({
-        palette: {
-            mode: "light",
-        },
-    });
-    
     return (
-        <ThemeProvider theme={theme}>
-            <Box sx={styles.container}>
-                
-                {/* Sidebar - File Explorer */}
-                <Box sx={styles.sidebar}>
-                    <Typography variant="h6">FILE EXPLORER</Typography>
+        <Box sx={styles.container}>
+            {/* Sidebar - File Explorer */}
+            <Box sx={styles.sidebar}>
+                <Typography variant="h6" sx={styles.sidebarTitle}>
+                    <FolderIcon sx={{ mr: 1 }} />
+                    File Explorer
+                </Typography>
 
-                    {/* Smaller Upload Box */}
-                    <Paper elevation={3} sx={styles.uploadBox}>
-                        <input type="file" onChange={(e) => setFile(e.target.files[0])} style={styles.fileInput} />
-                        <Button variant="contained" color="primary" startIcon={<CloudUploadIcon />} onClick={handleUpload} fullWidth>
-                            Upload
-                        </Button>
-                    </Paper>
+                {/* Upload Box - With Select File Button */}
+                <Paper elevation={3} sx={styles.uploadBox}>
+                    <input
+                        type="file"
+                        id="file-input"
+                        style={{ display: "none" }}
+                        onChange={handleFileChange}
+                    />
+                    <Button
+                        variant="outlined"
+                        component="label"
+                        fullWidth
+                        sx={{ mb: 1 }}
+                    >
+                        Select File
+                        <input type="file" hidden onChange={handleFileChange} />
+                    </Button>
+                    <Typography sx={{ fontSize: "12px", textAlign: "center", color: "gray" }}>
+                        {file ? file.name : "No file selected"}
+                    </Typography>
+                    <Button
+                        variant="contained"
+                        color="primary"
+                        startIcon={<CloudUploadIcon />}
+                        onClick={handleUpload}
+                        fullWidth
+                        sx={{ mt: 1 }}
+                        disabled={!file}
+                    >
+                        Upload
+                    </Button>
+                </Paper>
 
-                    <Paper elevation={3} sx={styles.fileList}>
-                    <ul style={styles.fileListUl}>
-                        {files.map((file, index) => (
-                            <li key={index} style={styles.fileItem} title={file}>
+                {/* File List */}
+                <Paper elevation={3} sx={styles.fileList}>
+                    {files.length === 0 ? (
+                        <Typography sx={{ textAlign: "center", color: "gray" }}>No files available</Typography>
+                    ) : (
+                        files.map((file, index) => (
+                            <Box key={index} sx={styles.fileItem}>
+                                <InsertDriveFileIcon sx={{ color: "gray", fontSize: 18, mr: 1 }} />
+                                <span style={styles.fileName}>{file}</span>
                                 <IconButton size="small" color="error" onClick={() => handleDelete(file)}>
                                     <DeleteIcon />
                                 </IconButton>
-                                <span style={styles.fileName}>{file}</span>
-                            </li>
-                        ))}
-                    </ul>
-                    </Paper>
-                </Box>
-
-                {/* Main Editor Section */}
-                <Box sx={styles.editorContainer}>
-                    <Box sx={styles.topBar}>
-                        <Button variant="contained" color="success" startIcon={<PlayArrowIcon />} onClick={handleRunCode}>
-                            Run
-                        </Button>
-                    </Box>
-
-                    <CodeMirror
-                        value={code}
-                        height="395px"
-                        extensions={[python()]}
-                        theme={vscodeLight}
-                        onChange={(value) => setCode(value)}
-                        style={{ flexGrow: 1 }}
-                    />
-                </Box>
-
-                {/* Terminal - Adjusted for Proper UI Fit */}
-                <Box sx={styles.terminal}>
-                    <Typography variant="h6" sx={{ marginBottom: "5px" }}>Terminal</Typography>
-                    <Paper elevation={3} sx={styles.outputBox}>
-                        <pre>{output || "No output yet..."}</pre>
-                    </Paper>
-                </Box>
+                            </Box>
+                        ))
+                    )}
+                </Paper>
             </Box>
-        </ThemeProvider>
+
+            {/* Code Editor */}
+            <Box sx={styles.editorContainer}>
+                <Box sx={styles.topBar}>
+                    <Button variant="contained" color="success" startIcon={<PlayArrowIcon />} onClick={handleRunCode}>
+                        Run Code
+                    </Button>
+                </Box>
+                <CodeMirror
+                    value={code}
+                    height="400px"
+                    extensions={[python()]}
+                    theme={vscodeDark}
+                    onChange={(value) => setCode(value)}
+                    style={{ flexGrow: 1, borderRadius: "5px", overflow: "hidden" }}
+                />
+            </Box>
+
+            {/* Output Terminal */}
+            <Box sx={styles.terminal}>
+                <Typography variant="h6" sx={{ marginBottom: "5px" }}>Output</Typography>
+                
+                <Paper elevation={3} sx={styles.outputBox}>
+                    <pre style={styles.outputText}>{output || "No output yet..."}</pre>
+                </Paper>
+
+                {output.length > 200 && (
+                    <Button variant="outlined" color="primary" onClick={() => setPopupOpen(true)} sx={styles.viewFullOutput}>
+                        View Full Output
+                    </Button>
+                )}
+            </Box>
+
+
+            {/* Popup for Large Output */}
+            <Dialog open={isPopupOpen} onClose={() => setPopupOpen(false)} maxWidth="md" fullWidth>
+                <DialogTitle>Full Output</DialogTitle>
+                <DialogContent>
+                    <pre style={{ whiteSpace: "pre-wrap", wordWrap: "break-word" }}>{output}</pre>
+                </DialogContent>
+                <DialogActions>
+                    <Button onClick={() => setPopupOpen(false)} color="primary">
+                        Close
+                    </Button>
+                </DialogActions>
+            </Dialog>
+        </Box>
     );
 };
 
@@ -146,13 +196,13 @@ const CodePlayground = ({ token }) => {
 const styles = {
     container: {
         display: "grid",
-        gridTemplateColumns: "280px 4fr",
-        gridTemplateRows: "70% 30%",
+        gridTemplateColumns: "260px 4fr",
+        gridTemplateRows: "60% 40%",
         gridTemplateAreas: `
             "sidebar editor"
             "sidebar terminal"
         `,
-        height: "88vh",
+        height: "90vh",
         backgroundColor: "#f5f5f5",
     },
     sidebar: {
@@ -161,77 +211,73 @@ const styles = {
         flexDirection: "column",
         padding: "10px",
         backgroundColor: "#ffffff",
+        borderRight: "1px solid #ddd",
+    },
+    sidebarTitle: {
+        display: "flex",
+        alignItems: "center",
+        marginBottom: "10px",
     },
     uploadBox: {
-        padding: "6px",
+        padding: "10px",
         borderRadius: "5px",
         marginBottom: "8px",
         width: "95%",
         alignSelf: "center",
-    },
-    fileInput: {
-        display: "block",
-        marginBottom: "6px",
+        backgroundColor: "#f9f9f9",
     },
     fileList: {
         padding: "10px",
         borderRadius: "5px",
         flexGrow: 1,
-    },
-    fileListUl: {
-        listStyle: "none",
-        padding: 0,
-    },
-    fileItem: {
-        display: "flex",
-        justifyContent: "space-between",
-        alignItems: "center",
-        padding: "5px 0",
-    },
-    editorContainer: {
-        gridArea: "editor",
-        display: "flex",
-        flexDirection: "column",
-        backgroundColor: "#ffffff",
-    },
-    topBar: {
-        padding: "8px",
-        display: "flex",
-        justifyContent: "flex-start",
-        backgroundColor: "#e0e0e0",
-    },
-    terminal: {
-        gridArea: "terminal",
-        padding: "10px",
-        borderTop: "2px solid #ccc",
-        backgroundColor: "#ffffff",
-        overflow: "hidden",
-    },
-    outputBox: {
-        padding: "6px",
-        borderRadius: "5px",
-        minHeight: "100px",
-        overflowX: "auto",
-        whiteSpace: "pre-wrap",
-        backgroundColor: "#e0e0e0",
+        backgroundColor: "#fafafa",
+        maxHeight: "250px",
+        overflowY: "auto",
     },
     fileItem: {
         display: "flex",
         alignItems: "center",
-        padding: "3px 0",
-        fontSize: "12px",
-        maxWidth: "250px",
-        whiteSpace: "nowrap",
-        overflow: "hidden",
-        textOverflow: "ellipsis",
-        gap: "5px",
+        padding: "5px",
+        fontSize: "14px",
+        gap: "8px",
+        borderBottom: "1px solid #eee",
     },
     fileName: {
         flexGrow: 1,
         overflow: "hidden",
         textOverflow: "ellipsis",
         whiteSpace: "nowrap",
-    },   
+    },
+    terminal: {
+        gridArea: "terminal",
+        padding: "10px",
+        backgroundColor: "#ffffff",
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "flex-start",
+        alignItems: "stretch",
+    },
+    outputBox: {
+        padding: "10px",
+        borderRadius: "5px",
+        minHeight: "150px",  // Increased height
+        maxHeight: "300px",  // Allows better viewing
+        overflowY: "auto",  // Enables scrolling if output is large
+        whiteSpace: "pre-wrap",
+        backgroundColor: "#333",  // Darker theme for better contrast
+        color: "#fff",  // White text for readability
+        fontSize: "14px",
+        fontFamily: "monospace",
+    },
+    outputText: {
+        margin: "0",
+        whiteSpace: "pre-wrap",
+        wordWrap: "break-word",
+    },
+    viewFullOutput: {
+        marginTop: "10px",
+        alignSelf: "center",
+    },
 };
 
 export default CodePlayground;
