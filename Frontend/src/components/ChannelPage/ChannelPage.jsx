@@ -29,6 +29,7 @@ const ChannelPage = () => {
         const response = await axios.get(`${server}api/auth/channels`, {
           headers: { Authorization: `Bearer ${token}` },
         });
+        console.log(response)
         setChannels(response.data.channels);
       } catch (error) {
         console.error("Error fetching channels:", error);

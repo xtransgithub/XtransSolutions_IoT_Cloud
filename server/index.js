@@ -13,6 +13,7 @@ const verification = require('./controllers/verificationController')
 // const createChannel = require('./controllers/channelController')
 const nodemailer = require('nodemailer');
 const csvRouter = require('./routes/csvRoute');
+const aryanRouter = require('./routes/aryanRoute');
 const {v4: uuidv4} = require('uuid')
 const app = express()
 const port = 4001
@@ -47,6 +48,7 @@ app.use('/api/csv', csvRouter);
 console.log(1)
 app.use('/api/auth', channelRouter)
 app.use('/api/auth', eventRouter)
+app.use('/api/auth', aryanRouter)
 console.log(2)
 const addEntryToChannel = async (channelId, fieldData, res) => {
     try {

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { listFiles, deleteFile, uploadFile, runCode } from "./api/api";
+import { listFiles, deleteFile, uploadFile, runCode, renameFile } from "./api/api";
 import { toast } from "react-toastify";
 import CodeMirror from "@uiw/react-codemirror";
 import { python } from "@codemirror/lang-python";
@@ -14,10 +14,12 @@ import {
     DialogTitle,
     DialogContent,
     DialogActions,
+    TextField
 } from "@mui/material";
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 import PlayArrowIcon from "@mui/icons-material/PlayArrow";
 import DeleteIcon from "@mui/icons-material/Delete";
+import EditIcon from "@mui/icons-material/Edit";
 import FolderIcon from "@mui/icons-material/Folder";
 import InsertDriveFileIcon from "@mui/icons-material/InsertDriveFile";
 
@@ -27,6 +29,9 @@ const CodePlayground = ({ token }) => {
     const [isPopupOpen, setPopupOpen] = useState(false);
     const [files, setFiles] = useState([]);
     const [file, setFile] = useState(null);
+    const [renameDialogOpen, setRenameDialogOpen] = useState(false);
+    const [selectedFile, setSelectedFile] = useState("");
+    const [newFileName, setNewFileName] = useState("");
 
     useEffect(() => {
         fetchFiles();
@@ -47,6 +52,8 @@ const CodePlayground = ({ token }) => {
             setOutput(response.data.output);
             toast.success("Code executed successfully!");
         } catch (error) {
+            const errorMessage = error.response?.data?.error || "Unknown error occurred.";
+        setOutput(`Error: ${errorMessage}`);
             toast.error("Error executing code");
         }
     };
@@ -82,6 +89,27 @@ const CodePlayground = ({ token }) => {
             toast.error("Error deleting file.");
         }
     };
+    
+    const handleRenameClick = (filename) => {
+        setSelectedFile(filename);
+        setNewFileName(filename);
+        setRenameDialogOpen(true);
+    };
+
+    const handleRenameConfirm = async () => {
+        if (!newFileName.trim() || newFileName === selectedFile) {
+            toast.warn("Please enter a new filename.");
+            return;
+        }
+        try {
+            await renameFile(selectedFile, newFileName, token);
+            toast.success("File renamed successfully!");
+            setRenameDialogOpen(false);
+            fetchFiles();
+        } catch (error) {
+            toast.error("Error renaming file.");
+        }
+    };
 
     return (
         <Box sx={styles.container}>
@@ -92,35 +120,17 @@ const CodePlayground = ({ token }) => {
                     File Explorer
                 </Typography>
 
-                {/* Upload Box - With Select File Button */}
+                {/* Upload Box */}
                 <Paper elevation={3} sx={styles.uploadBox}>
-                    <input
-                        type="file"
-                        id="file-input"
-                        style={{ display: "none" }}
-                        onChange={handleFileChange}
-                    />
-                    <Button
-                        variant="outlined"
-                        component="label"
-                        fullWidth
-                        sx={{ mb: 1 }}
-                    >
+                    <input type="file" id="file-input" style={{ display: "none" }} onChange={handleFileChange} />
+                    <Button variant="outlined" component="label" fullWidth sx={{ mb: 1 }}>
                         Select File
                         <input type="file" hidden onChange={handleFileChange} />
                     </Button>
                     <Typography sx={{ fontSize: "12px", textAlign: "center", color: "gray" }}>
                         {file ? file.name : "No file selected"}
                     </Typography>
-                    <Button
-                        variant="contained"
-                        color="primary"
-                        startIcon={<CloudUploadIcon />}
-                        onClick={handleUpload}
-                        fullWidth
-                        sx={{ mt: 1 }}
-                        disabled={!file}
-                    >
+                    <Button variant="contained" color="primary" startIcon={<CloudUploadIcon />} onClick={handleUpload} fullWidth sx={{ mt: 1 }} disabled={!file}>
                         Upload
                     </Button>
                 </Paper>
@@ -134,6 +144,11 @@ const CodePlayground = ({ token }) => {
                             <Box key={index} sx={styles.fileItem}>
                                 <InsertDriveFileIcon sx={{ color: "gray", fontSize: 18, mr: 1 }} />
                                 <span style={styles.fileName}>{file}</span>
+
+                                <IconButton size="small" color="primary" onClick={() => handleRenameClick(file)}>
+                                    <EditIcon />
+                                </IconButton>
+
                                 <IconButton size="small" color="error" onClick={() => handleDelete(file)}>
                                     <DeleteIcon />
                                 </IconButton>
@@ -142,6 +157,18 @@ const CodePlayground = ({ token }) => {
                     )}
                 </Paper>
             </Box>
+
+            {/* Rename Dialog */}
+            <Dialog open={renameDialogOpen} onClose={() => setRenameDialogOpen(false)}>
+                <DialogTitle>Rename File</DialogTitle>
+                <DialogContent>
+                    <TextField fullWidth label="New Filename" value={newFileName} onChange={(e) => setNewFileName(e.target.value)} />
+                </DialogContent>
+                <DialogActions>
+                    <Button onClick={() => setRenameDialogOpen(false)} color="secondary">Cancel</Button>
+                    <Button onClick={handleRenameConfirm} color="primary">Rename</Button>
+                </DialogActions>
+            </Dialog>
 
             {/* Code Editor */}
             <Box sx={styles.editorContainer}>
@@ -174,7 +201,6 @@ const CodePlayground = ({ token }) => {
                     </Button>
                 )}
             </Box>
-
 
             {/* Popup for Large Output */}
             <Dialog open={isPopupOpen} onClose={() => setPopupOpen(false)} maxWidth="md" fullWidth>
@@ -260,12 +286,12 @@ const styles = {
     outputBox: {
         padding: "10px",
         borderRadius: "5px",
-        minHeight: "150px",  // Increased height
-        maxHeight: "300px",  // Allows better viewing
-        overflowY: "auto",  // Enables scrolling if output is large
+        minHeight: "150px",
+        maxHeight: "300px",
+        overflowY: "auto",
         whiteSpace: "pre-wrap",
-        backgroundColor: "#333",  // Darker theme for better contrast
-        color: "#fff",  // White text for readability
+        backgroundColor: "#333",
+        color: "#fff",
         fontSize: "14px",
         fontFamily: "monospace",
     },
