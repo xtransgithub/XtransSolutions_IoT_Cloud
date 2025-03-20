@@ -90,38 +90,41 @@ const GlobalDashboard = () => {
                 <div key={channel._id} className="tab-pane fade show active">
                   <div className="container p-3 rounded">
                     {/* Combined Charts Row */}
-                    <div className="combined-charts-row mb-4">
-                      <div className="combined-chart-container">
-                        <CombinedLineChart historicalData={historicalData} fields={channelData.fields || []} />
-                      </div>
-                      <div className="combined-chart-container">
-                        <FieldEntryBarChart fieldCounts={fieldCounts} fields={channelData.fields || []} />
-                      </div>
-                      <div className="combined-chart-container">
-                        <BubbleChartComponent historicalData={historicalData} fields={channelData.fields || []} />
-                      </div>
-                    </div>
-
+                    
                     {/* Individual Field Charts */}
                     {channelData.fields?.length > 0 ? (
-                      <div className="charts-container dashboardChartContainer">
-                        {channelData.fields?.map((field) => (
-                          <div className="chart mb-4 dashboardChart" key={`${channel._id}-${field}`}>
-                            <center><FieldDisplay name={field} value={fieldData[field]} count={fieldCounts[field] || 0} /></center>
-                            <div className="mb-4">
-                              <LineChartComponent
-                                data={{
-                                  series1: historicalData[field]?.map(entry => entry.value) || [],
-                                }}
-                                timeLabels={historicalData[field]?.map(entry => {
-                                  const date = new Date(entry.timestamp);
-                                  return date.toLocaleTimeString([], { day: 'numeric', month: 'numeric', hour: '2-digit', minute: '2-digit' });
-                                }) || []}
-                              />
-                            </div>
+                      <>
+                        <div className="combined-charts-row mb-4">
+                          <div className="combined-chart-container">
+                            <CombinedLineChart historicalData={historicalData} fields={channelData.fields || []} />
                           </div>
-                        ))}
-                      </div>
+                          <div className="combined-chart-container">
+                            <FieldEntryBarChart fieldCounts={fieldCounts} fields={channelData.fields || []} />
+                          </div>
+                          <div className="combined-chart-container">
+                            <BubbleChartComponent historicalData={historicalData} fields={channelData.fields || []} />
+                          </div>
+                        </div>
+
+                        <div className="charts-container dashboardChartContainer">
+                          {channelData.fields?.map((field) => (
+                            <div className="chart mb-4 dashboardChart" key={`${channel._id}-${field}`}>
+                              <center><FieldDisplay name={field} value={fieldData[field]} count={fieldCounts[field] || 0} /></center>
+                              <div className="mb-4">
+                                <LineChartComponent
+                                  data={{
+                                    series1: historicalData[field]?.map(entry => entry.value) || [],
+                                  }}
+                                  timeLabels={historicalData[field]?.map(entry => {
+                                    const date = new Date(entry.timestamp);
+                                    return date.toLocaleTimeString([], { day: 'numeric', month: 'numeric', hour: '2-digit', minute: '2-digit' });
+                                  }) || []}
+                                />
+                              </div>
+                            </div>
+                          ))}
+                        </div>
+                      </>
                     ) : (
                       <div className="empty-state-message text-center">
                         <img src={no_data} alt="No Data Available" className="img-fluid mb-3" style={{ maxWidth: '600px' }} />

@@ -130,3 +130,11 @@
   background-color: #f8f9fa;
   border-radius: 2%;
 }
+
+@media screen and (max-width: 768px) {
+  .help {
+    background-color: #f8f9fa;
+    border-radius: 2%;
+    margin-top: 20px;
+  }
+}
