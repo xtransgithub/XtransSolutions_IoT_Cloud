@@ -14,7 +14,7 @@ const Navbar = () => {
   };
 
   return (
-    <nav className="navbar navbar-expand-lg bg-dark sticky-top text-white mainNavbar">
+    <nav className="navbar navbar-expand-lg navbar-dark bg-dark sticky-top text-white">
       <div className="container-fluid">
         <a className="navbar-brand d-flex align-items-center" href="/">
           <img 
@@ -55,9 +55,9 @@ const Navbar = () => {
             </li>
 
             {token ? (
-              <li className="nav-item dropdown">
+              <li className="nav-item dropdown vk12">
                 <button 
-                  className="btn dropdown-toggle navDrop" 
+                  className="btn btn-secondary dropdown-toggle" 
                   type="button" 
                   id="dropdownMenuButton" 
                   data-bs-toggle="dropdown" 
