@@ -132,7 +132,7 @@ const EventForm = () => {
 
   return (
     <div className="container mt-4">
-      <h2 className="text-center mb-3">Set Event Alerts</h2>
+      <h2 className="text-center text-primary mb-4">Set Event Alerts</h2>
       <div className="row">
         <div className="col-md-6 d-flex flex-column align-items-center">
           <Carousel fade interval={2000} className="w-100" onSelect={handleSelect}>

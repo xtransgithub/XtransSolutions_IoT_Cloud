@@ -13,7 +13,6 @@ import { server } from '../../config';
 
 import EditModal from './EditModal'; 
 import {handleRemoveField} from './EditUtils';
-
 import no_data from "../../assets/empty.webp";
 
 const ChannelDashboard = () => {
@@ -25,7 +24,8 @@ const ChannelDashboard = () => {
     const [isEditing, setIsEditing] = useState(false);
     const [isLoading, setIsLoading] = useState(true);
     const [chartTypes, setChartTypes] = useState({});
-    const [allChannels, setAllChannels] = useState([]);
+    const [allChannels, setAllChannels] = useState([]);    
+    const [toggleStates, setToggleStates] = useState({});
 
     const token = localStorage.getItem('token');
     const { id } = useParams();
@@ -53,6 +53,12 @@ const ChannelDashboard = () => {
                 return acc;
             }, {});
             setChartTypes(initialChartTypes);
+
+            const initialToggles = channelData.fields.reduce((acc, field) => {
+                acc[field] = false;
+                return acc;
+            }, {});
+            setToggleStates(initialToggles);
         }
     }, [channelData.fields]);
 
@@ -70,6 +76,25 @@ const ChannelDashboard = () => {
         setChartTypes(prev => ({ ...prev, [field]: type }));
     };
 
+    const handleToggle = async (field) => {
+        const newValue = toggleStates[field] ? 0 : 1;
+        setToggleStates(prev => ({ ...prev, [field]: !prev[field] }));
+    
+        try {
+            const uri = `http://cloud.xtranssolutions.com/node/api/channels/${id}/entries?${field}=${newValue}`;
+            // console.log("Sending Request:", uri, { field, value: newValue });
+    
+            await axios.get(
+                uri,
+                { field, value: newValue },
+                { headers: { Authorization: `Bearer ${token}` } }
+            );
+            // fetchChannelData(id, token, setFieldData, setHistoricalData, setFieldCounts, setChannelData, setCurrentChannel);
+        } catch (error) {
+            console.error(`Error updating field ${field}:`, error);
+        }
+    };
+    
     if(isLoading){
         return <Loading message={"Loading Channel..."} />
     }
@@ -104,7 +129,6 @@ const ChannelDashboard = () => {
                 <div className="col-md-9">
                     {(!channelData.fields || Object.keys(fieldData).length === 0) ? (
                         <div className="empty-state-message">
-                            {/* <h2>No Data Available</h2> */}
                             <img src={no_data} alt="No Data Available" className="img-fluid mb-3" style={{ maxWidth: '800px' }} />
                             <p>This channel currently has no entries. Please add data to view the charts.</p>
                         </div>
@@ -119,10 +143,34 @@ const ChannelDashboard = () => {
                                     value={chartTypes[field] || 'line'}
                                     onChange={(e) => handleChartTypeChange(field, e.target.value)}
                                 >
-                                    <option value="all">All Charts</option>
-                                    <option value="gauge">Gauge Chart</option>
-                                    <option value="line">Line Chart</option>
+                                    <option value="all">All Widgets</option>
+                                    <option value="gauge">Gauge</option>
+                                    <option value="line">Chart</option>
+                                    <option value="toggle">Toggle</option>
                                 </select>
+
+                                {(chartTypes[field] === 'all') && (
+                                    <div className="d-flex justify-content-center align-items-center gap-3 mt-3">
+                                        <span className="fw-bold">Toggle:</span>
+                                        <button 
+                                            className={`btn btn-${toggleStates[field] ? 'success' : 'danger'}`}
+                                            onClick={() => handleToggle(field)}
+                                        >
+                                            {toggleStates[field] ? "On" : "Off"}
+                                        </button>
+                                    </div>
+                                )}
+
+                                {(chartTypes[field] === 'toggle') && (
+                                    <div className="d-flex justify-content-center align-items-center mt-2">
+                                        <button 
+                                            className={`btn btn-lg d-flex justify-content-center align-items-center rounded-circle btn-${toggleStates[field] ? 'success' : 'danger'}`}                                            onClick={() => handleToggle(field)}
+                                            style={{ width: '200px', height: '200px', fontSize: '1.2rem', padding: '0' }}
+                                        >
+                                            {toggleStates[field] ? "On" : "Off"}
+                                        </button>
+                                    </div>
+                                )}
 
                                 {(chartTypes[field] === 'all' || chartTypes[field] === 'gauge') && (
                                     <div className='GuageChart'>

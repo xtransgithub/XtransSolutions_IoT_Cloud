@@ -82,6 +82,13 @@ const Analysis = () => {
     }
   };
 
+  const formatValue = (value) => {
+    if (Array.isArray(value)) {
+      return value.map((v) => (typeof v === "number" ? v.toFixed(2) : v)).join(", ");
+    }
+    return typeof value === "number" ? value.toFixed(2) : value;
+  };
+
   return (
     <div className="container mt-5">
       <h2 className="text-center text-primary mb-4">Data Analysis</h2>
@@ -115,7 +122,7 @@ const Analysis = () => {
                   <option value="">Select a Channel</option>
                   {channels.map((channel) => (
                     <option key={channel._id} value={channel._id}>
-                      {channel.name}
+                      {channel.name} 
                     </option>
                   ))}
                 </select>
@@ -156,11 +163,12 @@ const Analysis = () => {
                   required
                 >
                   <option value="">Select</option>
-                  <option value="average">Average</option>
+                  <option value="average">Mean</option>
                   <option value="median">Median</option>
                   <option value="mode">Mode</option>
                   <option value="max">Max</option>
                   <option value="min">Min</option>
+                  <option value="overview">Overview</option>
                 </select>
               </div>
 
@@ -186,12 +194,14 @@ const Analysis = () => {
             <div className="mt-4">
               <h3 className="text-success">Analysis Result:</h3>
               <div className="list-group">
-                {Object.entries(result).map(([key, value]) => (
-                  <div className="list-group-item d-flex justify-content-between" key={key}>
-                    <strong>{key}:</strong>
-                    <span>{value}</span>
-                  </div>
-                ))}
+                {
+                  Object.entries(result).map(([key, value]) => (
+                    <div className="list-group-item d-flex justify-content-between" key={key}>
+                      <strong>{key}:</strong>
+                      <span>{formatValue(value)}</span>
+                    </div>
+                  )
+                )}
               </div>
             </div>
           )}
