@@ -74,7 +74,7 @@ const CreateChannelForm = ({ onClose }) => {
     <div className="popup-overlay" onClick={onClose}>
       <div className="popup-content" onClick={(e) => e.stopPropagation()}>
         {/* Close Button */}
-        <button className="close-btn" onClick={onClose}>&times;</button>
+        <button className="close-btn my-2" onClick={onClose}>&times;</button>
 
         <h2 className="mb-3">Create a New Channel</h2>
 

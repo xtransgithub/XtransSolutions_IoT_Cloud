@@ -1,14 +1,20 @@
-import React, { useState } from "react";
-import "bootstrap/dist/css/bootstrap.min.css";
+import React, { useState, useEffect } from 'react';
 import "./sidebar.css";
 import Navbar from "../Navbar/Navbar";
 
 function Sidebar() {
   const [isExpanded, setIsExpanded] = useState(false);
+  const [userId, setUserId] = useState(null);
 
   const handleToggle = () => {
     setIsExpanded(!isExpanded);
   };
+  useEffect(() => {
+    const UserID = localStorage.getItem('userId');
+    if (UserID) {
+      setUserId(UserID);
+    }
+  }, []);
 
   return(
     <>

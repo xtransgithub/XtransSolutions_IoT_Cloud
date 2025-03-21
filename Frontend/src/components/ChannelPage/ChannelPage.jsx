@@ -1,15 +1,17 @@
-//ChannelPage.jsx
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import ChannelCard from "./ChannelCard";
 import "./channel.css";
 import { server } from "../../config";
-import Loading from "../loading"; 
-import CreateChannelForm from "../CreateChannelForm/CreateChannelForm"; 
-import NO_CHANNEL_IMAGE from "../../assets/no_chh.jpg";
-
+import Loading from "../loading";
+import CreateChannelForm from "../CreateChannelForm/CreateChannelForm";
+import {AdvancedImage} from '@cloudinary/react';
+import images from '../../assets/index'
 const MAX_CHANNELS = 4;
+
+//nti5ullg8iobxoovbof2
+
 
 const ChannelPage = () => {
   const navigate = useNavigate();
@@ -29,7 +31,6 @@ const ChannelPage = () => {
         const response = await axios.get(`${server}api/auth/channels`, {
           headers: { Authorization: `Bearer ${token}` },
         });
-        console.log(response)
         setChannels(response.data.channels);
       } catch (error) {
         console.error("Error fetching channels:", error);
@@ -57,35 +58,38 @@ const ChannelPage = () => {
   };
 
   return (
-    <div className="container m-0">
-      <h2 className="text-center text-primary mb-0 pageHeading">Manage Channels</h2>
-      <br />
-      
+    <div className="container-fluid">
       <div className="row">
-        <div className="col-md-8">
-          <div className="row row-cols-1 row-cols-md-2 g-2">
-            {isLoading ? (
-              <Loading message={"Loading channels..."} />
-            ) : channels.length > 0 ? (
-              channels.map((channel) => (
-                <div className="col" key={channel._id}>
-                  <ChannelCard
-                    channel={channel}
-                    onChannelClick={handleChannelClick}
-                    onDelete={handleDeleteChannel}
-                  />
+          <center><h2>Mannage Channels</h2></center>
+        {/* Left Column (Channels Section) */}
+        <div className="col-sm-12 col-md-8 mt-2">
+          <div className="col-pad">
+            {/* Channels Grid */}
+            <div className="row row-cols-1 row-cols-md-2 g-4">
+              {isLoading ? (
+                <Loading message={"Loading channels..."} />
+              ) : channels.length > 0 ? (
+                channels.map((channel) => (
+                  <div className="col" key={channel._id}>
+                    <ChannelCard
+                      channel={channel}
+                      onChannelClick={handleChannelClick}
+                      onDelete={handleDeleteChannel}
+                    />
+                  </div>
+                ))
+              ) : (
+                <div className="no-channels text-center">
+                  {/* <img src={NO_CHANNEL_IMAGE} alt="No Channels Available" className="no-channel-img" /> */}
+                  <AdvancedImage className="no-channel-img" cldImg={images.nochannel}/>
+                  <p>No channels available. Create one to get started!</p>
                 </div>
-              ))
-            ) : (
-              <div className="no-channels text-center">
-                <img src={NO_CHANNEL_IMAGE} alt="No Channels Available" className="no-channel-img" />
-                <p>No channels available. Create one to get started!</p>
-              </div>
-            )}
+              )}
+            </div>
           </div>
         </div>
 
-        {/* Right Section - 1/3 Width for Help Section */}
+        {/* Right Column (Help Section) */}
         <div className="col-md-4 help-section sticky">
           <h4 className="text-primary">Help & Instructions</h4>
           <p>💡 Click on a channel to view its dashboard.</p>

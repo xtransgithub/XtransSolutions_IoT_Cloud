@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
-import Images from '../../assets';
+import {AdvancedImage} from '@cloudinary/react';
+import images from '../../assets/index'
 import './navbar.css';
 
 const Navbar = () => {
@@ -17,8 +18,8 @@ const Navbar = () => {
     <nav className="navbar navbar-expand-lg navbar-dark bg-dark sticky-top text-white">
       <div className="container-fluid">
         <a className="navbar-brand d-flex align-items-center" href="/">
-          <img 
-            src={Images.logo} 
+          <AdvancedImage 
+            cldImg={images.logo} 
             alt="XTrans Logo" 
             width="30" 
             height="30" 

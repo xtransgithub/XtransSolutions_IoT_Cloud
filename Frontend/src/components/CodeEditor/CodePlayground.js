@@ -32,6 +32,7 @@ const CodePlayground = ({ token }) => {
     const [renameDialogOpen, setRenameDialogOpen] = useState(false);
     const [selectedFile, setSelectedFile] = useState("");
     const [newFileName, setNewFileName] = useState("");
+    const [isRunning, setIsRunning] = useState(false);
 
     useEffect(() => {
         fetchFiles();
@@ -47,6 +48,7 @@ const CodePlayground = ({ token }) => {
     };
 
     const handleRunCode = async () => {
+        setIsRunning(true);
         try {
             const response = await runCode(code, token);
             setOutput(response.data.output);
@@ -55,6 +57,8 @@ const CodePlayground = ({ token }) => {
             const errorMessage = error.response?.data?.error || "Unknown error occurred.";
         setOutput(`Error: ${errorMessage}`);
             toast.error("Error executing code");
+        } finally {
+            setIsRunning(false);
         }
     };
 
@@ -173,8 +177,8 @@ const CodePlayground = ({ token }) => {
             {/* Code Editor */}
             <Box sx={styles.editorContainer}>
                 <Box sx={styles.topBar}>
-                    <Button variant="contained" color="success" startIcon={<PlayArrowIcon />} onClick={handleRunCode}>
-                        Run Code
+                    <Button variant="contained" color="success" startIcon={<PlayArrowIcon />} onClick={handleRunCode} disabled={isRunning}>
+                        {isRunning ? "Executing..." : "Run Code"}
                     </Button>
                 </Box>
                 <CodeMirror

@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { server } from "../../config";
-import Prediction_img from "../../assets/pred_data.jpeg";
 import { Modal, Button } from "react-bootstrap";
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from "recharts";
+import {AdvancedImage} from '@cloudinary/react';
+import images from '../../assets/index'
 
 const Prediction = () => {
   const [formData, setFormData] = useState({
@@ -103,8 +104,8 @@ const Prediction = () => {
         
       <h2 className="text-center text-primary mb-4">Data Prediction</h2>
         <div className="col-md-6 text-center">
-          <img
-            src={Prediction_img}
+          <AdvancedImage
+            cldImg={images.prediction}
             alt="Prediction Illustration"
             className="img-fluid"
             style={{ maxHeight: "450px", borderRadius: "10px" }}

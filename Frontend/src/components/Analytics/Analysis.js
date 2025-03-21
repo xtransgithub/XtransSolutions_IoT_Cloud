@@ -2,7 +2,8 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { server } from "../../config";
 import { useNavigate } from "react-router-dom";
-import Analysis_IMG from "../../assets/analysis_dashboard.png";
+import {AdvancedImage} from '@cloudinary/react';
+import images from '../../assets/index'
 
 const Analysis = () => {
   const [formData, setFormData] = useState({
@@ -95,8 +96,8 @@ const Analysis = () => {
       <div className="row align-items-center">
         {/* Left Side: Image */}
         <div className="col-md-6 text-center">
-          <img 
-            src={Analysis_IMG} 
+          <AdvancedImage 
+            cldImg={images.analytics} 
             alt="No Channels Available" 
             className="no-channel-img" 
             style={{ width: "100%", maxWidth: "650px", height: "auto" }} 

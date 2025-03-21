@@ -5,8 +5,8 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import AlertModal from '../Alert/Alert';
 import Navbar from '../Navbar/Navbar';
-
-import CloudImg2 from "../../assets/cloud2.png";
+import {AdvancedImage} from '@cloudinary/react';
+import images from '../../assets/index'
 import { server } from '../../config';
 
 function SignUp() {
@@ -124,7 +124,7 @@ function SignUp() {
           {showAlert && <AlertModal message={responseMessage} onClose={handleCloseAlert} />}
         </div>
         <div className="col-md-8 col-lg-6 col-xl-5 d-flex align-items-center order-1 order-lg-2">
-          <img src={CloudImg2} className="img-fluid w-80 h-75" alt="signup" />
+          <AdvancedImage cldImg={images.singup} className="img-fluid w-80 h-75" alt="signup" />
         </div>
       </div>
     </>
