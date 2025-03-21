@@ -5,6 +5,8 @@ import './NewDashboard.css';
 import FieldDisplay from './FieldDisplay';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
+import {AdvancedImage} from '@cloudinary/react';
+import images from '../../assets/index'
 
 import { fetchChannelData } from './FetchChannel';
 import { getCSV } from './CsvUtils';
@@ -13,7 +15,6 @@ import { server } from '../../config';
 
 import EditModal from './EditModal'; 
 import {handleRemoveField} from './EditUtils';
-import no_data from "../../assets/empty.webp";
 
 const ChannelDashboard = () => {
     const [channelData, setChannelData] = useState({});
@@ -129,7 +130,8 @@ const ChannelDashboard = () => {
                 <div className="col-md-9">
                     {(!channelData.fields || Object.keys(fieldData).length === 0) ? (
                         <div className="empty-state-message">
-                            <img src={no_data} alt="No Data Available" className="img-fluid mb-3" style={{ maxWidth: '800px' }} />
+                            <AdvancedImage cldImg={images.nodata} alt="No Data Available" className="img-fluid mb-3" style={{ maxwidth: '600px' }}/>
+                            {/* <img src={no_data} alt="No Data Available" className="img-fluid mb-3" style={{ maxWidth: '800px' }} /> */}
                             <p>This channel currently has no entries. Please add data to view the charts.</p>
                         </div>
                     ) : (

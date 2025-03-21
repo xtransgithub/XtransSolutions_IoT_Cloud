@@ -6,9 +6,12 @@ import "./channel.css";
 import { server } from "../../config";
 import Loading from "../loading";
 import CreateChannelForm from "../CreateChannelForm/CreateChannelForm";
-import NO_CHANNEL_IMAGE from "../../assets/no_chh.jpg";
-
+import {AdvancedImage} from '@cloudinary/react';
+import images from '../../assets/index'
 const MAX_CHANNELS = 4;
+
+//nti5ullg8iobxoovbof2
+
 
 const ChannelPage = () => {
   const navigate = useNavigate();
@@ -77,7 +80,8 @@ const ChannelPage = () => {
                 ))
               ) : (
                 <div className="no-channels text-center">
-                  <img src={NO_CHANNEL_IMAGE} alt="No Channels Available" className="no-channel-img" />
+                  {/* <img src={NO_CHANNEL_IMAGE} alt="No Channels Available" className="no-channel-img" /> */}
+                  <AdvancedImage className="no-channel-img" cldImg={images.nochannel}/>
                   <p>No channels available. Create one to get started!</p>
                 </div>
               )}

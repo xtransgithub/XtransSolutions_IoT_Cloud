@@ -9,7 +9,8 @@ import CombinedLineChart from './CombinedLineChart';
 import FieldEntryBarChart from './FieldEntryBarChart';
 import BubbleChartComponent from './BubbleChartComponent';
 import './dashboard.css';
-import no_data from "../../assets/empty.webp";
+import {AdvancedImage} from '@cloudinary/react';
+import images from '../../assets/index'
 
 const GlobalDashboard = () => {
   const [allChannels, setAllChannels] = useState([]);
@@ -62,7 +63,7 @@ const GlobalDashboard = () => {
 
       {allChannels.length === 0 ? (
         <div className="empty-state-message text-center">
-          <img src={no_data} alt="No Data Available" className="img-fluid mb-3" style={{ maxWidth: '800px' }} />
+          <AdvancedImage cldImg={images.nochannel} alt="No Data Available" className="img-fluid mb-3" style={{ maxwidth: '800px' }} />
           <p>Please add channels to view data.</p>
         </div>
       ) : (
@@ -127,7 +128,8 @@ const GlobalDashboard = () => {
                       </>
                     ) : (
                       <div className="empty-state-message text-center">
-                        <img src={no_data} alt="No Data Available" className="img-fluid mb-3" style={{ maxWidth: '600px' }} />
+                        <AdvancedImage cldImg={images.nodata} alt="No Data Available" className="img-fluid mb-3" style={{ maxwidth: '600px' }} />
+                        {/* <img src={no_data} alt="No Data Available" className="img-fluid mb-3" style={{ maxWidth: '600px' }} /> */}
                         <p>No data available for this channel.</p>
                       </div>
                     )}

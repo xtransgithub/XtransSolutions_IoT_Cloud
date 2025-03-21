@@ -2,10 +2,18 @@ import Navbar from "../Navbar/Navbar";
 import { Link } from 'react-router-dom';
 
 // Import local images
-import CloudImg from "../../assets/cloud_img.png";
-import IoTKitImg from "../../assets/iot_kit.png";
+// import CloudImg from "../../assets/cloud_img.png";
+// import IoTKitImg from "../../assets/iot_kit.png";
+import { Cloudinary } from "@cloudinary/url-gen";
+import {scale} from '@cloudinary/url-gen/actions/resize';
+import {AdvancedImage} from '@cloudinary/react';
 
 const token = localStorage.getItem('token');
+
+const cld = new Cloudinary({cloud:{cloudName: 'daf2hsxuj'}});
+
+const Cloudimg = cld.image('fjcwlvbl81h3m5tndmcy').format('auto').quality('auto:low').resize(scale());
+const iotimg = cld.image('jgnfprqqs4p0uasdmfhp').format('auto').quality('auto:low').resize(scale());
 
 const Home = () => {
   return (
@@ -29,7 +37,8 @@ const Home = () => {
               </Link>
             </div>
             <div className="col-md-6 text-center">
-              <img src={CloudImg} alt="IoT Cloud Visualization" className="img-fluid rounded" />
+              {/* <img src={CloudImg} alt="IoT Cloud Visualization" className="img-fluid rounded" /> */}
+              <AdvancedImage  className="img-fluid rounded" cldImg={Cloudimg}/>
             </div>
           </div>
         </main>
@@ -69,7 +78,8 @@ const Home = () => {
         <section id="stats" className="stats-section container py-5">
           <div className="row align-items-center">
             <div className="col-md-6">
-              <img src={IoTKitImg} alt="AIoT Kit" className="img-fluid rounded" />
+              {/* <img src={IoTKitImg} alt="AIoT Kit" className="img-fluid rounded" /> */}
+              <AdvancedImage  className="img-fluid rounded" cldImg={iotimg}/>
             </div>
             <div className="col-md-6">
               <h2>Why Choose Us</h2>
