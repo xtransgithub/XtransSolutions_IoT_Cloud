@@ -24,7 +24,7 @@ const CreateChannelForm = ({ onClose }) => {
         Yup.string()
           .required("Field name is required")
           .matches(
-            /^[a-zA-Z0-9]+$/,
+            /^[a-z0-9]+$/,
             "Field name can only contain lowercase letters and numbers"
           )
       )
