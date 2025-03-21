@@ -59,7 +59,7 @@ const Tutorials = () => {
         <Loading message={"Loading Tutorial..."} />
       ) : (
         <div style={{ marginLeft: "2rem", marginRight: "2rem" }}>
-          <h1 classname =" text-center text-primary mb-4" >Tutorials</h1>
+          <h1 className =" text-center text-primary mb-4" >Tutorials</h1>
           <p>
             Welcome to the Tutorial page! Select a tutorial from the dropdown below.
           </p>
@@ -248,9 +248,9 @@ const Tutorials = () => {
               <h4>Creating an Account on Xtrans IoT Cloud</h4>
               <p>Follow these steps to create an account on the Xtrans IoT Cloud platform.</p>
               <ol>
-                <li>1. Go to the home page.<img src={Home_page} alt="Home Page" width= "100%" maxWidth= "1000px" height= "auto" /></li>
-                <li><br />2. Click on the <strong>Sign In</strong> button.<img src={Signin_page} alt="Sign In Page" width= "100%" maxWidth= "1000px" height= "auto" /></li>
-                <li><br />3. Click on <strong>Sign Up</strong> to create a new account.<img src={Signup_page} alt="Sign Up Page" width= "100%" maxWidth= "1000px" height= "auto" /></li>
+                <li>1. Go to the home page.<img src={Home_page} alt="Home Page" width= "100%" maxwidth= "1000px" height= "auto" /></li>
+                <li><br />2. Click on the <strong>Sign In</strong> button.<img src={Signin_page} alt="Sign In Page" width= "100%" maxwidth= "1000px" height= "auto" /></li>
+                <li><br />3. Click on <strong>Sign Up</strong> to create a new account.<img src={Signup_page} alt="Sign Up Page" width= "100%" maxwidth= "1000px" height= "auto" /></li>
                 <li><br />4. Fill in the required details:
                   <ul>
                     <li>First Name</li>
@@ -262,11 +262,11 @@ const Tutorials = () => {
                 </li>
                 <li><br />5. Check the box to agree to the <strong>Terms of Service</strong>.</li>
                 <li><br />6. Click the <strong>Register</strong> button to complete your sign-up.</li>
-                <li><br />7. You will see a confirmation message stating that a verification email has been sent.<img src={Verify1_page} alt="Email Verification Message"  width= "100%" maxWidth= "1000px" height= "auto" /></li>
-                <li><br />8. Open the email you used for registration and find the verification email.<img src={email_page} alt="Email Verification" width= "100%" maxWidth= "1000px" height= "auto"  /></li>
+                <li><br />7. You will see a confirmation message stating that a verification email has been sent.<img src={Verify1_page} alt="Email Verification Message"  width= "100%" maxwidth= "1000px" height= "auto" /></li>
+                <li><br />8. Open the email you used for registration and find the verification email.<img src={email_page} alt="Email Verification" width= "100%" maxwidth= "1000px" height= "auto"  /></li>
                 <li><br />9. Click on the verification link in the email.</li>
-                <li><br />10. A confirmation message will appear stating that your email has been successfully verified.<img src={email_verify_page} alt="Email Verified" width= "100%" maxWidth= "1000px" height= "auto" /></li>
-                <li><br />11. You will be redirected to the <strong>Sign In</strong> page.<img src={Signin2_page} alt="Sign In Page After Verification" width= "100%" maxWidth= "1000px" height= "auto"  /></li>
+                <li><br />10. A confirmation message will appear stating that your email has been successfully verified.<img src={email_verify_page} alt="Email Verified" width= "100%" maxwidth= "1000px" height= "auto" /></li>
+                <li><br />11. You will be redirected to the <strong>Sign In</strong> page.<img src={Signin2_page} alt="Sign In Page After Verification" width= "100%" maxwidth= "1000px" height= "auto"  /></li>
                 <li><br />12. Enter your registered email and password to log in and start using the Xtrans IoT Cloud services.</li>
               </ol>
             </section>
@@ -277,12 +277,12 @@ const Tutorials = () => {
               <p>Follow these steps to create a new channel on the Xtrans IoT Cloud platform.</p>
               <ol>
                 <li>1. Go to the home page.</li>
-                <li><br />2. Click on <strong>Channels</strong> in the navbar.<img src={home_create} alt="Home Page" width="100%" maxWidth="1000px" height="auto"  /></li>
-                <li><br />3. Click on <strong>Create New Channel</strong> button.<img src={channel1} alt="Sidebar Icon" width="100%" maxWidth="1000px" height="auto" /></li>
-                <li><br />4. Fill in all the details. To add a field, click on <strong>Add Field</strong> (you can add up to 5 fields).<img src={channel2} alt="Create Channel Page" width="100%" maxWidth="1000px" height="auto" /></li>
-                <li><br />5. Click on <strong>Create Channel</strong> button.<img src={channel3} alt="Channels in Sidebar" width="100%" maxWidth="1000px" height="auto" /></li>
-                <li><br />6. Your new channel is now created.<img src={create_channel} alt="Channel Page" width="100%" maxWidth="1000px" height="auto" /></li>
-                <li><br />7. It will look like this after fetching data through API.<img src={channel_page} alt="Channel Page" width="100%" maxWidth="1000px" height="auto" /></li>
+                <li><br />2. Click on <strong>Channels</strong> in the navbar.<img src={home_create} alt="Home Page" width="100%" maxwidth="1000px" height="auto"  /></li>
+                <li><br />3. Click on <strong>Create New Channel</strong> button.<img src={channel1} alt="Sidebar Icon" width="100%" maxwidth="1000px" height="auto" /></li>
+                <li><br />4. Fill in all the details. To add a field, click on <strong>Add Field</strong> (you can add up to 5 fields).<img src={channel2} alt="Create Channel Page" width="100%" maxwidth="1000px" height="auto" /></li>
+                <li><br />5. Click on <strong>Create Channel</strong> button.<img src={channel3} alt="Channels in Sidebar" width="100%" maxwidth="1000px" height="auto" /></li>
+                <li><br />6. Your new channel is now created.<img src={create_channel} alt="Channel Page" width="100%" maxwidth="1000px" height="auto" /></li>
+                <li><br />7. It will look like this after fetching data through API.<img src={channel_page} alt="Channel Page" width="100%" maxwidth="1000px" height="auto" /></li>
               </ol>
             </section>
           )}
@@ -293,17 +293,17 @@ const Tutorials = () => {
               <p>Follow these steps to set an alert based on a specific field value in your selected channel.</p>
               <ol>
                 <li>1. Go to the home page.</li>
-                <li><br />2. Click on <strong>Channels</strong> in the navbar.<img src={alert_1} alt="Channel Page" width="100%" maxWidth="1000px" height="auto" /></li>
-                <li><br />3. Click on the red-marked icon in the sidebar.<img src={alert_2} alt="Channel Page" width="100%" maxWidth="1000px" height="auto" /></li>
-                <li><br />4. Click on <strong>Events</strong>.<img src={alert_3} alt="Channel Page" width="100%" maxWidth="1000px" height="auto" /></li>
-                <li><br />5. Select the channel from the <strong>Select a Channel</strong> dropdown.<img src={alert_5} alt="Channel Page" width="100%" maxWidth="1000px" height="auto" /></li>
-                <li><br />6. Select the field of the selected channel from the <strong>Select Field</strong> dropdown.<img src={alert_6} alt="Channel Page" width="100%" maxWidth="1000px" height="auto" /></li>
-                <li><br />7. Select the operator from the <strong>Operator</strong> dropdown.<img src={alert_7} alt="Channel Page" width="100%" maxWidth="1000px" height="auto" /></li>
+                <li><br />2. Click on <strong>Channels</strong> in the navbar.<img src={alert_1} alt="Channel Page" width="100%" maxwidth="1000px" height="auto" /></li>
+                <li><br />3. Click on the red-marked icon in the sidebar.<img src={alert_2} alt="Channel Page" width="100%" maxwidth="1000px" height="auto" /></li>
+                <li><br />4. Click on <strong>Events</strong>.<img src={alert_3} alt="Channel Page" width="100%" maxwidth="1000px" height="auto" /></li>
+                <li><br />5. Select the channel from the <strong>Select a Channel</strong> dropdown.<img src={alert_5} alt="Channel Page" width="100%" maxwidth="1000px" height="auto" /></li>
+                <li><br />6. Select the field of the selected channel from the <strong>Select Field</strong> dropdown.<img src={alert_6} alt="Channel Page" width="100%" maxwidth="1000px" height="auto" /></li>
+                <li><br />7. Select the operator from the <strong>Operator</strong> dropdown.<img src={alert_7} alt="Channel Page" width="100%" maxwidth="1000px" height="auto" /></li>
                 <li><br />8. Set the <strong>Trigger Value</strong> and enter the <strong>Email Address</strong> to receive alerts.</li>
-                <li><br />9. Click on the <strong>Set Event</strong> button<img src={alert_8} alt="Channel Page" width="100%" maxWidth="1000px" height="auto" /></li>
+                <li><br />9. Click on the <strong>Set Event</strong> button<img src={alert_8} alt="Channel Page" width="100%" maxwidth="1000px" height="auto" /></li>
                 <li><br />10. A pop-up message will appear: <em>"Alert message will be sent at intervals."</em></li>
-                <li><br />11. Click <strong>OK</strong>.<img src={alert_9} alt="Channel Page" width="100%" maxWidth="1000px" height="auto" /></li>
-                <li><br />12. Open the email inbox that you provided. If the trigger value is crossed, an alert email will be sent <strong>three times at intervals</strong>.<img src={alert_10} alt="Channel Page" width="100%" maxWidth="1000px" height="auto" /></li>
+                <li><br />11. Click <strong>OK</strong>.<img src={alert_9} alt="Channel Page" width="100%" maxwidth="1000px" height="auto" /></li>
+                <li><br />12. Open the email inbox that you provided. If the trigger value is crossed, an alert email will be sent <strong>three times at intervals</strong>.<img src={alert_10} alt="Channel Page" width="100%" maxwidth="1000px" height="auto" /></li>
               </ol>
             </section>
           )}
@@ -314,15 +314,15 @@ const Tutorials = () => {
               <p>Follow these steps to analyze data in Xtrans IoT Cloud.</p>
               <ol>
                 <li>1. Go to the home page.</li>
-                <li><br />2. Click on the <strong>Channel</strong> section.<img src={analysis_1} alt="Channel Page" width="100%" maxWidth="1000px" height="auto" /></li>
-                <li><br />3. Click on the red-marked icon.<img src={analysis_2} alt="Red Marked Icon" width="100%" maxWidth="1000px" height="auto" /></li>
-                <li><br />4. Click on the <strong>Analytics</strong> section.<img src={analysis_3} alt="Analytics Section" width="100%" maxWidth="1000px" height="auto" /></li>
-                <li><br />5. Select the channel for analysis.<img src={analysis_4} alt="Select Channel" width="100%" maxWidth="1000px" height="auto" /></li>
-                <li><br />6. Select the field you want to analyze.<img src={analysis_5} alt="Select Field" width="100%" maxWidth="1000px" height="auto" /></li>
-                <li><br />7. Choose the analysis type.<img src={analysis_6} alt="Select Analysis Type" width="100%" maxWidth="1000px" height="auto" /></li>
-                <li><br />8. Input the number of entries you want to analyze.<img src={analysis_7} alt="Input Number of Entries" width="100%" maxWidth="1000px" height="auto" /></li>
-                <li><br />9. Click the <strong>Analyze</strong> button to view the analysis.<img src={analysis_8} alt="Input Number of Entries" width="100%" maxWidth="1000px" height="auto" /></li>
-                <li><br />9. Now view the analyzed result.<img src={analysis_9} alt="Analysis" width="100%" maxWidth="1000px" height="auto" /></li>
+                <li><br />2. Click on the <strong>Channel</strong> section.<img src={analysis_1} alt="Channel Page" width="100%" maxwidth="1000px" height="auto" /></li>
+                <li><br />3. Click on the red-marked icon.<img src={analysis_2} alt="Red Marked Icon" width="100%" maxwidth="1000px" height="auto" /></li>
+                <li><br />4. Click on the <strong>Analytics</strong> section.<img src={analysis_3} alt="Analytics Section" width="100%" maxwidth="1000px" height="auto" /></li>
+                <li><br />5. Select the channel for analysis.<img src={analysis_4} alt="Select Channel" width="100%" maxwidth="1000px" height="auto" /></li>
+                <li><br />6. Select the field you want to analyze.<img src={analysis_5} alt="Select Field" width="100%" maxwidth="1000px" height="auto" /></li>
+                <li><br />7. Choose the analysis type.<img src={analysis_6} alt="Select Analysis Type" width="100%" maxwidth="1000px" height="auto" /></li>
+                <li><br />8. Input the number of entries you want to analyze.<img src={analysis_7} alt="Input Number of Entries" width="100%" maxwidth="1000px" height="auto" /></li>
+                <li><br />9. Click the <strong>Analyze</strong> button to view the analysis.<img src={analysis_8} alt="Input Number of Entries" width="100%" maxwidth="1000px" height="auto" /></li>
+                <li><br />9. Now view the analyzed result.<img src={analysis_9} alt="Analysis" width="100%" maxwidth="1000px" height="auto" /></li>
               </ol>
             </section>
           )}
