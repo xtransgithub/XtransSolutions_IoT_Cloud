@@ -86,6 +86,7 @@ const EventForm = () => {
     email: Yup.string()
       .required("Please enter an email address")
       .email("Invalid email address"),
+    cstMsg: Yup.string(),
   });
 
   const handleSubmit = (values, { setSubmitting, resetForm }) => {
@@ -95,6 +96,7 @@ const EventForm = () => {
       ch_id: values.channelId,
       fieldName: values.fieldName,
       triggerValue: parseFloat(values.triggerValue),
+      cstMsg: values.cstMsg || "",
     };
 
     axios
@@ -179,6 +181,8 @@ const EventForm = () => {
               operator: "greater than",
               triggerValue: "",
               reciver_email: "",
+              // email: "",
+              cstMsg: "",
             }}
             validationSchema={validationSchema}
             onSubmit={handleSubmit}
@@ -234,6 +238,20 @@ const EventForm = () => {
                     className="form-control"
                   />
                   <ErrorMessage name="triggerValue" component="div" className="text-danger" />
+                </div>
+
+                <div className="mb-3">
+                  <label htmlFor="cstMsg" className="form-label">
+                    Custom Message (Optional):
+                  </label>
+                  <Field 
+                    type="text"
+                    name="cstMsg"
+                    id="cstMsg"
+                    className="form-control"
+                    value={values.cstMsg || ""}
+                    onChange={(e) => setFieldValue("cstMsg", e.target.value)}
+                  />
                 </div>
 
                 <div className="mb-3">
