@@ -26,7 +26,7 @@ import InsertDriveFileIcon from "@mui/icons-material/InsertDriveFile";
 const CodePlayground = ({ token }) => {
     const [code, setCode] = useState("");
     const [output, setOutput] = useState("");
-    const [plots, setPlots] = useState([]);
+    const [plots, setPlots] = useState([]); // FIXED: Initialize as an empty array
     const [plotPopupOpen, setPlotPopupOpen] = useState(false);
     const [isPopupOpen, setPopupOpen] = useState(false);
     const [files, setFiles] = useState([]);
@@ -51,7 +51,6 @@ const CodePlayground = ({ token }) => {
 
     const handleRunCode = async () => {
         setIsRunning(true);
-        setPlots([]);
         try {
             const response = await runCode(code, token);
             setOutput(response.data.output);
@@ -170,7 +169,7 @@ const CodePlayground = ({ token }) => {
                     )}
                 </Paper>
 
-                {plots && output && !output.startsWith("Error") && (
+                {plots.length > 0 && !output.startsWith("Error") && (
                     <Button
                         variant="contained"
                         color="primary"
@@ -213,7 +212,7 @@ const CodePlayground = ({ token }) => {
 
             {/* Output Terminal */}
             <Box sx={styles.terminal}>
-                <Typography variant="h6" sx={{ marginBottom: "5px" }}>Output</Typography>                
+                <Typography variant="h6">Output</Typography>                
                 <Paper elevation={3} sx={styles.outputBox}>
                     <pre style={styles.outputText}>{output || "No output yet..."}</pre>
                 </Paper>
@@ -239,26 +238,25 @@ const CodePlayground = ({ token }) => {
             </Dialog>
 
             {/* Popup for Plots */}
-            <Dialog open={plotPopupOpen} onClose={() => setPlotPopupOpen(false)} maxWidth="md" fullWidth>
-                <DialogTitle>Plot Output</DialogTitle>
-                <DialogContent>
-                    {plots.length > 0 ? (
-                        plots.map((plot, index) => (
+            {plots.length > 0 && (
+                <Dialog open={plotPopupOpen} onClose={() => setPlotPopupOpen(false)} maxWidth="md" fullWidth>
+                    <DialogTitle>Plot Output</DialogTitle>
+                    <DialogContent>
+                        {plots.map((plot, index) => (
                             <img 
                                 key={index} 
                                 src={`data:image/png;base64,${plot}`} 
                                 alt={`Plot ${index + 1}`} 
                                 style={{ width: "100%", borderRadius: "5px", marginBottom: "10px" }} 
                             />
-                        ))
-                    ) : (
-                        <Typography>No plots available</Typography>
-                    )}
-                </DialogContent>
-                <DialogActions>
-                    <Button onClick={() => setPlotPopupOpen(false)} color="primary">Close</Button>
-                </DialogActions>
-            </Dialog>
+                        ))}
+                    </DialogContent>
+                    <DialogActions>
+                        <Button onClick={() => setPlotPopupOpen(false)} color="primary">Close</Button>
+                    </DialogActions>
+                </Dialog>
+            )}
+
         </Box>
     );
 };
@@ -273,7 +271,7 @@ const styles = {
             "sidebar editor"
             "sidebar terminal"
         `,
-        height: "90vh",
+        height: "100vh",
         backgroundColor: "#f5f5f5",
     },
     sidebar: {
