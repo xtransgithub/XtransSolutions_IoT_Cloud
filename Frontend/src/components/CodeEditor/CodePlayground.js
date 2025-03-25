@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect, useCallback  } from "react";
 import { listFiles, deleteFile, uploadFile, runCode, renameFile } from "./api/api";
 import { toast } from "react-toastify";
 import CodeMirror from "@uiw/react-codemirror";
@@ -26,9 +26,9 @@ import InsertDriveFileIcon from "@mui/icons-material/InsertDriveFile";
 const CodePlayground = ({ token }) => {
     const [code, setCode] = useState("");
     const [output, setOutput] = useState("");
-    const [plot, setPlot] = useState(null);
-    const [isPopupOpen, setPopupOpen] = useState(false);
+    const [plots, setPlots] = useState([]);
     const [plotPopupOpen, setPlotPopupOpen] = useState(false);
+    const [isPopupOpen, setPopupOpen] = useState(false);
     const [files, setFiles] = useState([]);
     const [file, setFile] = useState(null);
     const [renameDialogOpen, setRenameDialogOpen] = useState(false);
@@ -51,30 +51,32 @@ const CodePlayground = ({ token }) => {
 
     const handleRunCode = async () => {
         setIsRunning(true);
+        setPlots([]);
         try {
             const response = await runCode(code, token);
             setOutput(response.data.output);
-            setPlot(response.data.plot || null);
+            setPlots(response.data.plots || []);
+
             toast.success("Code executed successfully!");
 
-            if (response.data.plot) {
+            if (response.data.plots && response.data.plots.length > 0) {
                 setPlotPopupOpen(true);
             }
         } catch (error) {
             const errorMessage = error.response?.data?.error || "Unknown error occurred.";
-        setOutput(`Error: ${errorMessage}`);
+            setOutput(`Error: ${errorMessage}`);
             toast.error("Error executing code");
         } finally {
             setIsRunning(false);
         }
     };
 
-    // const handleFileChange = (event) => {
-    //     const selectedFile = event.target.files[0];
-    //     if (selectedFile) {
-    //         setFile(selectedFile);
-    //     }
-    // };
+    const handleFileChange = (event) => {
+        const selectedFile = event.target.files[0];
+        if (selectedFile) {
+            setFile(selectedFile);
+        }
+    };
 
     const handleUpload = async () => {
         if (!file) {
@@ -133,10 +135,10 @@ const CodePlayground = ({ token }) => {
 
                 {/* Upload Box */}
                 <Paper elevation={3} sx={styles.uploadBox}>
-                    <input type="file" id="file-input" style={{ display: "none" }} onChange={(e) => setFile(e.target.files[0])} />
+                    <input type="file" id="file-input" style={{ display: "none" }} onChange={handleFileChange} />
                     <Button variant="outlined" component="label" fullWidth sx={{ mb: 1 }}>
                         Select File
-                        <input type="file" hidden onChange={(e) => setFile(e.target.files[0])} />
+                        <input type="file" hidden onChange={handleFileChange} />
                     </Button>
                     <Typography sx={{ fontSize: "12px", textAlign: "center", color: "gray" }}>
                         {file ? file.name : "No file selected"}
@@ -155,9 +157,11 @@ const CodePlayground = ({ token }) => {
                             <Box key={index} sx={styles.fileItem}>
                                 <InsertDriveFileIcon sx={{ color: "gray", fontSize: 18, mr: 1 }} />
                                 <span style={styles.fileName}>{file}</span>
+
                                 <IconButton size="small" color="primary" onClick={() => handleRenameClick(file)}>
                                     <EditIcon />
                                 </IconButton>
+
                                 <IconButton size="small" color="error" onClick={() => handleDelete(file)}>
                                     <DeleteIcon />
                                 </IconButton>
@@ -166,7 +170,7 @@ const CodePlayground = ({ token }) => {
                     )}
                 </Paper>
 
-                {plot && !output.startsWith("Error") && (
+                {plots && output && !output.startsWith("Error") && (
                     <Button
                         variant="contained"
                         color="primary"
@@ -176,7 +180,6 @@ const CodePlayground = ({ token }) => {
                         View Plot
                     </Button>
                 )}
-
             </Box>
 
             {/* Rename Dialog */}
@@ -204,12 +207,13 @@ const CodePlayground = ({ token }) => {
                     extensions={[python()]}
                     theme={vscodeDark}
                     onChange={(value) => setCode(value)}
+                    style={{ flexGrow: 1, borderRadius: "5px", overflow: "hidden" }}
                 />
             </Box>
 
             {/* Output Terminal */}
             <Box sx={styles.terminal}>
-                <Typography variant="h6" sx={{ marginBottom: "5px" }}>Output</Typography>
+                <Typography variant="h6" sx={{ marginBottom: "5px" }}>Output</Typography>                
                 <Paper elevation={3} sx={styles.outputBox}>
                     <pre style={styles.outputText}>{output || "No output yet..."}</pre>
                 </Paper>
@@ -228,15 +232,28 @@ const CodePlayground = ({ token }) => {
                     <pre style={{ whiteSpace: "pre-wrap", wordWrap: "break-word" }}>{output}</pre>
                 </DialogContent>
                 <DialogActions>
-                    <Button onClick={() => setPopupOpen(false)} color="primary">Close</Button>
+                    <Button onClick={() => setPopupOpen(false)} color="primary">
+                        Close
+                    </Button>
                 </DialogActions>
             </Dialog>
 
-            {/* Popup for Plot */}
+            {/* Popup for Plots */}
             <Dialog open={plotPopupOpen} onClose={() => setPlotPopupOpen(false)} maxWidth="md" fullWidth>
                 <DialogTitle>Plot Output</DialogTitle>
                 <DialogContent>
-                    {plot && <img src={`data:image/png;base64,${plot}`} alt="Plot Output" style={{ width: "100%", borderRadius: "5px" }} />}
+                    {plots.length > 0 ? (
+                        plots.map((plot, index) => (
+                            <img 
+                                key={index} 
+                                src={`data:image/png;base64,${plot}`} 
+                                alt={`Plot ${index + 1}`} 
+                                style={{ width: "100%", borderRadius: "5px", marginBottom: "10px" }} 
+                            />
+                        ))
+                    ) : (
+                        <Typography>No plots available</Typography>
+                    )}
                 </DialogContent>
                 <DialogActions>
                     <Button onClick={() => setPlotPopupOpen(false)} color="primary">Close</Button>
