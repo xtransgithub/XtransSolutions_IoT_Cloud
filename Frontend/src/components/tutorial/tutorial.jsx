@@ -1,49 +1,8 @@
 import React, { useState, useEffect } from "react";
 import Loading from "../loading";
 
-import Home_page from "../../assets/tutorial/C1.png";
-import Signin_page from "../../assets/tutorial/C2.png";
-import Signup_page from "../../assets/tutorial/C3.png";
-import Verify1_page from "../../assets/tutorial/C4.png";
-import email_page from "../../assets/tutorial/C5.jpg";
-import email_verify_page from "../../assets/tutorial/C6.png";
-import Signin2_page from "../../assets/tutorial/C7.png";
-
-import channel_page from "../../assets/tutorial/create_channel/channel_page.png";
-import channel1 from "../../assets/tutorial/create_channel/channel1.png";
-import channel2 from "../../assets/tutorial/create_channel/channel2.png";
-import channel3 from "../../assets/tutorial/create_channel/channel3.png";
-import create_channel from "../../assets/tutorial/create_channel/channel4.png";
-import home_create from "../../assets/tutorial/create_channel/home.png";
-
-// import alert_1 from "../../assets/tutorial/alert/1_alert.png";
-// import alert_2 from "../../assets/tutorial/alert/2_alert.png";
-// import alert_3 from "../../assets/tutorial/alert/3_alert.png";
-// import alert_5 from "../../assets/tutorial/alert/5_alert.png";
-// import alert_6 from "../../assets/tutorial/alert/6_alert.png";
-// import alert_7 from "../../assets/tutorial/alert/7_alert.png";
-// import alert_8 from "../../assets/tutorial/alert/8_alert.png";
-// import alert_9 from "../../assets/tutorial/alert/9_alert.png";
-// import alert_10 from "../../assets/tutorial/alert/10_alert_email.png";
-
-import analysis_1 from "../../assets/tutorial/analysis/analysis_1.png";
-import analysis_2 from "../../assets/tutorial/analysis/analysis_2.png";
-import analysis_3 from "../../assets/tutorial/analysis/analysis_3.png";
-import analysis_4 from "../../assets/tutorial/analysis/analysis_4.png";
-import analysis_5 from "../../assets/tutorial/analysis/analysis_5.png";
-import analysis_6 from "../../assets/tutorial/analysis/analysis_6.png";
-import analysis_7 from "../../assets/tutorial/analysis/analysis_7.png";
-import analysis_8 from "../../assets/tutorial/analysis/analysis_8.png";
-import analysis_9 from "../../assets/tutorial/analysis/analysis_9.png";
-
-import pred_1 from "../../assets/tutorial/prediction/pred_1.png";
-import pred_2 from "../../assets/tutorial/prediction/pred_2.png";
-import pred_3 from "../../assets/tutorial/prediction/pred_3.png";
-import pred_4 from "../../assets/tutorial/prediction/pred_4.png";
-import pred_5 from "../../assets/tutorial/prediction/pred_5.png";
-import pred_6 from "../../assets/tutorial/prediction/pred_6.png";
-import pred_7 from "../../assets/tutorial/prediction/pred_7.png";
-import pred_8 from "../../assets/tutorial/prediction/pred_8.png";
+import {AdvancedImage} from '@cloudinary/react';
+import images from '../../assets/index'
 
 const Tutorials = () => {
   const [isLoading, setIsLoading] = useState(true);
@@ -252,8 +211,8 @@ const Tutorials = () => {
               <p>Follow these steps to create an account on the Xtrans IoT Cloud platform.</p>
               <ol>
                 <li>1. Go to the home page.</li>
-                <li><br />2. Click on the <strong>Sign In</strong> button.<img src={Home_page} alt="Home Page" width= "100%" maxwidth= "1000px" height= "auto" /></li>
-                <li><br />3. Click on <strong>Sign Up</strong> to create a new account.<img src={Signin_page} alt="Sign In Page" width= "100%" maxwidth= "1000px" height= "auto" /></li>
+                <li><br />2. Click on the <strong>Sign In</strong> button.<AdvancedImage cldImg={images.C1} alt="No Data Available" className="img-fluid mb-3" style={{ maxwidth: '600px' }}/></li>
+                <li><br />3. Click on <strong>Sign Up</strong> to create a new account.<AdvancedImage cldImg={images.C2} alt="No Data Available" className="img-fluid mb-3" style={{ maxwidth: '600px' }}/></li>
                 <li><br />4. Fill in the required details:
                   <ul>
                     <li>First Name</li>
@@ -261,16 +220,16 @@ const Tutorials = () => {
                     <li>Email</li>
                     <li>Password</li>
                     <li>Mobile Number (Optional)</li>
-                    <img src={Signup_page} alt="Sign Up Page" width= "100%" maxwidth= "1000px" height= "auto" />
+                    <AdvancedImage cldImg={images.C3} alt="No Data Available" className="img-fluid mb-3" style={{ maxwidth: '600px' }}/>
                   </ul>
                 </li>
                 <li><br />5. Check the box to agree to the <strong>Terms of Service</strong>.</li>
                 <li><br />6. Click the <strong>Register</strong> button to complete your sign-up.</li>
-                <li><br />7. You will see a confirmation message stating that a verification email has been sent.<img src={Verify1_page} alt="Email Verification Message"  width= "100%" maxwidth= "1000px" height= "auto" /></li>
-                <li><br />8. Open the email you used for registration and find the verification email.<img src={email_page} alt="Email Verification" width= "100%" maxwidth= "1000px" height= "auto"  /></li>
+                <li><br />7. You will see a confirmation message stating that a verification email has been sent.<AdvancedImage cldImg={images.C4} alt="No Data Available" className="img-fluid mb-3" style={{ maxwidth: '600px' }}/></li>
+                <li><br />8. Open the email you used for registration and find the verification email.<AdvancedImage cldImg={images.C5} alt="No Data Available" className="img-fluid mb-3" style={{ maxwidth: '600px' }}/></li>
                 <li><br />9. Click on the verification link in the email.</li>
-                <li><br />10. A confirmation message will appear stating that your email has been successfully verified.<img src={email_verify_page} alt="Email Verified" width= "100%" maxwidth= "1000px" height= "auto" /></li>
-                <li><br />11. You will be redirected to the <strong>Sign In</strong> page.<img src={Signin2_page} alt="Sign In Page After Verification" width= "100%" maxwidth= "1000px" height= "auto"  /></li>
+                <li><br />10. A confirmation message will appear stating that your email has been successfully verified.<AdvancedImage cldImg={images.C6} alt="No Data Available" className="img-fluid mb-3" style={{ maxwidth: '600px' }}/></li>
+                <li><br />11. You will be redirected to the <strong>Sign In</strong> page.<AdvancedImage cldImg={images.C7} alt="No Data Available" className="img-fluid mb-3" style={{ maxwidth: '600px' }}/></li>
                 <li><br />12. Enter your registered email and password to log in and start using the Xtrans IoT Cloud services.</li>
               </ol>
             </section>
@@ -281,12 +240,12 @@ const Tutorials = () => {
               <p>Follow these steps to create a new channel on the Xtrans IoT Cloud platform.</p>
               <ol>
                 <li>1. Go to the home page.</li>
-                <li><br />2. Click on <strong>Channels</strong> in the navbar.<img src={home_create} alt="Home Page" width="100%" maxwidth="1000px" height="auto"  /></li>
-                <li><br />3. Click on <strong>Create New Channel</strong> button.<img src={channel1} alt="Sidebar Icon" width="100%" maxwidth="1000px" height="auto" /></li>
-                <li><br />4. Fill in all the details. To add a field, click on <strong>Add Field</strong> (you can add up to 5 fields).<img src={channel2} alt="Create Channel Page" width="100%" maxwidth="1000px" height="auto" /></li>
-                <li><br />5. Click on <strong>Create Channel</strong> button.<img src={channel3} alt="Channels in Sidebar" width="100%" maxwidth="1000px" height="auto" /></li>
-                <li><br />6. Your new channel is now created.<img src={create_channel} alt="Channel Page" width="100%" maxwidth="1000px" height="auto" /></li>
-                <li><br />7. It will look like this after fetching data through API.<img src={channel_page} alt="Channel Page" width="100%" maxwidth="1000px" height="auto" /></li>
+                <li><br />2. Click on <strong>Channels</strong> in the navbar.<AdvancedImage cldImg={images.home} alt="No Data Available" className="img-fluid mb-3" style={{ maxwidth: '600px' }}/></li>
+                <li><br />3. Click on <strong>Create New Channel</strong> button.<AdvancedImage cldImg={images.channel1} alt="No Data Available" className="img-fluid mb-3" style={{ maxwidth: '600px' }}/></li>
+                <li><br />4. Fill in all the details. To add a field, click on <strong>Add Field</strong> (you can add up to 5 fields).<AdvancedImage cldImg={images.channel2} alt="No Data Available" className="img-fluid mb-3" style={{ maxwidth: '600px' }}/></li>
+                <li><br />5. Click on <strong>Create Channel</strong> button.<AdvancedImage cldImg={images.channel3} alt="No Data Available" className="img-fluid mb-3" style={{ maxwidth: '600px' }}/></li>
+                <li><br />6. Your new channel is now created.<AdvancedImage cldImg={images.channel4} alt="No Data Available" className="img-fluid mb-3" style={{ maxwidth: '600px' }}/></li>
+                <li><br />7. It will look like this after fetching data through API.<AdvancedImage cldImg={images.channel_page} alt="No Data Available" className="img-fluid mb-3" style={{ maxwidth: '600px' }}/></li>
               </ol>
             </section>
           )}
@@ -318,15 +277,15 @@ const Tutorials = () => {
               <p>Follow these steps to analyze data in Xtrans IoT Cloud.</p>
               <ol>
                 <li>1. Go to the home page.</li>
-                <li><br />2. Click on the <strong>Channel</strong> section.<img src={analysis_1} alt="Channel Page" width="100%" maxwidth="1000px" height="auto" /></li>
-                <li><br />3. Click on the red-marked icon.<img src={analysis_2} alt="Red Marked Icon" width="100%" maxwidth="1000px" height="auto" /></li>
-                <li><br />4. Click on the <strong>Analytics</strong> section.<img src={analysis_3} alt="Analytics Section" width="100%" maxwidth="1000px" height="auto" /></li>
-                <li><br />5. Select the channel for analysis.<img src={analysis_4} alt="Select Channel" width="100%" maxwidth="1000px" height="auto" /></li>
-                <li><br />6. Select the field you want to analyze.<img src={analysis_5} alt="Select Field" width="100%" maxwidth="1000px" height="auto" /></li>
-                <li><br />7. Choose the analysis type.<img src={analysis_6} alt="Select Analysis Type" width="100%" maxwidth="1000px" height="auto" /></li>
-                <li><br />8. Input the number of entries you want to analyze.<img src={analysis_7} alt="Input Number of Entries" width="100%" maxwidth="1000px" height="auto" /></li>
-                <li><br />9. Click the <strong>Analyze</strong> button to view the analysis.<img src={analysis_8} alt="Input Number of Entries" width="100%" maxwidth="1000px" height="auto" /></li>
-                <li><br />9. Now view the analyzed result.<img src={analysis_9} alt="Analysis" width="100%" maxwidth="1000px" height="auto" /></li>
+                <li><br />2. Click on the <strong>Channel</strong> section.<AdvancedImage cldImg={images.analysis_1} alt="No Data Available" className="img-fluid mb-3" style={{ maxwidth: '600px' }}/></li>
+                <li><br />3. Click on the red-marked icon.<AdvancedImage cldImg={images.analysis_2} alt="No Data Available" className="img-fluid mb-3" style={{ maxwidth: '600px' }}/></li>
+                <li><br />4. Click on the <strong>Analytics</strong> section.<AdvancedImage cldImg={images.analysis_3} alt="No Data Available" className="img-fluid mb-3" style={{ maxwidth: '600px' }}/></li>
+                <li><br />5. Select the channel for analysis.<AdvancedImage cldImg={images.analysis_4} alt="No Data Available" className="img-fluid mb-3" style={{ maxwidth: '600px' }}/></li>
+                <li><br />6. Select the field you want to analyze.<AdvancedImage cldImg={images.analysis_5} alt="No Data Available" className="img-fluid mb-3" style={{ maxwidth: '600px' }}/></li>
+                <li><br />7. Choose the analysis type.<AdvancedImage cldImg={images.analysis_6} alt="No Data Available" className="img-fluid mb-3" style={{ maxwidth: '600px' }}/></li>
+                <li><br />8. Enter the number of entries you want to analyze, or leave it blank to use all entries by default.<AdvancedImage cldImg={images.analysis_7} alt="No Data Available" className="img-fluid mb-3" style={{ maxwidth: '600px' }}/></li>
+                <li><br />9. Click the <strong>Analyze</strong> button to view the analysis.<AdvancedImage cldImg={images.analysis_8} alt="No Data Available" className="img-fluid mb-3" style={{ maxwidth: '600px' }}/></li>
+                <li><br />9. Now view the analyzed result.<AdvancedImage cldImg={images.analysis_9} alt="No Data Available" className="img-fluid mb-3" style={{ maxwidth: '600px' }}/></li>
               </ol>
             </section>
           )}
@@ -337,14 +296,14 @@ const Tutorials = () => {
               <p>Follow these steps to predict data in Xtrans IoT Cloud.</p>
               <ol>
                 <li>1. Go to the home page.</li> <br />
-                <li>2. Click on the <strong>Channel</strong> button. <img src={pred_1} alt="Home Page" width="100%" /></li> <br />
-                <li>3. Click on the red-marked icon.<img src={pred_2} alt="Channel Button" width="100%" /></li> <br />
-                <li>4. Click on the <strong>Prediction</strong> section.<img src={pred_3} alt="Red Marked Icon" width="100%" /></li> <br />
-                <li>5. Select the channel for prediction.<img src={pred_4} alt="Prediction Section" width="100%" /></li> <br />
-                <li>6. Select the field you want to predict.<img src={pred_5} alt="Select Channel" width="100%" /></li> <br />
-                <li>7. Input the prediction hours (Ensure consistent data for every 5 mins up to 1-hour prediction).<img src={pred_6} alt="Select Field" width="100%" /></li> <br />
-                <li>8. Click the <strong>Prediction</strong> button. <img src={pred_7} alt="Input Prediction Hours" width="100%" /></li> <br />
-                <li>9. The forecasted result will appear on the screen.<br /><img src={pred_8} alt="Forecasted Result" width="100%" /></li>
+                <li>2. Click on the <strong>Channel</strong> button. <AdvancedImage cldImg={images.pred_1} alt="No Data Available" className="img-fluid mb-3" style={{ maxwidth: '600px' }}/></li> <br />
+                <li>3. Click on the red-marked icon.<AdvancedImage cldImg={images.pred_2} alt="No Data Available" className="img-fluid mb-3" style={{ maxwidth: '600px' }}/></li> <br />
+                <li>4. Click on the <strong>Prediction</strong> section.<AdvancedImage cldImg={images.pred_3} alt="No Data Available" className="img-fluid mb-3" style={{ maxwidth: '600px' }}/></li> <br />
+                <li>5. Select the channel for prediction.<AdvancedImage cldImg={images.pred_4} alt="No Data Available" className="img-fluid mb-3" style={{ maxwidth: '600px' }}/></li> <br />
+                <li>6. Select the field you want to predict.<AdvancedImage cldImg={images.pred_5} alt="No Data Available" className="img-fluid mb-3" style={{ maxwidth: '600px' }}/></li> <br />
+                <li>7. Input the prediction hours (Ensure consistent data for every 5 mins up to 1-hour prediction).<AdvancedImage cldImg={images.pred_6} alt="No Data Available" className="img-fluid mb-3" style={{ maxwidth: '600px' }}/></li> <br />
+                <li>8. Click the <strong>Prediction</strong> button. <AdvancedImage cldImg={images.pred_7} alt="No Data Available" className="img-fluid mb-3" style={{ maxwidth: '600px' }}/></li> <br />
+                <li>9. The forecasted result will appear on the screen.<br /><AdvancedImage cldImg={images.pred_8} alt="No Data Available" className="img-fluid mb-3" style={{ maxwidth: '600px' }}/></li>
               </ol>
             </section>
           )}

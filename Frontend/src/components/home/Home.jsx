@@ -1,14 +1,12 @@
 import Navbar from "../Navbar/Navbar";
 import { Link } from 'react-router-dom';
 
-// Import local images
-// import CloudImg from "../../assets/cloud_img.png";
-// import IoTKitImg from "../../assets/iot_kit.png";
 import { Cloudinary } from "@cloudinary/url-gen";
 import {scale} from '@cloudinary/url-gen/actions/resize';
 import {AdvancedImage} from '@cloudinary/react';
 
 const token = localStorage.getItem('token');
+
 
 const cld = new Cloudinary({cloud:{cloudName: 'daf2hsxuj'}});
 
