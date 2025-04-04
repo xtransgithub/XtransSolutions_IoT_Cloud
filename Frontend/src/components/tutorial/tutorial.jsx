@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-// import Navbar from "../Navbar/Navbar";
 import Loading from "../loading";
 
 import Home_page from "../../assets/tutorial/C1.png";
@@ -17,15 +16,15 @@ import channel3 from "../../assets/tutorial/create_channel/channel3.png";
 import create_channel from "../../assets/tutorial/create_channel/channel4.png";
 import home_create from "../../assets/tutorial/create_channel/home.png";
 
-import alert_1 from "../../assets/tutorial/alert/1_alert.png";
-import alert_2 from "../../assets/tutorial/alert/2_alert.png";
-import alert_3 from "../../assets/tutorial/alert/3_alert.png";
-import alert_5 from "../../assets/tutorial/alert/5_alert.png";
-import alert_6 from "../../assets/tutorial/alert/6_alert.png";
-import alert_7 from "../../assets/tutorial/alert/7_alert.png";
-import alert_8 from "../../assets/tutorial/alert/8_alert.png";
-import alert_9 from "../../assets/tutorial/alert/9_alert.png";
-import alert_10 from "../../assets/tutorial/alert/10_alert_email.png";
+// import alert_1 from "../../assets/tutorial/alert/1_alert.png";
+// import alert_2 from "../../assets/tutorial/alert/2_alert.png";
+// import alert_3 from "../../assets/tutorial/alert/3_alert.png";
+// import alert_5 from "../../assets/tutorial/alert/5_alert.png";
+// import alert_6 from "../../assets/tutorial/alert/6_alert.png";
+// import alert_7 from "../../assets/tutorial/alert/7_alert.png";
+// import alert_8 from "../../assets/tutorial/alert/8_alert.png";
+// import alert_9 from "../../assets/tutorial/alert/9_alert.png";
+// import alert_10 from "../../assets/tutorial/alert/10_alert_email.png";
 
 import analysis_1 from "../../assets/tutorial/analysis/analysis_1.png";
 import analysis_2 from "../../assets/tutorial/analysis/analysis_2.png";
@@ -76,7 +75,7 @@ const Tutorials = () => {
           >
             <option value="xtrans-signup">Creating an Account on Xtrans IoT Cloud</option>            
             <option value="create-channel">Creating a Channel on Xtrans</option>
-            <option value="set-alert">Configuring Event Alerts</option>
+            {/* <option value="set-alert">Configuring Event Alerts</option> */}
             <option value="data-analysis">Performing Data Analysis</option>
             <option value="data-prediction">Performing Data Prediction</option>
             <option value="raspberry-pi">Connecting Raspberry Pi to IoT Cloud</option>
@@ -292,7 +291,7 @@ const Tutorials = () => {
             </section>
           )}
 
-          {selectedTutorial === "set-alert" && (
+          {/* {selectedTutorial === "set-alert" && (
             <section id="set-alert" style={{ marginBottom: "2rem", scrollMarginTop: "4rem" }}>
               <h4>Configuring Event Alerts</h4>    
               <p>Follow these steps to set an alert based on a specific field value in your selected channel.</p>
@@ -311,7 +310,7 @@ const Tutorials = () => {
                 <li><br />12. Open the email inbox that you provided. If the trigger value is crossed, an alert email will be sent <strong>three times at intervals</strong>.<img src={alert_10} alt="Channel Page" width="100%" maxwidth="1000px" height="auto" /></li>
               </ol>
             </section>
-          )}
+          )} */}
           {/* Data Analysis Tutorial */}
           {selectedTutorial === "data-analysis" && (
             <section id="data-analysis" style={{ marginBottom: "2rem", scrollMarginTop: "4rem" }}>
