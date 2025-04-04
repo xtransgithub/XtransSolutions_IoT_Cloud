@@ -2,19 +2,21 @@ import React, { useState, useEffect } from "react";
 // import Navbar from "../Navbar/Navbar";
 import Loading from "../loading";
 
-import Home_page from "../../assets/tutorial/home.jpg";
-import email_verify_page from "../../assets/tutorial/email_verify.png";
-import email_page from "../../assets/tutorial/email.jpg";
-import Signin_page from "../../assets/tutorial/Signin.jpg";
-import Signin2_page from "../../assets/tutorial/Signin2.jpg";
-import Verify1_page from "../../assets/tutorial/Verify1.jpg";
-import Signup_page from "../../assets/tutorial/Signup.jpg";
+import Home_page from "../../assets/tutorial/C1.png";
+import Signin_page from "../../assets/tutorial/C2.png";
+import Signup_page from "../../assets/tutorial/C3.png";
+import Verify1_page from "../../assets/tutorial/C4.png";
+import email_page from "../../assets/tutorial/C5.jpg";
+import email_verify_page from "../../assets/tutorial/C6.png";
+import Signin2_page from "../../assets/tutorial/C7.png";
+
 import channel_page from "../../assets/tutorial/create_channel/channel_page.png";
 import channel1 from "../../assets/tutorial/create_channel/channel1.png";
 import channel2 from "../../assets/tutorial/create_channel/channel2.png";
 import channel3 from "../../assets/tutorial/create_channel/channel3.png";
 import create_channel from "../../assets/tutorial/create_channel/channel4.png";
 import home_create from "../../assets/tutorial/create_channel/home.png";
+
 import alert_1 from "../../assets/tutorial/alert/1_alert.png";
 import alert_2 from "../../assets/tutorial/alert/2_alert.png";
 import alert_3 from "../../assets/tutorial/alert/3_alert.png";
@@ -24,6 +26,7 @@ import alert_7 from "../../assets/tutorial/alert/7_alert.png";
 import alert_8 from "../../assets/tutorial/alert/8_alert.png";
 import alert_9 from "../../assets/tutorial/alert/9_alert.png";
 import alert_10 from "../../assets/tutorial/alert/10_alert_email.png";
+
 import analysis_1 from "../../assets/tutorial/analysis/analysis_1.png";
 import analysis_2 from "../../assets/tutorial/analysis/analysis_2.png";
 import analysis_3 from "../../assets/tutorial/analysis/analysis_3.png";
@@ -33,6 +36,7 @@ import analysis_6 from "../../assets/tutorial/analysis/analysis_6.png";
 import analysis_7 from "../../assets/tutorial/analysis/analysis_7.png";
 import analysis_8 from "../../assets/tutorial/analysis/analysis_8.png";
 import analysis_9 from "../../assets/tutorial/analysis/analysis_9.png";
+
 import pred_1 from "../../assets/tutorial/prediction/pred_1.png";
 import pred_2 from "../../assets/tutorial/prediction/pred_2.png";
 import pred_3 from "../../assets/tutorial/prediction/pred_3.png";
@@ -248,9 +252,9 @@ const Tutorials = () => {
               <h4>Creating an Account on Xtrans IoT Cloud</h4>
               <p>Follow these steps to create an account on the Xtrans IoT Cloud platform.</p>
               <ol>
-                <li>1. Go to the home page.<img src={Home_page} alt="Home Page" width= "100%" maxwidth= "1000px" height= "auto" /></li>
-                <li><br />2. Click on the <strong>Sign In</strong> button.<img src={Signin_page} alt="Sign In Page" width= "100%" maxwidth= "1000px" height= "auto" /></li>
-                <li><br />3. Click on <strong>Sign Up</strong> to create a new account.<img src={Signup_page} alt="Sign Up Page" width= "100%" maxwidth= "1000px" height= "auto" /></li>
+                <li>1. Go to the home page.</li>
+                <li><br />2. Click on the <strong>Sign In</strong> button.<img src={Home_page} alt="Home Page" width= "100%" maxwidth= "1000px" height= "auto" /></li>
+                <li><br />3. Click on <strong>Sign Up</strong> to create a new account.<img src={Signin_page} alt="Sign In Page" width= "100%" maxwidth= "1000px" height= "auto" /></li>
                 <li><br />4. Fill in the required details:
                   <ul>
                     <li>First Name</li>
@@ -258,6 +262,7 @@ const Tutorials = () => {
                     <li>Email</li>
                     <li>Password</li>
                     <li>Mobile Number (Optional)</li>
+                    <img src={Signup_page} alt="Sign Up Page" width= "100%" maxwidth= "1000px" height= "auto" />
                   </ul>
                 </li>
                 <li><br />5. Check the box to agree to the <strong>Terms of Service</strong>.</li>
