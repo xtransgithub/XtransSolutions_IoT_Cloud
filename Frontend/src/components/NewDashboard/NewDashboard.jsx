@@ -15,6 +15,8 @@ import { server } from '../../config';
 
 import EditModal from './EditModal'; 
 import {handleRemoveField} from './EditUtils';
+import WriteURLModal from './WriteURLModal';
+import ReadURLModal from './ReadURLModal';
 
 const ChannelDashboard = () => {
     const [channelData, setChannelData] = useState({});
@@ -26,7 +28,9 @@ const ChannelDashboard = () => {
     const [isLoading, setIsLoading] = useState(true);
     const [chartTypes, setChartTypes] = useState({});
     const [allChannels, setAllChannels] = useState([]);    
-    const [toggleStates, setToggleStates] = useState({});
+    const [toggleStates, setToggleStates] = useState({});    
+    const [showWriteURLModal, setShowWriteURLModal] = useState(false);
+    const [showReadURLModal, setShowReadURLModal] = useState(false);
 
     const token = localStorage.getItem('token');
     const { id } = useParams();
@@ -124,6 +128,16 @@ const ChannelDashboard = () => {
                                 Edit
                             </button>
                         </div>
+                        <div className='card-footer d-flex justify-content-center'>
+                            <button className="btn btn-secondary w-75" onClick={() => setShowWriteURLModal(true)}>
+                                Generate Write URL
+                            </button>
+                        </div>
+                        <div className='card-footer d-flex justify-content-center'>
+                            <button className="btn btn-secondary w-75" onClick={() => setShowReadURLModal(true)}>
+                                Generate Read URL
+                            </button>
+                        </div>
                     </div>
                 </div>
 
@@ -213,6 +227,17 @@ const ChannelDashboard = () => {
                     setHistoricalData={setHistoricalData}
                 />
             )}
+            <WriteURLModal
+                allChannels={allChannels}
+                show={showWriteURLModal}
+                onClose={() => setShowWriteURLModal(false)}
+            />
+
+            <ReadURLModal
+                allChannels={allChannels}
+                show={showReadURLModal}
+                onClose={() => setShowReadURLModal(false)}
+            />
         </div>
     );
 };
