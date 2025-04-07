@@ -95,7 +95,7 @@ const Prediction = () => {
       minute: 'numeric',
       second: 'numeric',
       hour12: true,
-    }) + ' (UTC)';
+    }) + ' (IST)';
   };
 
   return (

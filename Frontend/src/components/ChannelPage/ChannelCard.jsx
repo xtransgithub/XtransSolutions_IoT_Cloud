@@ -22,7 +22,7 @@ const ChannelCard = ({ channel, onChannelClick, onDelete }) => {
             if (window.confirm("Are you sure you want to delete this channel?")) {
               onDelete(channel._id);
             }
-          }}
+          }} 
           aria-label={`Delete channel ${channel.name}`}
         >
           <FaTrash />

@@ -8,6 +8,7 @@ import { fetchDataEntries } from './FetchEntrieslDashboard';
 import CombinedLineChart from './CombinedLineChart';
 import FieldEntryBarChart from './FieldEntryBarChart';
 import BubbleChartComponent from './BubbleChartComponent';
+import StatisticsCard from './StatisticsCard';
 import './dashboard.css';
 import {AdvancedImage} from '@cloudinary/react';
 import images from '../../assets/index'
@@ -17,6 +18,7 @@ const GlobalDashboard = () => {
   const [fieldData, setFieldData] = useState({});
   const [historicalData, setHistoricalData] = useState({});
   const [fieldCounts, setFieldCounts] = useState({});
+  const [fieldStats, setFieldStats] = useState({});
   const [channelData, setChannelData] = useState({});
   const [isLoading, setIsLoading] = useState(true);
   const [activeTab, setActiveTab] = useState(null);
@@ -29,7 +31,7 @@ const GlobalDashboard = () => {
 
   useEffect(() => {
     if (activeTab) {
-      fetchDataEntries(activeTab, setFieldData, setHistoricalData, setFieldCounts, setChannelData);
+      fetchDataEntries(activeTab, setFieldData, setHistoricalData, setFieldCounts, setChannelData, setFieldStats);
     }
   }, [activeTab]);
 
@@ -90,9 +92,15 @@ const GlobalDashboard = () => {
               activeTab === channel._id && (
                 <div key={channel._id} className="tab-pane fade show active">
                   <div className="container p-3 rounded">
-                    {/* Combined Charts Row */}
                     
-                    {/* Individual Field Charts */}
+                    {/* Summary & Statistics Section */}
+                    <div className="statistics-container">
+                      {channelData.fields?.map(field => (
+                        <StatisticsCard key={field} field={field} stats={fieldStats[field]} />
+                      ))}
+                    </div>
+                    
+                    {/* Combined Charts Row */}
                     {channelData.fields?.length > 0 ? (
                       <>
                         <div className="combined-charts-row mb-4">

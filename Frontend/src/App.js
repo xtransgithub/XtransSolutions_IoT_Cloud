@@ -56,7 +56,7 @@ function App() {
             <Layout>
               <Tutorial />
             </Layout>
-          } />
+          } /> 
           {/* Protected Routes */}
           <Route path="/channels" element={
             <PrivateRoute>

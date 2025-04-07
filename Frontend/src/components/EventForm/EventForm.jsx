@@ -8,20 +8,16 @@ import AlertModal from "../Alert/Alert";
 import { Carousel } from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
 
-import reminder1 from "../../assets/tutorial/alert/reminder1.jpeg";
-import alert__1 from "../../assets/tutorial/alert/Alert_1.png";
-import alert__2 from "../../assets/tutorial/alert/Alert_2.png";
-import alert__3 from "../../assets/tutorial/alert/Alert_3.png";
-import alert__4 from "../../assets/tutorial/alert/Alert_4.png";
-import alert__5 from "../../assets/tutorial/alert/Alert_5.png";
+import {AdvancedImage} from '@cloudinary/react';
+import images from '../../assets/index'
 
 const tutorialSteps = [
-  { src: reminder1, title: "Home", text: "Event Alerts" },
-  { src: alert__1, title: "Step 1", text: "Select Channel from the dropdown" },
-  { src: alert__2, title: "Step 2", text: "Select Field from the field dropdown" },
-  { src: alert__3, title: "Step 3", text: "Select Operator" },
-  { src: alert__4, title: "Step 4", text: "Input Trigger Value and Email Address then Click on Set Event" },
-  { src: alert__5, title: "Step 5", text: "Click on OK" },
+  { src: images.reminder1, title: "Home", text: "Event Alerts" },
+  { src: images.Alert_4, title: "Step 1", text: "Select Channel from the dropdown" },
+  { src: images.Alert_2, title: "Step 2", text: "Select Field from the field dropdown" },
+  { src: images.Alert_3, title: "Step 3", text: "Select Operator" },
+  { src: images.Alert_1, title: "Step 4", text: "Input Trigger Value and Email Address then Click on Set Event" },
+  { src: images.Alert_5, title: "Step 5", text: "Click on OK" },
 ];
 
 const EventForm = () => {
@@ -140,7 +136,7 @@ const EventForm = () => {
           <Carousel fade interval={2000} className="w-100" onSelect={handleSelect}>
             {tutorialSteps.map((step, index) => (
               <Carousel.Item key={index}>
-                <img className="carousel-img" src={step.src} alt={step.title} />
+                <AdvancedImage cldImg={step.src} alt={step.title} className="carousel-img" />
               </Carousel.Item>
             ))}
           </Carousel>
