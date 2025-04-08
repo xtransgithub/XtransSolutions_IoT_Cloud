@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const API_BASE_URL = "http://cloud.xtranssolutions.com/tem/"; // Change if deployed
+const API_BASE_URL = "http://cloud.xtranssolutions.com/tem"; // Change if deployed
 
 // Run User Code
 export const runCode = async (code, token) => {
