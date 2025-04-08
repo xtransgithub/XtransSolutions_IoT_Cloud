@@ -1,10 +1,10 @@
 import React, { useState, useEffect, useCallback  } from "react";
-import { listFiles, deleteFile, uploadFile, runCode, renameFile } from "./api/api";
+import { listFiles, deleteFile, uploadFile, runCode, renameFile, fetchChannels, fetchCSV } from "./api/api";
 import { toast } from "react-toastify";
 import CodeMirror from "@uiw/react-codemirror";
 import { python } from "@codemirror/lang-python";
 import { vscodeDark } from "@uiw/codemirror-theme-vscode";
-import axios from "axios";
+// import axios from "axios";
 import MenuItem from '@mui/material/MenuItem';
 import Select from '@mui/material/Select';
 import {
@@ -40,8 +40,8 @@ const CodePlayground = ({ token }) => {
     const [isRunning, setIsRunning] = useState(false);
     const [channels, setChannels] = useState([]);
     const [selectedChannel, setSelectedChannel] = useState("");
-    const BACKEND_URL = "http://cloud.xtranssolutions.com/node";
-    const API_BASE_URL = "http://cloud.xtranssolutions.com/tem";
+    // const BACKEND_URL = "http://cloud.xtranssolutions.com/node";
+    // const API_BASE_URL = "http://cloud.xtranssolutions.com/tem";
 
     const fetchFiles = useCallback(async () => {
         try {
@@ -78,31 +78,19 @@ const CodePlayground = ({ token }) => {
     };
 
     useEffect(() => {
-        const fetchChannels = async () => {
+        const loadChannels = async () => {
             try {
-                const response = await axios.get(`${BACKEND_URL}/api/auth/channels`, {
-                    headers: {
-                        Authorization: `Bearer ${token}`,
-                    },
-                });
-    
-                const channels = response.data?.channels || response.data || [];
-    
-                if (!Array.isArray(channels)) {
-                    throw new Error("Channels is not an array");
-                }
-    
-                setChannels(channels);
+                const response = await fetchChannels(token);
+                const channelsData = response.data?.channels || response.data || [];
+                if (!Array.isArray(channelsData)) throw new Error("Channels is not an array");
+                setChannels(channelsData);
             } catch (err) {
                 console.error("Error fetching channels:", err.message);
                 toast.error("Failed to fetch channels.");
             }
         };
-    
-        if (token) {
-            fetchChannels();
-        }
-    }, [token]);             
+        if (token) loadChannels();
+    }, [token]);               
 
     const handleFileChange = (event) => {
         const selectedFile = event.target.files[0];
@@ -162,20 +150,8 @@ const CodePlayground = ({ token }) => {
             toast.warn("Please select a channel first.");
             return;
         }
-        console.log("Selected Channel ID:", selectedChannel);
-        console.log("Selected token:", token);
         try {
-            console.log("yippee")
-            const response = await axios.post(
-                `${API_BASE_URL}/file/fetch`,
-                { channel_id: selectedChannel },
-                {
-                    headers: {
-                        Authorization: token,
-                    },
-                }
-            );
-            console.log('ye response',response)
+            const response = await fetchCSV(selectedChannel, token);
             if (response.data.status === "success") {
                 toast.success("CSV file fetched successfully!");
                 fetchFiles(); // Refresh file list
@@ -186,7 +162,7 @@ const CodePlayground = ({ token }) => {
             toast.error("Error fetching CSV.");
             console.log(error);
         }
-    };    
+    };     
 
     return (
         <Box sx={styles.container}>
@@ -213,32 +189,31 @@ const CodePlayground = ({ token }) => {
                 </Paper>
 
                 <Paper elevation={3} sx={styles.uploadBox}>
-    <Typography variant="body2" sx={{ mb: 1 }}>Select Channel</Typography>
-    <Select
-        fullWidth
-        value={selectedChannel}
-        onChange={(e) => setSelectedChannel(e.target.value)}
-        displayEmpty
-        sx={{ mb: 1 }}
-    >
-        <MenuItem value="" disabled>Select a channel</MenuItem>
-        {channels.map((channel) => (
-            <MenuItem key={channel._id} value={channel._id}>
-                {channel.name}
-            </MenuItem>
-        ))}
-    </Select>
-    <Button
-        variant="contained"
-        color="secondary"
-        onClick={handleFetchCSV}
-        disabled={!selectedChannel}
-        fullWidth
-    >
-        Fetch CSV
-    </Button>
-</Paper>
-
+                    <Typography variant="body2" sx={{ mb: 1 }}>Select Channel</Typography>
+                    <Select
+                        fullWidth
+                        value={selectedChannel}
+                        onChange={(e) => setSelectedChannel(e.target.value)}
+                        displayEmpty
+                        sx={{ mb: 1 }}
+                    >
+                        <MenuItem value="" disabled>Select a channel</MenuItem>
+                        {channels.map((channel) => (
+                            <MenuItem key={channel._id} value={channel._id}>
+                                {channel.name}
+                            </MenuItem>
+                        ))}
+                    </Select>
+                    <Button
+                        variant="contained"
+                        color="secondary"
+                        onClick={handleFetchCSV}
+                        disabled={!selectedChannel}
+                        fullWidth
+                    >
+                        Fetch CSV
+                    </Button>
+                </Paper>
 
                 {/* File List */}
                 <Paper elevation={3} sx={styles.fileList}>
@@ -338,7 +313,7 @@ const CodePlayground = ({ token }) => {
                         {plots.map((plot, index) => (
                             <img 
                                 key={index} 
-                                src={`data:image/png;base64,${plot}`} 
+                                src={`data:image/png;base64,${plot.image}`} 
                                 alt={`Plot ${index + 1}`} 
                                 style={{ width: "100%", borderRadius: "5px", marginBottom: "10px" }} 
                             />
