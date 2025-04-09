@@ -224,7 +224,11 @@ const CodePlayground = ({ token }) => {
                 </Paper>
 
                 {/* File List */}
-                <Paper elevation={3} sx={styles.fileList}>
+                <Typography variant="h6" sx={styles.sidebarTitle}>
+                    <FolderIcon sx={{ mr: 1 }} />
+                    File Manager
+                </Typography>
+                <Paper elevation={3} sx={styles.fileList}> 
                     {files.length === 0 ? (
                         <Typography sx={{ textAlign: "center", color: "gray" }}>No files available</Typography>
                     ) : (
@@ -244,7 +248,7 @@ const CodePlayground = ({ token }) => {
                         ))
                     )}
                 </Paper>
-
+                
                 {plots.length > 0 && !output.startsWith("Error") && (
                     <Button
                         variant="contained"
@@ -347,7 +351,7 @@ const styles = {
             "sidebar editor"
             "sidebar terminal"
         `,
-        height: "100vh",
+        height: "89vh",
         backgroundColor: "#f5f5f5",
     },
     sidebar: {
@@ -376,7 +380,7 @@ const styles = {
         borderRadius: "5px",
         flexGrow: 1,
         backgroundColor: "#fafafa",
-        maxHeight: "250px",
+        maxHeight: "200px",
         overflowY: "auto",
     },
     fileItem: {
@@ -401,11 +405,12 @@ const styles = {
         flexDirection: "column",
         justifyContent: "flex-start",
         alignItems: "stretch",
+        marginTop: "30px",
     },
     outputBox: {
         padding: "10px",
         borderRadius: "5px",
-        minHeight: "150px",
+        minHeight: "160px",
         maxHeight: "300px",
         overflowY: "auto",
         whiteSpace: "pre-wrap",
