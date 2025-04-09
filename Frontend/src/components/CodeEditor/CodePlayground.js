@@ -104,13 +104,17 @@ const CodePlayground = ({ token }) => {
             toast.warn("Please select a file.");
             return;
         }
+
         try {
             await uploadFile(file, token);
             toast.success("File uploaded successfully!");
             setFile(null);
+            document.getElementById("file-input").value = "";
             fetchFiles();
         } catch (error) {
-            toast.error("File upload failed!");
+            const errorMessage = error?.response?.data?.message || "File upload failed!";
+            toast.error(errorMessage);
+            console.error("Upload error:", errorMessage);
         }
     };
 
@@ -159,8 +163,12 @@ const CodePlayground = ({ token }) => {
                 toast.warn(response.data.message || "Something went wrong.");
             }
         } catch (error) {
-            toast.error("Error fetching CSV.");
-            console.log(error);
+            const backendError =
+            error?.response?.data?.message ||
+            error?.response?.data?.error ||
+            error?.message ||
+            "Failed to fetch CSV.";
+        toast.error(backendError);
         }
     };     
 
@@ -176,7 +184,7 @@ const CodePlayground = ({ token }) => {
                 {/* Upload Box */}
                 <Paper elevation={3} sx={styles.uploadBox}>
                     <input type="file" id="file-input" style={{ display: "none" }} onChange={handleFileChange} />
-                    <Button variant="outlined" component="label" fullWidth sx={{ mb: 1 }}>
+                    <Button variant="outlined" component="label" fullWidth sx={{ mb: 1 }} htmlFor="file-input">
                         Select File
                         <input type="file" hidden onChange={handleFileChange} />
                     </Button>
