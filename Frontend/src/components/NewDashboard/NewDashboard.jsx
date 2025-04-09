@@ -6,6 +6,7 @@ import FieldDisplay from './FieldDisplay';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
 import {AdvancedImage} from '@cloudinary/react';
+import { FiCopy } from 'react-icons/fi';
 import images from '../../assets/index'
 
 import { fetchChannelData } from './FetchChannel';
@@ -100,6 +101,12 @@ const ChannelDashboard = () => {
         }
     };
     
+    const copyToClipboard = (text) => {
+        navigator.clipboard.writeText(text)
+            .then(() => alert('Copied to clipboard!'))
+            .catch((err) => console.error('Failed to copy: ', err));
+    };      
+
     if(isLoading){
         return <Loading message={"Loading Channel..."} />
     }
@@ -114,8 +121,22 @@ const ChannelDashboard = () => {
                         </div>
                         <ul className="list-group list-group-flush">
                             <li className="list-group-item"><strong>Description:</strong> {currentChannel.currentChannelDesc}</li>                            
-                            <li className="list-group-item"><strong>User ID:</strong> {currentChannel.currentChannelUserId}</li>
-                            <li className="list-group-item"><strong>Channel ID:</strong> {currentChannel.currentChannelId}</li>
+                            <li className="list-group-item d-flex justify-content-between align-items-center">
+                                <div><strong>User ID:</strong> {currentChannel.currentChannelUserId}</div>
+                                <FiCopy
+                                    style={{ cursor: 'pointer' }}
+                                    onClick={() => copyToClipboard(currentChannel.currentChannelUserId)}
+                                    title="Copy User ID"
+                                />
+                            </li>
+                            <li className="list-group-item d-flex justify-content-between align-items-center">
+                                <div><strong>Channel ID:</strong> {currentChannel.currentChannelId}</div>
+                                <FiCopy
+                                    style={{ cursor: 'pointer' }}
+                                    onClick={() => copyToClipboard(currentChannel.currentChannelId)}
+                                    title="Copy Channel ID"
+                                />
+                            </li>
                             <li className="list-group-item"><strong>Fields:</strong> {JSON.stringify(currentChannel.currentChannelFields)}</li>
                         </ul>
                         <div className='card-footer d-flex justify-content-center'>
