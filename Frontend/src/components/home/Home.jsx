@@ -110,6 +110,7 @@ const Home = () => {
             <li className="nav-item"><a href="/channels" className="nav-link px-2 text-body-secondary">Channels</a></li>
             <li className="nav-item"><a href="/contact" className="nav-link px-2 text-body-secondary">Contact</a></li>
             <li className="nav-item"><a href="/documentation" className="nav-link px-2 text-body-secondary">Documentation</a></li>
+            <li className="nav-item"><a href="/info" className="nav-link px-2 text-body-secondary">Info</a></li>
           </ul>
           <p className="text-center text-body-secondary">© 2025 Xtrans Solutions</p>
         </footer>

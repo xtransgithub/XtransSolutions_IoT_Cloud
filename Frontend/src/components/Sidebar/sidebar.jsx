@@ -1,4 +1,5 @@
 import React, { useState} from 'react';
+import { useNavigate } from "react-router-dom";
 // import React, { useState, useEffect } from 'react';
 import "./sidebar.css";
 import Navbar from "../Navbar/Navbar";
@@ -6,9 +7,14 @@ import Navbar from "../Navbar/Navbar";
 function Sidebar() {
   const [isExpanded, setIsExpanded] = useState(false);
 //   const [userId, setUserId] = useState(null);
-
+const navigate = useNavigate();
   const handleToggle = () => {
     setIsExpanded(!isExpanded);
+  };
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    localStorage.removeItem("userId");
+    navigate("/signin");
   };
 //   useEffect(() => {
 //     const UserID = localStorage.getItem('userId');
@@ -85,9 +91,15 @@ function Sidebar() {
                             <span>Documentation</span>
                         </a> 
                     </li>
+                    <li className="sidebar-item">
+                       <a href="/info" className="sidebar-link" data-tooltip="Info">
+                         <i className="bi bi-info-circle"></i>
+                         <span>Info</span>
+                       </a> 
+                    </li>
                 </ul>
                 <div className="sidebar-footer">
-                    <a href="/signin" className="sidebar-link" data-tooltip="Logout">
+                    <a href="/signin" className="sidebar-link" data-tooltip="Logout" onClick={handleLogout}>
                         <i className="bi bi-box-arrow-left"></i>
                         <span>Logout</span>
                     </a>

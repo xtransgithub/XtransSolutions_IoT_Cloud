@@ -13,7 +13,7 @@ const channelSchema = new mongoose.Schema({
   name: { 
     type: String, 
     required: true,
-    unique: true
+    // unique: true
     },
     description: String,
     apiKey: { 
@@ -50,5 +50,5 @@ const channelSchema = new mongoose.Schema({
     },
     entries: [entrySchema],
 });
-
+channelSchema.index({ userId: 1, name: 1 }, { unique: true });
 module.exports = mongoose.model('Channel', channelSchema);

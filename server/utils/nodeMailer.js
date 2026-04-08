@@ -8,7 +8,7 @@ const transporter = nodemailer.createTransport({
   secure: false,        
   auth: {
       user: process.env.EMAIL_ADDRESS, 
-      pass: process.env.PASSWORD, 
+      pass: process.env.EMAIL_PASSWORD,
   },
 });
 
@@ -30,3 +30,41 @@ const createTransporter = async (email,to, subject, text) => {
   };
 
 module.exports = createTransporter
+
+
+
+
+
+
+
+// const nodemailer = require("nodemailer")
+// require('dotenv').config();
+
+// const transporter = nodemailer.createTransport({
+//   service: "gmail",
+//   auth: {
+//     user: process.env.EMAIL_ADDRESS,
+//     pass: process.env.EMAIL_PASSWORD
+//   }
+// });
+
+// const createTransporter = async (email, to, subject, text) => {
+//   try {
+
+//     const info = await transporter.sendMail({
+//       from: email,
+//       to: to,
+//       subject: subject,
+//       text: text
+//     });
+
+//     console.log("Email sent:", info.messageId);
+//     return info;
+
+//   } catch (error) {
+//     console.error("Error sending email:", error);
+//     throw error;
+//   }
+// };
+
+// module.exports = createTransporter;

@@ -1,7 +1,7 @@
+require('dotenv').config();
 const express = require('express')
 const mongoose = require('mongoose')
 const cors = require('cors') 
-require('dotenv').config();
 const authRouter = require('./routes/authRoute')
 const dataRouter = require('./routes/dataRoute')
 const accountRouter = require('./routes/accountRoute')
@@ -10,13 +10,16 @@ const eventRouter = require('./routes/eventRoute')
 const authenticateJWT = require('./middleware/authenticateJWT'); 
 const Channel = require('./models/channelModel');
 const verification = require('./controllers/verificationController')
-// const createChannel = require('./controllers/channelController')
+const createChannel = require('./controllers/channelController')
 const nodemailer = require('nodemailer');
 const csvRouter = require('./routes/csvRoute');
 const aryanRouter = require('./routes/aryanRoute');
+const contactRouter = require('./routes/contactRoute');
+// const analysisRouter = require('./routes/analysisRoute');
 const {v4: uuidv4} = require('uuid')
 const app = express()
 const port = 4001
+// require('dotenv').config();
 
 // const corsOptions = {
 //     origin: 'https://xtrans-cloud.vercel.app', 
@@ -49,6 +52,8 @@ console.log(1)
 app.use('/api/auth', channelRouter)
 app.use('/api/auth', eventRouter)
 app.use('/api/auth', aryanRouter)
+app.use('/api', contactRouter);
+// app.use('/api', analysisRouter);
 console.log(2)
 const addEntryToChannel = async (channelId, fieldData, res) => {
     try {
@@ -101,6 +106,23 @@ app.route('/api/channels/:channelId/entries')
         const fieldData = req.query; // Expecting data in query parameters
         await addEntryToChannel(channelId, fieldData, res);
     });
+    // .get(async (req, res) => {
+    //     try {
+    //         const { channelId } = req.params;
+    //         const channel = await Channel.findById(channelId);
+    
+    //         if (!channel) {
+    //             return res.status(404).json({ message: 'Channel not found' });
+    //         }
+    
+    //         res.status(200).json({
+    //             entries: channel.entries
+    //         });
+    
+    //     } catch (error) {
+    //         res.status(500).json({ message: 'Failed to fetch entries' });
+    //     }
+    // });
 
 app.get('/', (req,res)=>{
     res.send('<h2>This is XtransIoTCloud server home</h2>')

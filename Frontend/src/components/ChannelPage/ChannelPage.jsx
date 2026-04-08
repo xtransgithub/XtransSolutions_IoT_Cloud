@@ -60,7 +60,7 @@ const ChannelPage = () => {
   return (
     <div className="container-fluid">
       <div className="row">
-          <center><h2>Mannage Channels</h2></center>
+          <center><h2>Manage Channels</h2></center>
         {/* Left Column (Channels Section) */}
         <div className="col-sm-12 col-md-8 mt-2">
           <div className="col-pad">

@@ -5,7 +5,8 @@ exports.setChannel = async (req, res) => {
     const { name, description, fields } = req.body;
     const myheader = req.header;
 
-    // console.log(myheader);
+    console.log(myheader);
+    console.log("Request body:", req.body);  
 
     if (!name || !fields) {
         return res.status(400).json({ message: 'Channel name and fields are required' });
@@ -16,8 +17,18 @@ exports.setChannel = async (req, res) => {
     }
 
     try {
+
+
         const userId = req.user._id;
         const apiKey = uuidv4(); 
+
+        const existingChannel = await Channel.findOne({ userId, name });
+
+        if (existingChannel) {
+            return res.status(400).json({
+                message: "You already have a channel with this name"
+            });
+        }
 
         let channelCount = await Channel.countDocuments({ userId });
         // console.log(channelCount)
@@ -41,27 +52,50 @@ exports.setChannel = async (req, res) => {
             channel: newChannel
         });
     } catch (error) {
+        if (error.code === 11000) {
+            return res.status(400).json({
+                message: "Channel name already exists"
+            });
+        }
+        console.log(error);
         res.status(500).json({ message: 'Failed to create channel', error: error.message });
     }
 }
 
 
+// exports.getChannel = async (req, res) => {
+//     try {
+//         // Retrieve the user ID from the JWT token (set by authenticateJWT)
+//         const userId = req.user._id;
+
+//         // Find all channels that belong to the logged-in user
+//         const userChannels = await Channel.find({ userId });
+
+//         if (!userChannels.length) {
+//             return res.status(404).json({ message: 'No channels found for this user' });
+//         }
+
+//         res.status(200).json({
+//             message: 'Channels retrieved successfully',
+//             channels: userChannels
+//         });
+//     } catch (error) {
+//         console.error('Error retrieving channels:', error);
+//         res.status(500).json({ message: 'Failed to retrieve channels', error: error.message });
+//     }
+// }
+
 exports.getChannel = async (req, res) => {
     try {
-        // Retrieve the user ID from the JWT token (set by authenticateJWT)
         const userId = req.user._id;
-
-        // Find all channels that belong to the logged-in user
         const userChannels = await Channel.find({ userId });
 
-        if (!userChannels.length) {
-            return res.status(404).json({ message: 'No channels found for this user' });
-        }
-
+        // ALWAYS return 200
         res.status(200).json({
             message: 'Channels retrieved successfully',
-            channels: userChannels
+            channels: userChannels || []
         });
+
     } catch (error) {
         console.error('Error retrieving channels:', error);
         res.status(500).json({ message: 'Failed to retrieve channels', error: error.message });

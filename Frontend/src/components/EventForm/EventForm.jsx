@@ -176,8 +176,8 @@ const EventForm = () => {
               fieldName: "",
               operator: "greater than",
               triggerValue: "",
-              reciver_email: "",
-              // email: "",
+              // reciver_email: "",
+              email: "",
               cstMsg: "",
             }}
             validationSchema={validationSchema}

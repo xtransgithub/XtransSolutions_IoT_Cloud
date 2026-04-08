@@ -26,7 +26,7 @@ function Contact() {
 
     try {
       // Send form data to server
-      const response = await fetch(`${server}/contact`, {
+      const response = await fetch(`${server}api/contact`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

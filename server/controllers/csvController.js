@@ -3,6 +3,7 @@ const Channel = require('../models/channelModel');
 const { Parser } = require('json2csv');
 
 exports.getCSV = async (req, res) => {
+    console.log("hello")
     const { channelId } = req.params;
     
     try {
@@ -13,10 +14,13 @@ exports.getCSV = async (req, res) => {
 
         const entries = channel.entries; 
         
-        if (!entries.length) {
-            return res.status(404).json({ message: 'No entries found in this channel' });
-        }
+        // if (!entries.length) {
 
+        //     return res.status(404).json({ message: 'No entries found in this channel' });
+        // }
+        if (!entries.length) {
+            return res.status(200).json({ message: 'No entries yet', data: [] });
+        }
         const formattedEntries = entries.map(entry => {
             const entryObj = { timestamp: entry.timestamp };
             entry.fieldData.forEach(field => {

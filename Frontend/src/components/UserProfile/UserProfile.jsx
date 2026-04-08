@@ -10,6 +10,8 @@ const UserProfile = () => {
   const [editMode, setEditMode] = useState(false); // Track if the form is in edit mode
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
+  const [mobileNumber, setMobileNumber] = useState('');
+  const [mobileError, setMobileError] = useState('');
   const [error, setError] = useState('');
   const [successMessage, setSuccessMessage] = useState('');
   const [isLoading, setIsLoading] = useState(true);
@@ -33,7 +35,8 @@ const UserProfile = () => {
           const userData = response.data.user;
           setUser(userData);
           setFirstName(userData.firstName);
-          setLastName(userData.lastName); // Set initial values for the form
+          setLastName(userData.lastName); 
+          setMobileNumber(userData.mobileNumber);// Set initial values for the form
         } else {
           setError('Failed to load user details');
         }
@@ -52,14 +55,21 @@ const UserProfile = () => {
 
   const handleSave = async () => {
     const token = localStorage.getItem('token');
+    if (!/^[0-9]{10}$/.test(mobileNumber)) {
+      setMobileError("Enter a valid 10 digit mobile number");
+      return;
+    } else {
+      setMobileError('');
+    }
     if (!token) {
       setError('User is not authenticated.');
       return;
     }
+    console.log("Updating user:", { firstName, lastName, mobileNumber });
     try {
       const response = await axios.patch(
         `${server}api/auth/me`,
-        { firstName, lastName },
+        { firstName, lastName,mobileNumber },
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -177,7 +187,22 @@ const UserProfile = () => {
               <div className="col-md-6 col-sm-12">
                 <div className="p-3 bg-light rounded">
                   <label className="form-label"><i className="bi bi-telephone-fill text-success"></i> Mobile Number</label>
-                  <p className="mb-0">{user.mobileNumber}</p>
+                  {/* <p className="mb-0">{user.mobileNumber}</p> */}
+                  {editMode ? (
+                    <>
+                  <input
+                    type="text"
+                    value={mobileNumber}
+                    onChange={(e) => {setMobileNumber(e.target.value);setMobileError('');}}
+                    className="form-control"
+                />
+                {mobileError && (
+                  <small className="text-danger">{mobileError}</small>
+                )}
+                </>
+             ) : (
+              <p className="mb-0">{user.mobileNumber}</p>
+               )}
                 </div>
               </div>
             </div>

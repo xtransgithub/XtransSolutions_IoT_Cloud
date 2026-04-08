@@ -1,9 +1,16 @@
 import React from 'react';
 
 const FieldDisplay = ({ name, value, count, onRemove }) => {
+  // const handleRemoveClick = () => {
+  //   const isConfirmed = window.confirm(`Are you sure you want to remove the field "${name}"?`);
+  //   if (isConfirmed) {
+  //     onRemove(name);
+  //   }
+  // };
   const handleRemoveClick = () => {
     const isConfirmed = window.confirm(`Are you sure you want to remove the field "${name}"?`);
-    if (isConfirmed) {
+    
+    if (isConfirmed && typeof onRemove === "function") {
       onRemove(name);
     }
   };

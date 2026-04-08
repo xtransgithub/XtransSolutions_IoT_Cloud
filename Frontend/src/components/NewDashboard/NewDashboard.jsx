@@ -15,7 +15,7 @@ import Loading from '../loading';
 import { server } from '../../config';
 
 import EditModal from './EditModal'; 
-import {handleRemoveField} from './EditUtils';
+import {handleRemoveField} from './EditUtils'; 
 import WriteURLModal from './WriteURLModal';
 import ReadURLModal from './ReadURLModal';
 
@@ -88,6 +88,7 @@ const ChannelDashboard = () => {
     
         try {
             const uri = `http://cloud.xtranssolutions.com/node/api/channels/${id}/entries?${field}=${newValue}`;
+            // const uri = `${server}/api/channels/${id}/entries?${field}=${newValue}`
             // console.log("Sending Request:", uri, { field, value: newValue });
     
             await axios.get(

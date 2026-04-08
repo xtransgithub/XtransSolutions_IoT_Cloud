@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-
+import { server } from '../../config';
 const WriteURLModal = ({ allChannels, show, onClose }) => {
     const [selectedChannelId, setSelectedChannelId] = useState('');
     const [selectedFields, setSelectedFields] = useState([]);
@@ -18,7 +18,8 @@ const WriteURLModal = ({ allChannels, show, onClose }) => {
     const handleGenerate = () => {
         if (selectedChannelId && selectedFields.length > 0) {
             const queryParams = selectedFields.map(f => `${f}=12`).join('&');
-            const url = `http://cloud.xtranssolutions.com/node/api/channels/${selectedChannelId}/entries?${queryParams}`;
+            // const url = `http://cloud.xtranssolutions.com/node/api/channels/${selectedChannelId}/entries?${queryParams}`;
+            const url = `${server}api/channels/${selectedChannelId}/entries?${queryParams}`;
             setGeneratedURL(url);
             setCopied(false); // Reset copied message
         }

@@ -33,9 +33,10 @@ exports.getUser = async (req, res, next) => {
 };
 
 exports.changeName = async (req, res, next) => {
-    const {firstName, lastName} = req.body;
+    // const {firstName, lastName} = req.body;
+    const { firstName, lastName, mobileNumber } = req.body;
 
-    if(!firstName && !lastName){
+    if(!firstName && !lastName && !mobileNumber){
         return res.status(400).json({
             message: "Atleast one of the first name or lastname is required",
         })
@@ -47,7 +48,7 @@ exports.changeName = async (req, res, next) => {
         const updateFields = {};
         if(firstName) updateFields.firstName = firstName;
         if(lastName) updateFields.lastName = lastName
-
+        if (mobileNumber) updateFields.mobileNumber = mobileNumber;
         const updatedUser = await User.findByIdAndUpdate(
             userId,
             updateFields,

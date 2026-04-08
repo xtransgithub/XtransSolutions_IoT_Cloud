@@ -24,6 +24,8 @@ import NotVerified from './components/VerifyEmail/NotVerified';
 import Tutorial from "./components/tutorial/tutorial";
 import Dashboard from "./components/Dashboard/dashboard"
 import CodePlayground from './components/CodeEditor/CodePlayground';
+import ThankYou from "./components/ThankYou/ThankYou";
+import Info from "./components/Info/Info";
 
 function App() {
   const [token, setToken] = useState(localStorage.getItem("token") || "");
@@ -47,11 +49,13 @@ function App() {
           <Route path="/signin" element={<SignIn />} />
           <Route path="/signup" element={<SignUp />} />
           <Route path="/contact" element={<Contact />} />
+          <Route path="/thank-you" element={<ThankYou />} />
           <Route path="/forget-password" element={<ForgotPasswordPage />} />
           <Route path="/update-password/:token" element={<ResetPasswordPage />} />
           <Route path="/verify" element={<VerifyEmail />} />
           <Route path="/verify-email" element={<NotVerified />} />
           <Route path="/documentation" element={<Documentation />} />
+          <Route path="/info" element={<Info />} />
           <Route path="/tutorial" element={
             <Layout>
               <Tutorial />

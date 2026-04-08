@@ -9,6 +9,7 @@ import CombinedLineChart from './CombinedLineChart';
 import FieldEntryBarChart from './FieldEntryBarChart';
 import BubbleChartComponent from './BubbleChartComponent';
 import StatisticsCard from './StatisticsCard';
+import { handleRemoveField } from '../NewDashboard/EditUtils';
 import './dashboard.css';
 import {AdvancedImage} from '@cloudinary/react';
 import images from '../../assets/index'
@@ -24,7 +25,16 @@ const GlobalDashboard = () => {
   const [activeTab, setActiveTab] = useState(null);
 
   const token = localStorage.getItem('token');
-
+  const removeFieldFromDashboard = (fieldName) => {
+    handleRemoveField(
+      activeTab,          // channel id
+      fieldName,          // field to delete
+      token,              // auth token
+      setChannelData,     // update fields
+      setFieldData,       // update field values
+      setHistoricalData   // update chart data
+    );
+  };
   useEffect(() => {
     fetchAllChannels();
   }, []);
@@ -118,7 +128,7 @@ const GlobalDashboard = () => {
                         <div className="charts-container dashboardChartContainer">
                           {channelData.fields?.map((field) => (
                             <div className="chart mb-4 dashboardChart" key={`${channel._id}-${field}`}>
-                              <center><FieldDisplay name={field} value={fieldData[field]} count={fieldCounts[field] || 0} /></center>
+                              <center><FieldDisplay name={field} value={fieldData[field]} count={fieldCounts[field] || 0}  onRemove={removeFieldFromDashboard} /></center>
                               <div className="mb-4">
                                 <LineChartComponent
                                   data={{

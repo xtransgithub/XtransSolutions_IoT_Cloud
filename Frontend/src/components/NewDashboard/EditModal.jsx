@@ -167,7 +167,7 @@ const EditModal = ({
                                 </div>
                             )}
 
-                            {values.newFields.map((field, index) => (
+                            {/* {values.newFields.map((field, index) => (
                                 <div key={index} className="field-input mb-2">
                                     <Field
                                         name={`newFields[${index}]`}
@@ -177,7 +177,41 @@ const EditModal = ({
                                     />
                                     <ErrorMessage name={`newFields[${index}]`} component="div" className="error-message" />
                                 </div>
-                            ))}
+                            ))} */}
+                           {values.newFields.map((field, index) => (
+    <div key={index} className="field-input mb-3">
+
+        <div className="d-flex align-items-center">
+
+            <Field
+                name={`newFields[${index}]`}
+                type="text"
+                className="form-control me-2"
+                placeholder="Enter new field name"
+            />
+
+            <button
+                type="button"
+                className="btn btn-danger"
+                onClick={() => {
+                    const updatedFields = values.newFields.filter((_, i) => i !== index);
+                    setFieldValue('newFields', updatedFields);
+                }}
+            >
+                Delete
+            </button>
+
+        </div>
+
+        {/* Error message now appears below input */}
+        <ErrorMessage
+            name={`newFields[${index}]`}
+            component="div"
+            className="error-message mt-1"
+        />
+
+    </div>
+))}
 
                             <button
                                 type="button"

@@ -12,7 +12,10 @@ export const getCSV = async (id, token) => {
                 responseType: 'blob',
             }
         );
-
+        if (response.data.size === 0) {
+            alert("No data available to export");
+            return;
+        }
         const url = window.URL.createObjectURL(new Blob([response.data]));
         const link = document.createElement('a');
         link.href = url;

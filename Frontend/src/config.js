@@ -1,2 +1,2 @@
-export const server = "http://cloud.xtranssolutions.com/node/";
-// export const server = "localhost:4001/";
+// export const server = "http://cloud.xtranssolutions.com/node/";
+export const server = "http://localhost:4001/";

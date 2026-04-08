@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-
+import { server } from '../../config';
 const ReadURLModal = ({ allChannels, show, onClose }) => {
     const [selectedChannelId, setSelectedChannelId] = useState('');
     const [generatedURL, setGeneratedURL] = useState('');
@@ -15,7 +15,8 @@ const ReadURLModal = ({ allChannels, show, onClose }) => {
 
     const handleGenerate = () => {
         if (selectedChannelId) {
-            const url = `http://cloud.xtranssolutions.com/node/api/channels/${selectedChannelId}/entries/read`;
+            // const url = `http://cloud.xtranssolutions.com/node/api/channels/${selectedChannelId}/entries/read`;
+            const url = `${server}api/channels/${selectedChannelId}/entries/read`
             setGeneratedURL(url);
             setCopied(false);
         }
