@@ -18,7 +18,7 @@ CORS(app)
 # Sample Node.js API URL
 # NODEJS_API_URL = 'http://cloud.xtranssolutions.com/node/api/channels/{channel_id}/entries/read'
 # NODEJS_API_URL = 'http://127.0.0.1:4001/api/channels/{channel_id}/entries/read'
-NODEJS_API_URL = 'http://server:4001/api/channels/{channel_id}/entries/read'
+NODEJS_API_URL = 'https://xtrans-solutions.onrender.com/api/channels/{channel_id}/entries/read'
 
 @app.route('/code/run', methods=['POST'])
 def run_code():
@@ -204,7 +204,7 @@ def fetch_csv():
 
         # Node.js CSV export URL
         # csv_url = f"http://127.0.0.1:4001/api/csv/channels/{channel_id}/fields/csv"
-        csv_url = f"http://server:4001/api/csv/channels/{channel_id}/fields/csv"
+        csv_url = f"https://xtrans-solutions.onrender.com/api/csv/channels/{channel_id}/fields/csv"
 
         # # Call Node backend
         # response = requests.get(csv_url, headers={'Authorization': token})
