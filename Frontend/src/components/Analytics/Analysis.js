@@ -75,7 +75,7 @@ const Analysis = () => {
 
     try {
       //const response = await axios.post("http://cloud.xtranssolutions.com/tem/api/analysis", formData, {
-        const response = await axios.post("http://127.0.0.1:5001/analysis", formData, {
+        const response = await axios.post("http://localhost:5001/analysis", formData, {
         headers: { Authorization: `Bearer ${token}` },
       });
       setResult(response.data);

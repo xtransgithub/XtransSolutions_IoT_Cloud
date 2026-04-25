@@ -653,9 +653,9 @@ import LANAccess from "./pages/LANAccess";
 import PiCameraModule from "./pages/PiCameraModule";
 import WiFiAccess from "./pages/WiFiAccess";
 
-// ✅ ADD YOUR SENSOR PAGES HERE
+// ✅ ADD YOUR SENSOR PAGES HERE  Frontend/src/components/Info/pages/MagnetometerHMC5883L.js
 import MPU6050 from "./pages/MPU6050";
-import HMC5883L from "./pages/HMC5883L";
+import HMC5883L from "./pages/MagnetometerHMC5883L";
 import DHT11 from "./pages/DHT11Sensor";
 import PIR from "./pages/PIRMotionSensor";
 
@@ -725,7 +725,7 @@ const Info = () => {
       case "UARTCommunication": return <UARTCommunication />;
       case "I2C": return <I2C />;
 
-      // ✅ SENSOR PAGES CONNECTED
+      // ✅ SENSOR PAGES CONNECTED HMC5883L
       case "MPU6050": return <MPU6050 />;
       case "HMC5883L": return <HMC5883L />;
       case "DHT11": return <DHT11 />;

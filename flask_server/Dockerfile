@@ -1,5 +1,5 @@
 # Use the Python 3.9 slim base image
-FROM python:3.8-slim
+FROM python:3.10-slim
 
 # Set environment variable to ensure Python output is sent straight to terminal (not buffered)
 ENV PYTHONUNBUFFERED 1
@@ -25,7 +25,7 @@ RUN python -m pip install --no-cache-dir --upgrade pip
 RUN pip install --no-cache-dir -r requirements.txt
 
 # Expose the port that the Flask app will run on
-EXPOSE 5000
+EXPOSE 5001
 
 # Set the default command to run the Flask application
 CMD ["python", "app.py"]

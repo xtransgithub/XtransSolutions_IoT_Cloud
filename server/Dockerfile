@@ -11,10 +11,10 @@ RUN apt-get update && apt-get install -y \
 WORKDIR /app
 
 COPY package*.json ./
-RUN npm clean-install
+RUN npm install
 
 COPY . .
 
-EXPOSE 8000
+EXPOSE 4001
 
 CMD ["npm", "start"]

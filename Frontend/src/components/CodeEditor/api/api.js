@@ -2,8 +2,9 @@ import axios from "axios";
 
 // const API_BASE_URL = "http://cloud.xtranssolutions.com/tem";
 // const BACKEND_URL = "http://cloud.xtranssolutions.com/node";
-const API_BASE_URL = "http://127.0.0.1:5001";
-const BACKEND_URL = "http://127.0.0.1:4001";
+const API_BASE_URL = "http://localhost:5001";
+// const BACKEND_URL = "http://127.0.0.1:4001";
+const BACKEND_URL = "http://localhost:4001";
 // Run User Code
 export const runCode = async (code, token) => {
     return axios.post(`${API_BASE_URL}/code/run`, { code }, {
@@ -67,7 +68,7 @@ export const fetchChannels = async (token) => {
 export const fetchCSV = async (channelId, token) => {
     return axios.post(`${API_BASE_URL}/file/fetch`, { channel_id: channelId }, {
         headers: {
-            Authorization: token, // Not Bearer
+            Authorization: `Bearer ${token}`, // Not Bearer
         },
     });
 };

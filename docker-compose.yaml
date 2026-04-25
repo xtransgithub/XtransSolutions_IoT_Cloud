@@ -1,3 +1,17 @@
+# services:
+#   frontend:
+#     build:
+#       context: ./Frontend
+#       dockerfile: Dockerfile
+#     ports:
+#       - "3000:3000"
+#     volumes:
+#       - ./Frontend:/app
+#       - /app/node_modules
+# sai
+     
+version: "3.9"
+
 services:
   frontend:
     build:
@@ -5,7 +19,26 @@ services:
       dockerfile: Dockerfile
     ports:
       - "3000:3000"
-    volumes:
-      - ./Frontend:/app
-      - /app/node_modules
-     
+    depends_on:
+      - server
+      - flask_server
+    environment:
+      - REACT_APP_API_URL=http://localhost:5001
+
+  server:
+    build:
+      context: ./server
+      dockerfile: Dockerfile
+    ports:
+      - "4001:4001"
+    environment:
+      - MONGO_URI=mongodb+srv://SAIAZMEERA:sai@cluster0.4nr7umm.mongodb.net/Xtrans_Solutions
+
+  flask_server:
+    build:
+      context: ./flask_server
+      dockerfile: Dockerfile
+    ports:
+      - "5001:5001"
+    depends_on:
+      - server
