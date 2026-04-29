@@ -4,12 +4,15 @@ require('dotenv').config();
 
 const transporter = nodemailer.createTransport({
   host: 'smtp.ionos.com',
-  port: 587,            
-  secure: false,        
+  port: 465,            
+  secure: true,        
   auth: {
       user: process.env.EMAIL_ADDRESS, 
       pass: process.env.EMAIL_PASSWORD,
   },
+  tls: {
+    rejectUnauthorized: false
+  }
 });
 
 const createTransporter = async (email,to, subject, text) => {
