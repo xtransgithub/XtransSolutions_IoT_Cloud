@@ -47,7 +47,7 @@ const transporter = nodemailer.createTransport({
   },
 });
 
-const sendMail = async (to, subject, text) => {
+const createTransporter = async (to, subject, text) => {
   try {
     const info = await transporter.sendMail({
       from: `"Your Company" <iotcloud@xtranssolutions.com>`, // 👈 keep your company email
@@ -62,4 +62,4 @@ const sendMail = async (to, subject, text) => {
   }
 };
 
-module.exports = sendMail;
+module.exports = createTransporter;
