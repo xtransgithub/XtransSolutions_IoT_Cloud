@@ -2,14 +2,24 @@ const nodemailer = require("nodemailer")
 const { google } = require('googleapis');
 require('dotenv').config();
 
+// const transporter = nodemailer.createTransport({
+//   host: 'smtp.ionos.com',
+//   port: 587,            
+//   secure: false,        
+//   auth: {
+//       user: process.env.EMAIL_ADDRESS, 
+//       pass: process.env.EMAIL_PASSWORD,
+//   },
+// });
 const transporter = nodemailer.createTransport({
-  host: 'smtp.ionos.com',
-  port: 587,            
-  secure: false,        
+  host: "smtp.gmail.com",
+  port: 587,
+  secure: false,
   auth: {
-      user: process.env.EMAIL_ADDRESS, 
-      pass: process.env.EMAIL_PASSWORD,
+    user: process.env.EMAIL,
+    pass: process.env.APP_PASSWORD,
   },
+  connectionTimeout: 10000, // 10 seconds
 });
 
 const createTransporter = async (email,to, subject, text) => {
