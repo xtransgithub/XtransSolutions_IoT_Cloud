@@ -10,7 +10,7 @@ led1 = 5  # Pin connected to the LED
 gpio.setup(led1, gpio.OUT, initial=0)
 
 # URL for API request
-url = "http://cloud.xtranssolutions.com/node/api/channels/67b6e477f2420137ed9b1d2c/entries/read"
+url = "http://74.208.151.248:4001/api/channels/67b6e477f2420137ed9b1d2c/entries/read"
 
 # Function to check the API and toggle the LED accordingly
 def check_api():

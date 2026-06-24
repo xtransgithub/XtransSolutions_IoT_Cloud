@@ -1,10 +1,10 @@
 import axios from "axios";
 
-// const API_BASE_URL = "http://cloud.xtranssolutions.com/tem";
-// const BACKEND_URL = "http://cloud.xtranssolutions.com/node";
-const API_BASE_URL = "https://xtrans-solutions-1.onrender.com";
+ const API_BASE_URL = "https://cloud.xtranssolutions.com/ml";
+ const BACKEND_URL = "https://cloud.xtranssolutions.com/api";
+//const API_BASE_URL = "http://74.208.151.248:5001";
 // const BACKEND_URL = "http://127.0.0.1:4001";
-const BACKEND_URL = "https://xtrans-solutions.onrender.com";
+//const BACKEND_URL = "http://74.208.151.248:4001";
 // Run User Code
 export const runCode = async (code, token) => {
     return axios.post(`${API_BASE_URL}/code/run`, { code }, {

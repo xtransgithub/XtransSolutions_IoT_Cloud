@@ -1,22 +1,22 @@
-// const nodemailer = require("nodemailer")
-// const { google } = require('googleapis');
-// require('dotenv').config();
+ const nodemailer = require("nodemailer")
+ const { google } = require('googleapis');
+ require('dotenv').config();
 
-// const transporter = nodemailer.createTransport({
-//   host: 'smtp.ionos.com',
-//   port: 587,            
-//   secure: false,        
-//   auth: {
-//       user: process.env.EMAIL_ADDRESS, 
-//       pass: process.env.EMAIL_PASSWORD,
-//   },
-// });
-// const transporter = nodemailer.createTransport({
-//   host: "smtp.gmail.com",
+ const transporter = nodemailer.createTransport({
+   host: 'smtp.ionos.com',
+   port: 587,            
+   secure: false,        
+   auth: {
+       user: process.env.EMAIL_ADDRESS, 
+       pass: process.env.EMAIL_PASSWORD,
+   },
+ });
+ //const transporter = nodemailer.createTransport({
+ //  host: "smtp.gmail.com",
 //   port: 587,
-//   secure: false,
-//   auth: {
-//     user: process.env.EMAIL,
+ //  secure: false,
+   //auth: {
+  //   user: process.env.EMAIL,
 //     pass: process.env.APP_PASSWORD,
 //   },
 //    tls: {
@@ -25,59 +25,59 @@
 //   connectionTimeout: 10000, // 10 seconds
 // });
 
-// const createTransporter = async (email,to, subject, text) => {
-//     try {
-//         const info = await transporter.sendMail({
-//             from: email, 
-//             to,                                       
-//             subject,                                   
-//             text,                        
-//         });
+ const createTransporter = async (email,to, subject, text) => {
+     try {
+         const info = await transporter.sendMail({
+             from: email, 
+             to,                                       
+             subject,                                   
+             text,                        
+         });
 
-//         console.log('Email sent:', info.messageId);
-//         return info;
-//     } catch (error) {
-//         console.error('Error sending email:', error);
-//         throw error;
-//     }
-//   };
+         console.log('Email sent:', info.messageId);
+         return info;
+     } catch (error) {
+         console.error('Error sending email:', error);
+        throw error;
+     }
+   };
 
-// module.exports = createTransporter
-
-
+ module.exports = createTransporter
 
 
 
 
 
-const nodemailer = require("nodemailer")
-require('dotenv').config();
 
-const transporter = nodemailer.createTransport({
-  service: "gmail",
-  auth: {
-    user: process.env.EMAIL_ADDRESS,
-    pass: process.env.EMAIL_PASSWORD
-  }
-});
 
-const createTransporter = async (email, to, subject, text) => {
-  try {
+//const nodemailer = require("nodemailer")
+//require('dotenv').config();
 
-    const info = await transporter.sendMail({
-      from: email,
-      to: to,
-      subject: subject,
-      text: text
-    });
+//const transporter = nodemailer.createTransport({
+  //service: "gmail",
+//  auth: {
+  //  user: process.env.EMAIL_ADDRESS,
+    //pass: process.env.EMAIL_PASSWORD
+ // }
+//});
 
-    console.log("Email sent:", info.messageId);
-    return info;
+//const createTransporter = async (email, to, subject, text) => {
+  //try {
 
-  } catch (error) {
-    console.error("Error sending email:", error);
-    throw error;
-  }
-};
+    //const info = await transporter.sendMail({
+      //from: email,
+    //  to: to,
+     // subject: subject,
+ //     text: text
+   // });
 
-module.exports = createTransporter;
+   // console.log("Email sent:", info.messageId);
+  //  return info;
+
+ // } catch (error) {
+//    console.error("Error sending email:", error);
+    //throw error;
+  //}
+//};
+
+//module.exports = createTransporter;

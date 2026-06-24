@@ -53,14 +53,14 @@ exports.signup = async (req, res, next) => {
         const text = `Please verify your email by clicking the following link: ${verificationLink}`
         // const html = '<p>This is an <strong>HTML</strong> email body.</p>';
         const email = process.env.EMAIL_ADDRESS
-        // await createTransporter(email, to, subject, text);
-        // console.log('Email sent successfully!');
-        try {
-    await createTransporter(email, to, subject, text);
-    console.log('Email sent successfully!');
-} catch (err) {
-    console.log("Email error:", err.message);
-}
+         await createTransporter(email, to, subject, text);
+         console.log('Email sent successfully!');
+        //try {
+    //await createTransporter(email, to, subject, text);
+    //console.log('Email sent successfully!');
+//} catch (err) {
+  //  console.log("Email error:", err.message);
+//}
 
         const token = jwt.sign({ _id: newUser._id , verified: newUser.verified}, 'secretkey123', {
             expiresIn: '1d',

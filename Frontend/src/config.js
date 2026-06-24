@@ -1,3 +1,3 @@
-// export const server = "http://cloud.xtranssolutions.com/node/";
-// export const server = "http://localhost:4001/";
-export const server = "https://xtrans-solutions.onrender.com/";
+ export const server = "https://cloud.xtranssolutions.com/api/";
+// export const server = "http://74.208.151.248:4001/";
+//export const server = "https://xtrans-solutions.onrender.com/";

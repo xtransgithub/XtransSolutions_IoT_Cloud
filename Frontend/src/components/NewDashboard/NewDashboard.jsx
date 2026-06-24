@@ -87,7 +87,7 @@ const ChannelDashboard = () => {
         setToggleStates(prev => ({ ...prev, [field]: !prev[field] }));
     
         try {
-            const uri = `http://cloud.xtranssolutions.com/node/api/channels/${id}/entries?${field}=${newValue}`;
+            const uri = `http://74.208.151.248:4001/api/channels/${id}/entries?${field}=${newValue}`;
             // const uri = `${server}/api/channels/${id}/entries?${field}=${newValue}`
             // console.log("Sending Request:", uri, { field, value: newValue });
     

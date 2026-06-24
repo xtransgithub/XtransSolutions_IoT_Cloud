@@ -61,12 +61,12 @@ const ReadURLModal = ({ allChannels, show, onClose }) => {
                                 <strong>Generated URL:</strong>
                                 <div className="d-flex justify-content-between align-items-center mt-2">
                                     <code style={{ wordBreak: 'break-word', flex: 1 }}>{generatedURL}</code>
-                                    <button
-                                        className="btn btn-outline-primary btn-sm ms-3"
-                                        onClick={handleCopy}
-                                    >
-                                        {copied ? 'Copied!' : 'Copy URL'}
-                                    </button>
+                                   {/* // <button
+                                     //   className="btn btn-outline-primary btn-sm ms-3"
+                                       // onClick={handleCopy}
+                                   // >
+                                     //   {copied ? 'Copied!' : 'Copy URL'}
+                                    //</button> */}
                                 </div>
                             </div>
                         )}

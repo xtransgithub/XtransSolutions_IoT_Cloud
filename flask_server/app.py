@@ -16,9 +16,9 @@ app = Flask(__name__)
 CORS(app)
 
 # Sample Node.js API URL
-# NODEJS_API_URL = 'http://cloud.xtranssolutions.com/node/api/channels/{channel_id}/entries/read'
+ NODEJS_API_URL = 'https://cloud.xtranssolutions.com/api/api/channels/{channel_id}/entries/read'
 # NODEJS_API_URL = 'http://127.0.0.1:4001/api/channels/{channel_id}/entries/read'
-NODEJS_API_URL = 'https://xtrans-solutions.onrender.com/api/channels/{channel_id}/entries/read'
+#NODEJS_API_URL = 'http://74.208.151.248:4001/api/channels/{channel_id}/entries/read'
 
 @app.route('/code/run', methods=['POST'])
 def run_code():
@@ -203,8 +203,8 @@ def fetch_csv():
             return jsonify({"error": "channel_id is required"}), 400
 
         # Node.js CSV export URL
-        # csv_url = f"http://127.0.0.1:4001/api/csv/channels/{channel_id}/fields/csv"
-        csv_url = f"https://xtrans-solutions.onrender.com/api/csv/channels/{channel_id}/fields/csv"
+         csv_url = f"https://cloud.xtranssolutions.com/api/api/csv/channels/{channel_id}/fields/csv"
+        #csv_url = f"http://74.208.151.248:4001/api/csv/channels/{channel_id}/fields/csv"
 
         # # Call Node backend
         # response = requests.get(csv_url, headers={'Authorization': token})
@@ -509,5 +509,5 @@ def get_user_id_from_token(token):
 
 if __name__ == '__main__':
     # app.run(debug=False, host='0.0.0.0', port=5001)
-    port = int(os.environ.get("PORT", 5000))
+    port = int(os.environ.get("PORT", 5001))
     app.run(host="0.0.0.0", port=port)

@@ -74,8 +74,8 @@ const Prediction = () => {
     }
 
     try {
-      // const response = await axios.post('http://cloud.xtranssolutions.com/tem/api/prediction', formData, {
-      const response = await axios.post('https://xtrans-solutions-1.onrender.com/prediction', formData, {
+      const response = await axios.post('https://cloud.xtranssolutions.com/ml/prediction', formData, {
+     // const response = await axios.post('http://74.208.151.248:5001/prediction', formData, {
         headers: { Authorization: `Bearer ${token}` },
       });
       setResult(response.data);
