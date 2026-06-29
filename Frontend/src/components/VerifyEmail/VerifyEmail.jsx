@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import axios from "axios";
-import { server } from "../../config";
+import config from "../../config";
 
 export default function VerifyEmail() {
   const [searchParams] = useSearchParams();
@@ -20,7 +20,7 @@ export default function VerifyEmail() {
     }
 
     try {
-      const response = await axios.get(`${server}verify?uuid=${uuid}`);
+      const response = await axios.get(`${config.BACKEND_URL}verify?uuid=${uuid}`);
       if (response.data.status === "success") {
         setMessage("✅ Email verified successfully! Redirecting...");
         setVerified(true);

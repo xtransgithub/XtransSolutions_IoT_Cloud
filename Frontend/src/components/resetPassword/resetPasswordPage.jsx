@@ -5,7 +5,7 @@ import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 import Navbar from '../Navbar/Navbar';
 
-import { server } from '../../config';
+import config from '../../config';
 
 const ResetPasswordPage = () => {
   const { token } = useParams();
@@ -30,7 +30,7 @@ const ResetPasswordPage = () => {
   const handleSubmit = async (values, { setSubmitting, setErrors }) => {
     try {
           await axios.put(
-        `${server}api/auth/update-password/${token}`,
+        `${config.BACKEND_URL}api/auth/update-password/${token}`,
         { password: values.password }
       );
       setAlertVisible(true);

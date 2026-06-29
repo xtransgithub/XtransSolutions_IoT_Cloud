@@ -1,9 +1,9 @@
 import axios from 'axios';
-import { server } from '../../config';
+import config from '../../config';
 
 export const fetchDataEntries = async (id, setFieldData, setHistoricalData, setFieldCounts, setChannelData, setFieldStats) => {
     try {
-        const fieldResponse = await axios.get(`${server}api/channels/${id}/entries/read`);
+        const fieldResponse = await axios.get(`${config.BACKEND_URL}api/channels/${id}/entries/read`);
 
         const allFields = new Set();
         fieldResponse.data.entries.forEach(entry => {

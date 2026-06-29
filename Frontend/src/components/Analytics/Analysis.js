@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { server } from "../../config";
+import config from "../../config";
 import { useNavigate } from "react-router-dom";
 import {AdvancedImage} from '@cloudinary/react';
 import images from '../../assets/index'
@@ -30,7 +30,7 @@ const Analysis = () => {
 
     const fetchChannels = async () => {
       try {
-        const response = await axios.get(`${server}api/auth/channels`, {
+        const response = await axios.get(`${config.BACKEND_URL}api/auth/channels`, {
           headers: { Authorization: `Bearer ${token}` },
         });
         setChannels(response.data.channels);
@@ -74,7 +74,7 @@ const Analysis = () => {
     }
 
     try {
-      const response = await axios.post("https://cloud.xtranssolutions.com/ml/analysis", formData, {
+      const response = await axios.post(`${config.FLASK_URL}analysis`, formData, {
        // const response = await axios.post("http://74.208.151.248:5001/analysis", formData, {
         headers: { Authorization: `Bearer ${token}` },
       });

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import AlertModal from '../Alert/Alert';
-import { server } from '../../config';
+import config from '../../config';
 import Loading from '../loading';
 
 const UserProfile = () => {
@@ -26,7 +26,7 @@ const UserProfile = () => {
         return;
       }
       try {
-        const response = await axios.get(`${server}api/auth/me`, {
+        const response = await axios.get(`${config.BACKEND_URL}api/auth/me`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -68,7 +68,7 @@ const UserProfile = () => {
     console.log("Updating user:", { firstName, lastName, mobileNumber });
     try {
       const response = await axios.patch(
-        `${server}api/auth/me`,
+        `${config.BACKEND_URL}api/auth/me`,
         { firstName, lastName,mobileNumber },
         {
           headers: {
@@ -100,7 +100,7 @@ const UserProfile = () => {
     }
 
     try {
-      const response = await axios.delete(`${server}api/auth/me`, {
+      const response = await axios.delete(`${config.BACKEND_URL}api/auth/me`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },

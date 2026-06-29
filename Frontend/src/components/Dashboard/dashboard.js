@@ -3,7 +3,7 @@ import axios from 'axios';
 import LineChartComponent from '../LineChart/LineChart';
 import FieldDisplay from '../NewDashboard/FieldDisplay';
 import Loading from '../loading';
-import { server } from '../../config';
+import config from '../../config';
 import { fetchDataEntries } from './FetchEntrieslDashboard';
 import CombinedLineChart from './CombinedLineChart';
 import FieldEntryBarChart from './FieldEntryBarChart';
@@ -47,7 +47,7 @@ const GlobalDashboard = () => {
 
   const fetchAllChannels = async () => {
     try {
-      const response = await axios.get(`${server}api/auth/channels`, {
+      const response = await axios.get(`${config.BACKEND_URL}api/auth/channels`, {
         headers: { Authorization: `Bearer ${token}` }
       });
 
