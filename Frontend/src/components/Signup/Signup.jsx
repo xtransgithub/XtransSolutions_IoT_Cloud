@@ -7,7 +7,7 @@ import AlertModal from '../Alert/Alert';
 import Navbar from '../Navbar/Navbar';
 import {AdvancedImage} from '@cloudinary/react';
 import images from '../../assets/index'
-import { server } from '../../config';
+import config from '../../config';
 
 function SignUp() {
   const [responseMessage, setResponseMessage] = useState('');
@@ -39,7 +39,7 @@ function SignUp() {
 
   const handleSubmit = async (values, { setSubmitting }) => {
     try {
-      const response = await axios.post(`${server}api/auth/signup`, values);
+      const response = await axios.post(`${config.BACKEND_URL}api/auth/signup`, values);
       setResponseMessage(response.data.message);
       setShowAlert(true);
 

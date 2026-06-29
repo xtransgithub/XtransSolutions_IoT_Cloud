@@ -1,10 +1,10 @@
 import axios from 'axios';
-import { server } from '../../config';
+import config from '../../config';
 
 export const handleChannelUpdate = async (id, updatedChannelName, token, setChannelData, setIsEditing) => {
     try {
         const response = await axios.patch(
-            `${server}api/auth/channels/${id}`,
+            `${config.BACKEND_URL}api/auth/channels/${id}`,
             { name: updatedChannelName },
             { headers: { Authorization: `Bearer ${token}` } }
         );
@@ -31,7 +31,7 @@ export const handleFieldUpdate = async (id, updatedFields, token, setChannelData
         const updatedFieldData = updatedFields.map(({ oldName, newName }) => ({ oldName, newName }));
 
         const response = await axios.patch(
-            `${server}api/auth/channels/${id}/fields`,
+            `${config.BACKEND_URL}api/auth/channels/${id}/fields`,
             { fields: updatedFieldData },
             { headers: { Authorization: `Bearer ${token}` } }
         );
@@ -59,7 +59,7 @@ export const handleAddMultipleFields = async (id, newFields, token, setChannelDa
 
         try {
             const response = await axios.patch(
-                `${server}api/channels/${id}/add-fields`,
+                `${config.BACKEND_URL}api/channels/${id}/add-fields`,
                 { fields: newFields },
                 { headers: { Authorization: `Bearer ${token}` } }
             );
@@ -82,7 +82,7 @@ export const handleRemoveField = async (id, fieldToRemove, token, setChannelData
     if (fieldToRemove.trim()) {
         try {
             const response = await axios.delete(
-                `${server}api/channels/${id}/fields/${fieldToRemove}`,
+                `${config.BACKEND_URL}api/channels/${id}/fields/${fieldToRemove}`,
                 { headers: { Authorization: `Bearer ${token}` } }
             );
 

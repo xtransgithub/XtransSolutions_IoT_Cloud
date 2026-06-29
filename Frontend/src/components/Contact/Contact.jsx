@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import { server } from '../../config';
+import config from '../../config';
 import Navbar from '../Navbar/Navbar';
 
 function Contact() {
@@ -26,7 +26,7 @@ function Contact() {
 
     try {
       // Send form data to server
-      const response = await fetch(`${server}api/contact`, {
+      const response = await fetch(`${config.BACKEND_URL}api/contact`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

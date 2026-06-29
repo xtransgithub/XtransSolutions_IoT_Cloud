@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import ChannelCard from "./ChannelCard";
 import "./channel.css";
-import { server } from "../../config";
+import config from "../../config";
 import Loading from "../loading";
 import CreateChannelForm from "../CreateChannelForm/CreateChannelForm";
 import {AdvancedImage} from '@cloudinary/react';
@@ -28,7 +28,7 @@ const ChannelPage = () => {
       }
       setIsLoading(true);
       try {
-        const response = await axios.get(`${server}api/auth/channels`, {
+        const response = await axios.get(`${config.BACKEND_URL}api/auth/channels`, {
           headers: { Authorization: `Bearer ${token}` },
         });
         setChannels(response.data.channels);
@@ -44,7 +44,7 @@ const ChannelPage = () => {
 
   const handleDeleteChannel = async (channelId) => {
     try {
-      await axios.delete(`${server}api/auth/channels/${channelId}`, {
+      await axios.delete(`${config.BACKEND_URL}api/auth/channels/${channelId}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       setChannels(channels.filter((channel) => channel._id !== channelId));
@@ -61,6 +61,7 @@ const ChannelPage = () => {
     <div className="container-fluid">
       <div className="row">
           <center><h2>Manage Channels</h2></center>
+          
         {/* Left Column (Channels Section) */}
         <div className="col-sm-12 col-md-8 mt-2">
           <div className="col-pad">

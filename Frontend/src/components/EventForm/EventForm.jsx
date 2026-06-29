@@ -3,7 +3,7 @@ import axios from "axios";
 import { Formik, Field, Form, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import { useNavigate } from "react-router-dom";
-import { server } from "../../config";
+import config from "../../config";
 import AlertModal from "../Alert/Alert";
 import { Carousel } from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
@@ -39,7 +39,7 @@ const EventForm = () => {
       }
 
       try {
-        const response = await axios.get(`${server}api/auth/channels`, {
+        const response = await axios.get(`${config.BACKEND_URL}api/auth/channels`, {
           headers: { Authorization: `Bearer ${token}` },
         });
 
@@ -96,7 +96,7 @@ const EventForm = () => {
     };
 
     axios
-      .post(`${server}api/auth/events`, requestData, {
+      .post(`${config.BACKEND_URL}api/auth/events`, requestData, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },

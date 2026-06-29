@@ -3,7 +3,7 @@ import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 import axios from 'axios';
 import Navbar from '../Navbar/Navbar';
-import { server } from '../../config';
+import  config from '../../config';
 
 function ForgotPasswordPage() {
   const [alertVisible, setAlertVisible] = useState(false);
@@ -15,7 +15,7 @@ function ForgotPasswordPage() {
   const handleSubmit = async (values, { setSubmitting }) => {
     try {
       await axios.put(
-        `${server}api/auth/forget-password`,
+        `${config.BACKEND_URL}api/auth/forget-password`,
         { email: values.email }
       );
       setAlertVisible(true); // Show the alert

@@ -12,7 +12,7 @@ import images from '../../assets/index'
 import { fetchChannelData } from './FetchChannel';
 import { getCSV } from './CsvUtils';
 import Loading from '../loading';
-import { server } from '../../config';
+import config from '../../config';
 
 import EditModal from './EditModal'; 
 import {handleRemoveField} from './EditUtils'; 
@@ -43,7 +43,7 @@ const ChannelDashboard = () => {
 
     const fetchAllChannels = async () => {
         try {
-            const response = await axios.get(`${server}api/auth/channels`, {
+            const response = await axios.get(`${config.BACKEND_URL}api/auth/channels`, {
                 headers: { Authorization: `Bearer ${token}` }
             });
             setAllChannels(response.data.channels);
@@ -87,8 +87,8 @@ const ChannelDashboard = () => {
         setToggleStates(prev => ({ ...prev, [field]: !prev[field] }));
     
         try {
-            const uri = `http://74.208.151.248:4001/api/channels/${id}/entries?${field}=${newValue}`;
-            // const uri = `${server}/api/channels/${id}/entries?${field}=${newValue}`
+            const uri = `${config.BACKEND_URL}api/channels/${id}/entries?${field}=${newValue}`;
+            // const uri = `${config.BACKEND_URL}api/channels/${id}/entries?${field}=${newValue}`
             // console.log("Sending Request:", uri, { field, value: newValue });
     
             await axios.get(

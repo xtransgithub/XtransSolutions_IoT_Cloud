@@ -1,11 +1,11 @@
 import axios from 'axios';
 
-import { server } from '../../config';
+import config from '../../config';
 
 export const fetchChannelData = async (id, token, setFieldData, setHistoricalData, setFieldCounts, setChannelData, setCurrentChannel) => {
     await getChannelById(id, token, setCurrentChannel); // Make sure to wait for this
     try {
-        const fieldResponse = await axios.get(`${server}api/channels/${id}/entries/read`);
+        const fieldResponse = await axios.get(`${config.BACKEND_URL}api/channels/${id}/entries/read`);
         // console.log(fieldResponse);
 
         const allFields = new Set();
@@ -70,7 +70,7 @@ export const fetchChannelData = async (id, token, setFieldData, setHistoricalDat
 
 const getChannelById = async (id, token, setCurrentChannel) => {
     try {
-        const response = await axios.get(`${server}api/auth/channels`, {
+        const response = await axios.get(`${config.BACKEND_URL}api/auth/channels`, {
             headers: { Authorization: `Bearer ${token}` }
         });
 

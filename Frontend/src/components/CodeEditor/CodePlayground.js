@@ -40,6 +40,7 @@ const CodePlayground = ({ token }) => {
     const [isRunning, setIsRunning] = useState(false);
     const [channels, setChannels] = useState([]);
     const [selectedChannel, setSelectedChannel] = useState("");
+    const [userId, setUserId] = useState("");
     // const BACKEND_URL = "http://cloud.xtranssolutions.com/node";
     // const API_BASE_URL = "http://cloud.xtranssolutions.com/tem";
 
@@ -55,7 +56,12 @@ const CodePlayground = ({ token }) => {
     useEffect(() => {
         fetchFiles();
     }, [fetchFiles]);
-
+     useEffect(() => {
+    const storedUserId = localStorage.getItem("userId");
+    if (storedUserId) {
+        setUserId(storedUserId);
+    }
+}, []);
     const handleRunCode = async () => {
         setIsRunning(true);
         try {
@@ -222,7 +228,42 @@ const CodePlayground = ({ token }) => {
                         Fetch CSV
                     </Button>
                 </Paper>
+                  <Paper elevation={3} sx={styles.uploadBox}>
+    <Typography
+        variant="subtitle2"
+        sx={{ fontWeight: "bold", mb: 1 }}
+    >
+        User ID
+    </Typography>
 
+    <Typography
+        variant="body2"
+        sx={{
+            wordBreak: "break-all",
+            color: "#555"
+        }}
+    >
+        {userId || "Not Available"}
+    </Typography>
+</Paper>
+              <Paper elevation={1} sx={{ p: 1, bgcolor: "#f5f5f5", mb: 1 }}>
+        <Typography variant="body2" sx={{ fontWeight: "bold" }}>
+            Channel ID
+        </Typography>
+
+        <Paper elevation={3} sx={styles.fileList}> 
+                    {files.length === 0 ? (
+                        <Typography sx={{ textAlign: "center", color: "gray" }}>No channels files fetched available</Typography>
+                    ) : (
+                        files.map((file, index) => (
+                            <Box key={index} sx={styles.fileItem}>
+                                <InsertDriveFileIcon sx={{ color: "gray", fontSize: 18, mr: 1 }} />
+                                <span style={styles.fileName}>{file}</span>
+                            </Box>
+                        ))
+                    )}
+                </Paper>
+    </Paper>
                 {/* File List */}
                 <Typography variant="h6" sx={styles.sidebarTitle}>
                     <FolderIcon sx={{ mr: 1 }} />

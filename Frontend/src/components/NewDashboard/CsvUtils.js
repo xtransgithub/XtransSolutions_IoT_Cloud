@@ -1,10 +1,10 @@
 import axios from 'axios';
-import { server } from '../../config';
+import config from '../../config';
 
 export const getCSV = async (id, token) => {
     try {
         const response = await axios.get(
-            `${server}api/csv/channels/${id}/fields/csv`,
+            `${config.BACKEND_URL}api/csv/channels/${id}/fields/csv`,
             {
                 headers: {
                     Authorization: `Bearer ${token}`

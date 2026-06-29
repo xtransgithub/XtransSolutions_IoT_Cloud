@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { server } from "../../config";
+import config from "../../config";
 import { Modal, Button } from "react-bootstrap";
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from "recharts";
 import {AdvancedImage} from '@cloudinary/react';
@@ -30,7 +30,7 @@ const Prediction = () => {
 
     const fetchChannels = async () => {
       try {
-        const response = await axios.get(`${server}api/auth/channels`, {
+        const response = await axios.get(`${config.BACKEND_URL}api/auth/channels`, {
           headers: { Authorization: `Bearer ${token}` },
         });
         setChannels(response.data.channels);
@@ -74,7 +74,7 @@ const Prediction = () => {
     }
 
     try {
-      const response = await axios.post('https://cloud.xtranssolutions.com/ml/prediction', formData, {
+      const response = await axios.post(`${config.BACKEND_URL}prediction`, formData, {
      // const response = await axios.post('http://74.208.151.248:5001/prediction', formData, {
         headers: { Authorization: `Bearer ${token}` },
       });

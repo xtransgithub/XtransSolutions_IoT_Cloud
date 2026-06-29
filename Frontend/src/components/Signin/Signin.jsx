@@ -5,7 +5,7 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import Navbar from '../Navbar/Navbar';
 import AlertModal from '../Alert/Alert';
-import { server } from '../../config';
+import config from '../../config';
 import './SignIn.css'; // Import external CSS for responsiveness
 
 function SignIn() {
@@ -20,7 +20,7 @@ function SignIn() {
 
   const handleSubmit = async (values, { setSubmitting }) => {
     try {
-      const response = await axios.post(`${server}api/auth/login`, values);
+      const response = await axios.post(`${config.BACKEND_URL}api/auth/login`, values);
       setResponseMessage(response.data.message);
       setShowAlert(true);
       if (response.data.status === 'success') {

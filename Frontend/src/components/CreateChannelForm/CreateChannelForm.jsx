@@ -4,7 +4,7 @@ import { Formik, Form, Field, ErrorMessage, FieldArray } from "formik";
 import * as Yup from "yup";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import { server } from "../../config";
+import config from "../../config";
 import "./CreateChannel.css";
 
 const CreateChannelForm = ({ onClose }) => {
@@ -43,7 +43,7 @@ const CreateChannelForm = ({ onClose }) => {
     }
 
     try {
-      const response = await axios.post(`${server}api/auth/channels`, values, {
+      const response = await axios.post(`${config.BACKEND_URL}api/auth/channels`, values, {
         headers: { Authorization: `Bearer ${token}` },
       });
 
