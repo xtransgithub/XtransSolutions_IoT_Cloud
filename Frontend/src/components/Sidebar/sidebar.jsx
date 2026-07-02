@@ -1,6 +1,8 @@
 import React, { useState} from 'react';
 import { useNavigate } from "react-router-dom";
 // import React, { useState, useEffect } from 'react';
+import axios from "axios";
+import config from "../../config";
 import "./sidebar.css";
 import Navbar from "../Navbar/Navbar";
 
@@ -11,11 +13,40 @@ const navigate = useNavigate();
   const handleToggle = () => {
     setIsExpanded(!isExpanded);
   };
-  const handleLogout = () => {
+//   const handleLogout = () => {
+//     localStorage.removeItem("token");
+//     localStorage.removeItem("userId");
+//     navigate("/signin");
+//   };
+
+const handleLogout = async () => {
+
+    try {
+
+        const token = localStorage.getItem("token");
+
+        await axios.post(
+            `${config.BACKEND_URL}api/auth/logout`,
+            {},
+            {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            }
+        );
+
+    } catch (error) {
+
+        console.log("Logout Error:", error);
+
+    }
+
     localStorage.removeItem("token");
     localStorage.removeItem("userId");
+
     navigate("/signin");
-  };
+};
+
 //   useEffect(() => {
 //     const UserID = localStorage.getItem('userId');
 //     if (UserID) {
@@ -99,10 +130,29 @@ const navigate = useNavigate();
                     </li>
                 </ul>
                 <div className="sidebar-footer">
-                    <a href="/signin" className="sidebar-link" data-tooltip="Logout" onClick={handleLogout}>
+                    {/* <a href="/signin" className="sidebar-link" data-tooltip="Logout" onClick={handleLogout}>
                         <i className="bi bi-box-arrow-left"></i>
                         <span>Logout</span>
-                    </a>
+                    </a> */}
+                    {/* <button
+    className="sidebar-link"
+    onClick={handleLogout}
+>
+    <i className="bi bi-box-arrow-left"></i>
+    <span>Logout</span>
+</button> */}
+<a
+    href="#"
+    className="sidebar-link"
+    data-tooltip="Logout"
+    onClick={(e) => {
+        e.preventDefault();
+        handleLogout();
+    }}
+>
+     <i className="bi bi-box-arrow-left"></i>
+                        <span>Logout</span>
+</a>
                 </div>
             </aside>
     </>

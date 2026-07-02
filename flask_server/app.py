@@ -203,6 +203,7 @@ def fetch_csv():
     try:
         request_data = request.get_json()
         channel_id = request_data.get('channel_id')
+        channel_name = request_data.get("channel_name")
         token = request.headers.get('Authorization')
 
         if not channel_id:
@@ -261,7 +262,8 @@ def fetch_csv():
         return jsonify({
             "status": "success",
             "message": "CSV fetched and saved successfully",
-            "filename": filename
+            "filename": filename,
+            "channel_name": channel_name
             }), 200
 
     except Exception as e:

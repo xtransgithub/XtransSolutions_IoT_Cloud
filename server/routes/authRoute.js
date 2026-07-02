@@ -145,5 +145,6 @@ router.post('/login', authController.login)
 router.put('/forget-password', authController.forgetPassword)
 
 router.put('/update-password/:token', authController.updatePassword)
+router.post('/logout', authenticateJWT, authController.logout);
 
 module.exports = router

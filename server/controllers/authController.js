@@ -39,7 +39,7 @@ exports.signup = async (req, res, next) => {
         //     }
         // })
 
-        const verificationLink = `https://${process.env.FRONTEND_URI}/verify?uuid=${newUser.uuid}`;
+        const verificationLink = `https://${process.env.FRONTEND_URI}/api/verify?uuid=${newUser.uuid}`;
         // const verificationLink = `http://${process.env.BACKEND_URI}/api/auth/verifyEmail?uuid=${newUser.uuid}`;
         // await transporter.sendMail({
         //     from: process.env.EMAIL_ADDRESS,
@@ -102,10 +102,17 @@ exports.login = async (req, res, next) => {
         
         const isPasswordValid = await bcrypt.compare(password, user.password)
         if(!isPasswordValid) return next(new createError('Incorrect password', 401));
+        if (user.activeToken) {
+    return res.status(403).json({
+        message: "This account is already logged in on another device."
+    });
+}
 
         const token = jwt.sign({_id: user._id, verified: user.verified}, 'secretkey123',{
             expiresIn: '1d',
         });
+        user.activeToken = token;
+        await user.save();
 
         res.status(200).json({
             status: 'success',
@@ -288,3 +295,41 @@ exports.updatePassword = async (req, res, next)=>{
         return res.status(401).json({error: "Authentication Error"})
     }    
 }
+
+
+// exports.logout = async (req, res) => {
+
+//     const user = await User.findById(req.user._id);
+
+//     user.activeToken = null;
+
+//     await user.save();
+
+//     res.json({
+//         message: "Logged out successfully"
+//     });
+
+// };
+exports.logout = async (req, res) => {
+
+    try {
+
+        const user = await User.findById(req.user._id);
+
+        user.activeToken = null;
+
+        await user.save();
+
+        res.status(200).json({
+            message: "Logout successful"
+        });
+
+    } catch (error) {
+
+        res.status(500).json({
+            message: "Logout failed"
+        });
+
+    }
+
+};

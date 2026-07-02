@@ -3,16 +3,43 @@ import { Link, useNavigate, useLocation } from 'react-router-dom';
 import {AdvancedImage} from '@cloudinary/react';
 import images from '../../assets/index'
 import './navbar.css';
+import axios from 'axios';
+import config from '../../config';
 
 const Navbar = () => {
   const navigate = useNavigate();
   const token = localStorage.getItem('token');
   const location = useLocation();
   const isVerifyPage = location.pathname === '/verify-email';
-  const handleLogout = () => {
-    localStorage.clear();
-    navigate('/signin');
-  };
+  // const handleLogout = () => {
+  //   localStorage.clear();
+  //   navigate('/signin');
+  // };
+const handleLogout = async () => {
+
+    try {
+
+        const token = localStorage.getItem("token");
+
+        await axios.post(
+            `${config.BACKEND_URL}api/auth/logout`,
+            {},
+            {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            }
+        );
+
+    } catch (error) {
+        console.log("Logout Error:", error);
+    }
+
+    localStorage.removeItem("token");
+    localStorage.removeItem("userId");
+
+    navigate("/signin");
+};
 
   return (
     <nav className="navbar navbar-expand-lg navbar-dark bg-dark sticky-top text-white">

@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback  } from "react";
-import { listFiles, deleteFile, uploadFile, runCode, renameFile, fetchChannels, fetchCSV } from "./api/api";
+import { listFiles, deleteFile, uploadFile, runCode, renameFile, fetchChannels, fetchCSV, getChannelName} from "./api/api";
 import { toast } from "react-toastify";
 import CodeMirror from "@uiw/react-codemirror";
 import { python } from "@codemirror/lang-python";
@@ -7,6 +7,7 @@ import { vscodeDark } from "@uiw/codemirror-theme-vscode";
 // import axios from "axios";
 import MenuItem from '@mui/material/MenuItem';
 import Select from '@mui/material/Select';
+import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 import {
     Box,
     Button,
@@ -41,13 +42,16 @@ const CodePlayground = ({ token }) => {
     const [channels, setChannels] = useState([]);
     const [selectedChannel, setSelectedChannel] = useState("");
     const [userId, setUserId] = useState("");
+    const [channelName, setChannelName] = useState("");
     // const BACKEND_URL = "http://cloud.xtranssolutions.com/node";
     // const API_BASE_URL = "http://cloud.xtranssolutions.com/tem";
-
+    
     const fetchFiles = useCallback(async () => {
         try {
             const response = await listFiles(token);
             setFiles(response.data.files || []);
+            console.log("Fetched files:", response.data.files);
+            console.log(response.data.files);
         } catch (error) {
             toast.error("Failed to fetch files.");
         }
@@ -88,6 +92,7 @@ const CodePlayground = ({ token }) => {
             try {
                 const response = await fetchChannels(token);
                 const channelsData = response.data?.channels || response.data || [];
+                console.log("Fetched channels:", channelsData);
                 if (!Array.isArray(channelsData)) throw new Error("Channels is not an array");
                 setChannels(channelsData);
             } catch (err) {
@@ -161,7 +166,14 @@ const CodePlayground = ({ token }) => {
             return;
         }
         try {
-            const response = await fetchCSV(selectedChannel, token);
+             // Get channel name
+        //const channelResponse = await getChannelName(selectedChannel, token);
+        //setChannelName(channelResponse.data.channelName);
+        const selectedChannelData = channels.find(
+    (channel) => channel._id === selectedChannel
+);
+const channelName = selectedChannelData?.name;
+            const response = await fetchCSV(selectedChannel, channelName, token);
             if (response.data.status === "success") {
                 toast.success("CSV file fetched successfully!");
                 fetchFiles(); // Refresh file list
@@ -177,6 +189,10 @@ const CodePlayground = ({ token }) => {
         toast.error(backendError);
         }
     };     
+    const handleCopy = (text) => {
+    navigator.clipboard.writeText(text);
+    toast.success("Copied to clipboard!");
+};
 
     return (
         <Box sx={styles.container}>
@@ -236,15 +252,32 @@ const CodePlayground = ({ token }) => {
         User ID
     </Typography>
 
-    <Typography
-        variant="body2"
+    <Box
         sx={{
-            wordBreak: "break-all",
-            color: "#555"
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
         }}
     >
-        {userId || "Not Available"}
-    </Typography>
+        <Typography
+            variant="body2"
+            sx={{
+                wordBreak: "break-all",
+                color: "#555",
+                flexGrow: 1,
+            }}
+        >
+            {userId || "Not Available"}
+        </Typography>
+
+        <IconButton
+            size="small"
+            onClick={() => handleCopy(userId)}
+            disabled={!userId}
+        >
+            <ContentCopyIcon fontSize="small" />
+        </IconButton>
+    </Box>
 </Paper>
               <Paper elevation={1} sx={{ p: 1, bgcolor: "#f5f5f5", mb: 1 }}>
         <Typography variant="body2" sx={{ fontWeight: "bold" }}>
@@ -255,12 +288,80 @@ const CodePlayground = ({ token }) => {
                     {files.length === 0 ? (
                         <Typography sx={{ textAlign: "center", color: "gray" }}>No channels files fetched available</Typography>
                     ) : (
-                        files.map((file, index) => (
-                            <Box key={index} sx={styles.fileItem}>
-                                <InsertDriveFileIcon sx={{ color: "gray", fontSize: 18, mr: 1 }} />
-                                <span style={styles.fileName}>{file}</span>
-                            </Box>
-                        ))
+//                         files.map((file, index) => (
+//                             // <Box key={index} sx={styles.fileItem}>
+//                             //     {/* <InsertDriveFileIcon sx={{ color: "gray", fontSize: 18, mr: 1 }} /> */}
+//                             //     <span style={styles.fileName}>{file}</span>
+//                             // </Box>
+//                             <Box
+//     key={index}
+//     sx={{
+//         ...styles.fileItem,
+//         display: "flex",
+//         justifyContent: "space-between",
+//         alignItems: "center",
+//     }}
+// >
+//     <span style={styles.fileName}>{file}</span>
+
+//     <IconButton
+//         size="small"
+//         onClick={() => handleCopy(file)}
+//     >
+//         <ContentCopyIcon fontSize="small" />
+//     </IconButton>
+// </Box>
+//                         ))
+files.map((file, index) => {
+
+    const channelId = file.replace(".csv", "");
+
+    const matchedChannel = channels.find(
+        channel => channel._id === channelId
+    );
+
+    return (
+
+        <Box
+            key={index}
+            sx={{
+                ...styles.fileItem,
+                display: "flex",
+                justifyContent: "space-between",
+                alignItems: "center",
+            }}
+        >
+
+            <Box sx={{ flexGrow: 1 }}>
+
+                <Typography
+                    variant="body2"
+                    sx={{ fontWeight: "bold" }}
+                >
+                    {matchedChannel?.name || "Unknown Channel"}
+                </Typography>
+
+                <Typography
+                    variant="caption"
+                    color="text.secondary"
+                >
+                    {channelId}
+                </Typography>
+
+            </Box>
+
+            <IconButton
+                size="small"
+                onClick={() => handleCopy(channelId)}
+            >
+                <ContentCopyIcon fontSize="small" />
+            </IconButton>
+
+        </Box>
+
+    );
+
+})
                     )}
                 </Paper>
     </Paper>
