@@ -132,7 +132,7 @@ router.patch('/channels/:channelId', authenticateJWT, channelController.patchCha
 // });
 
 router.delete('/channels/:channelId', authenticateJWT, channelController.deleteChannel)
-
+router.get("/channel/:channelId/name", authenticateJWT, channelController.getChannelName);
 console.log('this done')
 
 module.exports = router

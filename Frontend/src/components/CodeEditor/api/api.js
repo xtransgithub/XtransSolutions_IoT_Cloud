@@ -65,10 +65,22 @@ export const fetchChannels = async (token) => {
 };
 
 // Fetch CSV file for selected channel
-export const fetchCSV = async (channelId, token) => {
-    return axios.post(`${config.FLASK_URL}file/fetch`, { channel_id: channelId }, {
+export const fetchCSV = async (channelId,channelName, token) => {
+    return axios.post(`${config.FLASK_URL}file/fetch`, { channel_id: channelId ,channel_name: channelName }, {
         headers: {
             Authorization: `Bearer ${token}`, // Not Bearer
         },
     });
 };
+
+
+// export const getChannelName = async (channelId, token) => {
+//     return axios.get(
+//         `${config.BACKEND_URL}api/auth/channel/${channelId}/name`,
+//         {
+//             headers: {
+//                 Authorization: `Bearer ${token}`,
+//             },
+//         }
+//     );
+// };

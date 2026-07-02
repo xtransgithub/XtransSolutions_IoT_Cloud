@@ -153,3 +153,33 @@ exports.deleteChannel = async (req, res) => {
         res.status(500).json({ message: 'Failed to delete channel', error: error.message });
     }
 }
+
+
+exports.getChannelName = async (req, res) => {
+    try {
+        const { channelId } = req.params;
+        const userId = req.user._id;
+
+        const channel = await Channel.findOne({
+            _id: channelId,
+            userId
+        });
+
+        if (!channel) {
+            return res.status(404).json({
+                message: "Channel not found"
+            });
+        }
+
+        res.status(200).json({
+            channelName: channel.name
+        });
+
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({
+            message: "Failed to get channel name",
+            error: error.message
+        });
+    }
+};
