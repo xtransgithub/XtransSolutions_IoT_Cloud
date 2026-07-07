@@ -47,9 +47,14 @@ const userSchema = new mongoose.Schema({
         default: Date.now 
     },
     activeToken: {
-        type: String,
-        default: null
-    }
+    type: String,
+    default: null
+},
+
+lastActivity: {
+    type: Date,
+    default: null
+}
 })
 
 const User = mongoose.model('User', userSchema)
