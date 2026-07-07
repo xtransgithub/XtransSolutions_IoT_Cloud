@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import axios from "axios";
 import './App.css';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
@@ -26,18 +27,53 @@ import Dashboard from "./components/Dashboard/dashboard"
 import CodePlayground from './components/CodeEditor/CodePlayground';
 import ThankYou from "./components/ThankYou/ThankYou";
 import Info from "./components/Info/Info";
+import config from "./config";
 
 function App() {
-  const [token, setToken] = useState(localStorage.getItem("token") || "");
+ // const [token, setToken] = useState(localStorage.getItem("token") || "");
 
-  useEffect(() => {
-    const handleStorageChange = () => {
-      setToken(localStorage.getItem("token") || "");
-    };
+  // useEffect(() => {
+  //   const handleStorageChange = () => {
+  //     setToken(localStorage.getItem("token") || "");
+  //   };
 
-    window.addEventListener("storage", handleStorageChange);
-    return () => window.removeEventListener("storage", handleStorageChange);
-  }, []);
+  //   window.addEventListener("storage", handleStorageChange);
+  //   return () => window.removeEventListener("storage", handleStorageChange);
+  // }, []);
+  
+useEffect(() => {
+
+    const interval = setInterval(async () => {
+
+        const token = localStorage.getItem("token");
+
+        if (!token) return;
+
+        try {
+
+            await axios.post(
+                `${config.BACKEND_URL}api/auth/heartbeat`,
+                {},
+                {
+                    headers: {
+                        Authorization: `Bearer ${token}`
+                    }
+                }
+            );
+
+            console.log("Heartbeat Sent");
+
+        } catch (err) {
+
+            console.error("Heartbeat Failed:", err.response?.data || err.message);
+
+        }
+
+    }, 30000);
+
+    return () => clearInterval(interval);
+
+}, []);
 
   return (
     <>
@@ -108,7 +144,7 @@ function App() {
             <PrivateRoute>
               <Layout>
                 <ToastContainer />
-                <CodePlayground token={token}/>
+                <CodePlayground token={localStorage.getItem("token")}/>
               </Layout>
             </PrivateRoute>
           } />

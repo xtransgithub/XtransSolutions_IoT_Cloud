@@ -24,6 +24,24 @@ jwt.verify(token.slice(7), 'secretkey123', async (err, decoded) => {
 
     // Find user from database
     const user = await User.findById(decoded._id);
+    const SESSION_TIMEOUT = 15 * 60 * 1000;
+
+const now = new Date();
+
+if (
+    user.lastActivity &&
+    (now - user.lastActivity) > SESSION_TIMEOUT
+) {
+
+    user.activeToken = null;
+    user.lastActivity = null;
+
+    await user.save();
+
+    return res.status(401).json({
+        message: "Session expired. Please login again."
+    });
+}
 
     if (!user) {
         return res.status(404).json({
@@ -38,9 +56,16 @@ jwt.verify(token.slice(7), 'secretkey123', async (err, decoded) => {
         });
     }
 
-    req.user = user;
+    // req.user = user;
 
-    next();
+    // next();
+    user.lastActivity = new Date();
+
+await user.save();
+
+req.user = user;
+
+next();
 });
 };
 

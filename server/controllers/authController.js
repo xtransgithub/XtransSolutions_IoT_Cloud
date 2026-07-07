@@ -102,16 +102,38 @@ exports.login = async (req, res, next) => {
         
         const isPasswordValid = await bcrypt.compare(password, user.password)
         if(!isPasswordValid) return next(new createError('Incorrect password', 401));
-        if (user.activeToken) {
+    //     if (user.activeToken) {
+    // return res.status(403).json({
+    //     message: "This account is already logged in on another device."
+    // });
+    const SESSION_TIMEOUT = 15 * 60 * 1000; // 15 minutes
+
+const now = new Date();
+
+if (
+    user.activeToken &&
+    user.lastActivity &&
+    (now - user.lastActivity) < SESSION_TIMEOUT
+) {
     return res.status(403).json({
         message: "This account is already logged in on another device."
     });
 }
 
+// Old session expired
+if (
+    user.lastActivity &&
+    (now - user.lastActivity) >= SESSION_TIMEOUT
+) {
+    user.activeToken = null;
+}
+
         const token = jwt.sign({_id: user._id, verified: user.verified}, 'secretkey123',{
             expiresIn: '1d',
         });
+        // user.activeToken = token;
         user.activeToken = token;
+       user.lastActivity = new Date();
         await user.save();
 
         res.status(200).json({
@@ -317,6 +339,7 @@ exports.logout = async (req, res) => {
         const user = await User.findById(req.user._id);
 
         user.activeToken = null;
+       user.lastActivity = null;
 
         await user.save();
 
@@ -328,6 +351,30 @@ exports.logout = async (req, res) => {
 
         res.status(500).json({
             message: "Logout failed"
+        });
+
+    }
+
+};
+
+exports.heartbeat = async (req, res) => {
+
+    try {
+
+        const user = await User.findById(req.user._id);
+
+        user.lastActivity = new Date();
+
+        await user.save();
+
+        res.status(200).json({
+            success: true
+        });
+
+    } catch (err) {
+
+        res.status(500).json({
+            message: "Heartbeat failed"
         });
 
     }
