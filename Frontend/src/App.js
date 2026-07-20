@@ -63,11 +63,25 @@ useEffect(() => {
 
             console.log("Heartbeat Sent");
 
-        } catch (err) {
+         }
+        // catch (err) {
 
-            console.error("Heartbeat Failed:", err.response?.data || err.message);
+        //     console.error("Heartbeat Failed:", err.response?.data || err.message);
 
-        }
+        // }
+        catch (err) {
+
+    if (err.response?.status === 401) {
+
+        localStorage.removeItem("token");
+        localStorage.removeItem("userId");
+
+        window.location.href = "/signin";
+        return;
+    }
+
+    console.error("Heartbeat Failed:", err.response?.data || err.message);
+}
 
     }, 30000);
 
