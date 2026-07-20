@@ -40,9 +40,24 @@ const UserProfile = () => {
         } else {
           setError('Failed to load user details');
         }
-      } catch (error) {
-        setError('An error occurred while fetching user details');
-      } finally {
+      }
+      //  catch (error) {
+      //   setError('An error occurred while fetching user details');
+      // } 
+      catch (error) {
+
+  if (error.response?.status === 401) {
+    localStorage.removeItem("token");
+    localStorage.removeItem("userId");
+    navigate("/signin");
+    return;
+  }
+
+  setError(
+    error.response?.data?.message || "An error occurred while fetching user details"
+  );
+}
+      finally {
         setIsLoading(false);
       }
     };

@@ -485,25 +485,62 @@ files.map((file, index) => {
 
 // Styles
 const styles = {
-    container: {
-        display: "grid",
-        gridTemplateColumns: "260px 4fr",
-        gridTemplateRows: "60% 40%",
-        gridTemplateAreas: `
-            "sidebar editor"
-            "sidebar terminal"
-        `,
-        height: "89vh",
-        backgroundColor: "#f5f5f5",
-    },
-    sidebar: {
-        gridArea: "sidebar",
-        display: "flex",
-        flexDirection: "column",
-        padding: "10px",
-        backgroundColor: "#ffffff",
-        borderRight: "1px solid #ddd",
-    },
+    // container: {
+    //     display: "grid",
+    //     // gridTemplateColumns: "260px 4fr",
+    //     gridTemplateColumns: "300px 1fr",
+    //     gridTemplateRows: "60% 40%",
+    //     gridTemplateAreas: `
+    //         "sidebar editor"
+    //         "sidebar terminal"
+    //     `,
+    //     // height: "89vh",
+    //     height: "calc(100vh - 70px)",
+    //     backgroundColor: "#f5f5f5",
+    // },
+    
+   container: {
+    display: "grid",
+    gridTemplateColumns: "300px 1fr",
+    gridTemplateRows: "60% 40%",
+    gridTemplateAreas: `
+        "sidebar editor"
+        "sidebar terminal"
+    `,
+    height: "calc(100vh - 70px)",
+    minHeight: 0,
+    overflow: "hidden",
+    backgroundColor: "#f5f5f5",
+},
+   
+    // sidebar: {
+    //     gridArea: "sidebar",
+    //     display: "flex",
+    //     flexDirection: "column",
+    //     padding: "10px",
+    //     backgroundColor: "#ffffff",
+    //     borderRight: "1px solid #ddd",
+    //     // height: "100%",
+    //     // overflowY: "auto",
+    //      height: "100%",
+    // overflowY: "auto",
+    // overflowX: "hidden",
+
+    // scrollbarWidth: "thin",
+    // },
+  sidebar: {
+    gridArea: "sidebar",
+    display: "flex",
+    flexDirection: "column",
+    padding: "10px",
+    backgroundColor: "#ffffff",
+    borderRight: "1px solid #ddd",
+    height: "100%",
+    minHeight: 0,
+    overflowY: "auto",
+    overflowX: "hidden",
+    scrollbarWidth: "thin",
+},
     sidebarTitle: {
         display: "flex",
         alignItems: "center",
@@ -517,14 +554,19 @@ const styles = {
         alignSelf: "center",
         backgroundColor: "#f9f9f9",
     },
+    // fileList: {
+    //     padding: "10px",
+    //     borderRadius: "5px",
+    //     flexGrow: 1,
+    //     backgroundColor: "#fafafa",
+    //     maxHeight: "200px",
+    //     overflowY: "auto",
+    // },
     fileList: {
-        padding: "10px",
-        borderRadius: "5px",
-        flexGrow: 1,
-        backgroundColor: "#fafafa",
-        maxHeight: "200px",
-        overflowY: "auto",
-    },
+    padding: "10px",
+    borderRadius: "5px",
+    backgroundColor: "#fafafa",
+},
     fileItem: {
         display: "flex",
         alignItems: "center",
