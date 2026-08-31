@@ -13,6 +13,7 @@ import { handleRemoveField } from '../NewDashboard/EditUtils';
 import './dashboard.css';
 import {AdvancedImage} from '@cloudinary/react';
 import images from '../../assets/index'
+//import Temp from './temp';
 
 const GlobalDashboard = () => {
   const [allChannels, setAllChannels] = useState([]);
@@ -23,6 +24,11 @@ const GlobalDashboard = () => {
   const [channelData, setChannelData] = useState({});
   const [isLoading, setIsLoading] = useState(true);
   const [activeTab, setActiveTab] = useState(null);
+  const [trafficStatus, setTrafficStatus] = useState({
+  red: 0,
+  yellow: 0,
+  green: 0
+});
 
   const token = localStorage.getItem('token');
   const removeFieldFromDashboard = (fieldName) => {
@@ -72,11 +78,11 @@ const GlobalDashboard = () => {
   return (
     <div className="container vi mt-4 mx-0">
       <h2 className="text-center mb-4">User Dashboard</h2>
-
+        {/* <Temp /> */}
       {allChannels.length === 0 ? (
         <div className="empty-state-message text-center">
           <AdvancedImage cldImg={images.nochannel} alt="No Data Available" className="img-fluid mb-3" style={{ maxwidth: '800px' }} />
-          <p>Please add channels to view data.</p>
+          <p>Please add channaels to view data.</p>
         </div>
       ) : (
         <>
@@ -102,18 +108,21 @@ const GlobalDashboard = () => {
               activeTab === channel._id && (
                 <div key={channel._id} className="tab-pane fade show active">
                   <div className="container p-3 rounded">
-                    
+                    <div className="top-dashboard-section">
+                   
                     {/* Summary & Statistics Section */}
                     <div className="statistics-container">
                       {channelData.fields?.map(field => (
                         <StatisticsCard key={field} field={field} stats={fieldStats[field]} />
                       ))}
                     </div>
+                    </div>
                     
                     {/* Combined Charts Row */}
                     {channelData.fields?.length > 0 ? (
                       <>
                         <div className="combined-charts-row mb-4">
+                          
                           <div className="combined-chart-container">
                             <CombinedLineChart historicalData={historicalData} fields={channelData.fields || []} />
                           </div>
@@ -126,6 +135,7 @@ const GlobalDashboard = () => {
                         </div>
 
                         <div className="charts-container dashboardChartContainer">
+                          
                           {channelData.fields?.map((field) => (
                             <div className="chart mb-4 dashboardChart" key={`${channel._id}-${field}`}>
                               <center><FieldDisplay name={field} value={fieldData[field]} count={fieldCounts[field] || 0}  onRemove={removeFieldFromDashboard} /></center>
@@ -158,6 +168,7 @@ const GlobalDashboard = () => {
           </div>
         </>
       )}
+    
     </div>
   );
 };
