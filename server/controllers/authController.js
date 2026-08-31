@@ -39,7 +39,7 @@ exports.signup = async (req, res, next) => {
         //     }
         // })
 
-        const verificationLink = `https://${process.env.FRONTEND_URI}/api/verify?uuid=${newUser.uuid}`;
+        const verificationLink = `${process.env.BACKEND_URI}/api/verify?uuid=${newUser.uuid}`;
         // const verificationLink = `http://${process.env.BACKEND_URI}/api/auth/verifyEmail?uuid=${newUser.uuid}`;
         // await transporter.sendMail({
         //     from: process.env.EMAIL_ADDRESS,

@@ -10,13 +10,26 @@ import sys
 import traceback
 import base64
 import os
+import joblib
+from flask import send_file
+from werkzeug.utils import secure_filename
 from dotenv import load_dotenv
 load_dotenv()
 import jwt
 SECRET_KEY = "secretkey123"  # same as Node backend
 import matplotlib.pyplot as plt
 app = Flask(__name__)
-CORS(app)
+
+CORS(
+    app,
+    resources={
+        r"/*": {
+            "origins": ["http://localhost:3000"]
+        }
+    },
+    allow_headers=["Content-Type", "Authorization"],
+    methods=["GET", "POST", "PUT", "DELETE", "OPTIONS"]
+)
 
 # Sample Node.js API URL
 # NODEJS_API_URL = 'https://cloud.xtranssolutions.com/api/api/channels/{channel_id}/entries/read'
@@ -73,10 +86,505 @@ def run_code():
             "error": traceback.format_exc()
         }), 400
 
+# @app.route('/model/train', methods=['POST'])
+# def train_model():
+#     old_stdout = sys.stdout
+
+#     try:
+#         # ---------------------------------------
+#         # 1. Get logged-in user
+#         # ---------------------------------------
+#         token = request.headers.get('Authorization')
+#         user_id = get_user_id_from_token(token)
+
+#         if not user_id:
+#             return jsonify({
+#                 "success": False,
+#                 "error": "Unauthorized"
+#             }), 401
+
+#         # ---------------------------------------
+#         # 2. Get request data
+#         # ---------------------------------------
+#         data = request.get_json()
+
+#         if not data:
+#             return jsonify({
+#                 "success": False,
+#                 "error": "Request body is required"
+#             }), 400
+
+#         code = data.get("code")
+#         model_name = data.get("model_name")
+
+#         if not code:
+#             return jsonify({
+#                 "success": False,
+#                 "error": "Training code is required"
+#             }), 400
+
+#         # ---------------------------------------
+#         # 3. Capture print output
+#         # ---------------------------------------
+#         sys.stdout = io.StringIO()
+
+#         # ---------------------------------------
+#         # 4. Environment in which code runs
+#         # ---------------------------------------
+#         exec_globals = {
+#             "__name__": "__main__"
+#         }
+
+#         # ---------------------------------------
+#         # 5. Execute user's training code
+#         # ---------------------------------------
+#         exec(code, exec_globals)
+
+#         # ---------------------------------------
+#         # 6. Check whether "model" exists
+#         # ---------------------------------------
+#         if "model" not in exec_globals:
+#             return jsonify({
+#                 "success": False,
+#                 "error": (
+#                     "No trained model found. "
+#                     "Please store your trained model in a variable named 'model'."
+#                 )
+#             }), 400
+
+#         model = exec_globals["model"]
+
+#         # ---------------------------------------
+#         # 7. Create user's model folder
+#         # ---------------------------------------
+#         user_model_folder = os.path.join(
+#             BASE_MODEL_FOLDER,
+#             str(user_id)
+#         )
+
+#         os.makedirs(user_model_folder, exist_ok=True)
+
+#        # ---------------------------------------
+#         # 8. Create UNIQUE model filename
+#         # ---------------------------------------
+#         from datetime import datetime
+
+#         timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+
+#         model_filename = f"trained_model_{timestamp}.pkl"
+
+#         model_path = os.path.join(
+#             user_model_folder,
+#             model_filename
+#         )
+
+
+#         # ---------------------------------------
+#         # 9. Save model
+#         # ---------------------------------------
+#         joblib.dump(model, model_path)
+
+#         # ---------------------------------------
+#         # 10. Get training output
+#         # ---------------------------------------
+#         output = sys.stdout.getvalue()
+
+#         # ---------------------------------------
+#         # 11. Restore stdout
+#         # ---------------------------------------
+#         sys.stdout = old_stdout
+
+#         # ---------------------------------------
+#         # 12. Return success
+#         # ---------------------------------------
+#         return jsonify({
+#             "success": True,
+#             "message": "Model trained and saved successfully",
+#             "filename": model_filename,
+#             "output": output
+#         }), 200
+
+#     except Exception as e:
+
+#         sys.stdout = old_stdout
+
+#         return jsonify({
+#             "success": False,
+#             "error": traceback.format_exc()
+#         }), 400
+
+@app.route('/model/train', methods=['POST'])
+def train_model():
+    old_stdout = sys.stdout
+
+    try:
+        # ---------------------------------------
+        # 1. Get logged-in user
+        # ---------------------------------------
+        token = request.headers.get('Authorization')
+        user_id = get_user_id_from_token(token)
+
+        if not user_id:
+            return jsonify({
+                "success": False,
+                "error": "Unauthorized"
+            }), 401
+
+        # ---------------------------------------
+        # 2. Get request data
+        # ---------------------------------------
+        data = request.get_json()
+
+        if not data:
+            return jsonify({
+                "success": False,
+                "error": "Request body is required"
+            }), 400
+
+        code = data.get("code")
+        model_name = data.get("model_name")
+
+        # ---------------------------------------
+        # 3. Validate code
+        # ---------------------------------------
+        if not code:
+            return jsonify({
+                "success": False,
+                "error": "Training code is required"
+            }), 400
+
+        # ---------------------------------------
+        # 4. Validate model name
+        # ---------------------------------------
+        if not model_name or not model_name.strip():
+            return jsonify({
+                "success": False,
+                "error": "Model name is required"
+            }), 400
+
+        # ---------------------------------------
+        # 5. Make model name safe
+        # ---------------------------------------
+        safe_model_name = secure_filename(model_name.strip())
+
+        if not safe_model_name:
+            return jsonify({
+                "success": False,
+                "error": "Invalid model name"
+            }), 400
+
+        # ---------------------------------------
+        # 6. Capture training output
+        # ---------------------------------------
+        sys.stdout = io.StringIO()
+
+        # ---------------------------------------
+        # 7. Environment for user's code
+        # ---------------------------------------
+        exec_globals = {
+            "__name__": "__main__"
+        }
+
+        # ---------------------------------------
+        # 8. Run user's training code
+        # ---------------------------------------
+        exec(code, exec_globals)
+
+        # ---------------------------------------
+        # 9. Check trained model
+        # ---------------------------------------
+        if "model" not in exec_globals:
+            sys.stdout = old_stdout
+
+            return jsonify({
+                "success": False,
+                "error": (
+                    "No trained model found. "
+                    "Please store your trained model "
+                    "in a variable named 'model'."
+                )
+            }), 400
+
+        model = exec_globals["model"]
+
+        # ---------------------------------------
+        # 10. Create user's model folder
+        # ---------------------------------------
+        user_model_folder = os.path.join(
+            BASE_MODEL_FOLDER,
+            str(user_id)
+        )
+
+        os.makedirs(
+            user_model_folder,
+            exist_ok=True
+        )
+
+        # ---------------------------------------
+        # 11. Create model filename
+        # ---------------------------------------
+        model_filename = f"{safe_model_name}.pkl"
+
+        # ---------------------------------------
+        # 12. Model path
+        # ---------------------------------------
+        model_path = os.path.join(
+            user_model_folder,
+            model_filename
+        )
+
+        # ---------------------------------------
+        # 13. Save model
+        # ---------------------------------------
+        # If the same model name already exists,
+        # this replaces the old model.
+        joblib.dump(model, model_path)
+
+        # ---------------------------------------
+        # 14. Get training output
+        # ---------------------------------------
+        output = sys.stdout.getvalue()
+
+        # ---------------------------------------
+        # 15. Restore stdout
+        # ---------------------------------------
+        sys.stdout = old_stdout
+
+        # ---------------------------------------
+        # 16. Return success
+        # ---------------------------------------
+        return jsonify({
+            "success": True,
+            "message": "Model trained and saved successfully",
+            "filename": model_filename,
+            "model_name": safe_model_name,
+            "output": output
+        }), 200
+
+    except Exception as e:
+
+        sys.stdout = old_stdout
+
+        return jsonify({
+            "success": False,
+            "error": traceback.format_exc()
+        }), 400
+
+
+@app.route('/model/list', methods=['GET'])
+def list_models():
+
+    if request.method == 'OPTIONS':
+        return '', 200
+
+    try:
+        # ---------------------------------------
+        # 1. Get logged-in user
+        # ---------------------------------------
+        token = request.headers.get('Authorization')
+        user_id = get_user_id_from_token(token)
+
+        if not user_id:
+            return jsonify({
+                "success": False,
+                "error": "Unauthorized"
+            }), 401
+
+        # ---------------------------------------
+        # 2. User's model folder
+        # ---------------------------------------
+        user_model_folder = os.path.join(
+            BASE_MODEL_FOLDER,
+            str(user_id)
+        )
+
+        # ---------------------------------------
+        # 3. No models yet
+        # ---------------------------------------
+        if not os.path.exists(user_model_folder):
+            return jsonify({
+                "success": True,
+                "models": []
+            }), 200
+
+        # ---------------------------------------
+        # 4. Get model files
+        # ---------------------------------------
+        models = []
+
+        for filename in os.listdir(user_model_folder):
+
+            file_path = os.path.join(
+                user_model_folder,
+                filename
+            )
+
+            if os.path.isfile(file_path) and filename.endswith(".pkl"):
+
+                models.append({
+                    "filename": filename
+                })
+
+        # ---------------------------------------
+        # 5. Newest models first
+        # ---------------------------------------
+        models.sort(
+            key=lambda x: x["filename"],
+            reverse=True
+        )
+
+        return jsonify({
+            "success": True,
+            "models": models
+        }), 200
+
+    except Exception as e:
+
+        return jsonify({
+            "success": False,
+            "error": str(e)
+        }), 500
+
+@app.route('/model/delete/<filename>', methods=['DELETE'])
+def delete_model(filename):
+    if request.method == 'OPTIONS':
+        return '', 200
+
+    try:
+        # ---------------------------------------
+        # 1. Get logged-in user
+        # ---------------------------------------
+        token = request.headers.get('Authorization')
+        user_id = get_user_id_from_token(token)
+
+        if not user_id:
+            return jsonify({
+                "success": False,
+                "error": "Unauthorized"
+            }), 401
+
+        # ---------------------------------------
+        # 2. Make filename safe
+        # ---------------------------------------
+        filename = secure_filename(filename)
+
+        if not filename:
+            return jsonify({
+                "success": False,
+                "error": "Invalid filename"
+            }), 400
+
+        # ---------------------------------------
+        # 3. Get user's model folder
+        # ---------------------------------------
+        user_model_folder = os.path.join(
+            BASE_MODEL_FOLDER,
+            str(user_id)
+        )
+
+        model_path = os.path.join(
+            user_model_folder,
+            filename
+        )
+
+        # ---------------------------------------
+        # 4. Check model exists
+        # ---------------------------------------
+        if not os.path.exists(model_path):
+            return jsonify({
+                "success": False,
+                "error": "Model not found"
+            }), 404
+
+        # ---------------------------------------
+        # 5. Delete model
+        # ---------------------------------------
+        os.remove(model_path)
+
+        return jsonify({
+            "success": True,
+            "message": "Model deleted successfully"
+        }), 200
+
+    except Exception as e:
+
+        return jsonify({
+            "success": False,
+            "error": str(e)
+        }), 500
+    
+@app.route('/model/download/<filename>', methods=['GET'])
+def download_model(filename):
+
+    try:
+        # ---------------------------------------
+        # 1. Check user
+        # ---------------------------------------
+        token = request.headers.get('Authorization')
+        user_id = get_user_id_from_token(token)
+
+        if not user_id:
+            return jsonify({
+                "success": False,
+                "error": "Unauthorized"
+            }), 401
+
+        # ---------------------------------------
+        # 2. Prevent unsafe filenames
+        # ---------------------------------------
+        filename = secure_filename(filename)
+
+        if not filename:
+            return jsonify({
+                "success": False,
+                "error": "Invalid filename"
+            }), 400
+
+        # ---------------------------------------
+        # 3. Get user's model folder
+        # ---------------------------------------
+        user_model_folder = os.path.join(
+            BASE_MODEL_FOLDER,
+            str(user_id)
+        )
+
+        model_path = os.path.join(
+            user_model_folder,
+            filename
+        )
+
+        # ---------------------------------------
+        # 4. Check model exists
+        # ---------------------------------------
+        if not os.path.exists(model_path):
+            return jsonify({
+                "success": False,
+                "error": "Model not found"
+            }), 404
+
+        # ---------------------------------------
+        # 5. Send model to browser
+        # ---------------------------------------
+        return send_file(
+            model_path,
+            as_attachment=True,
+            download_name=filename
+        )
+
+    except Exception as e:
+
+        return jsonify({
+            "success": False,
+            "error": str(e)
+        }), 500
+
 import os
 
 BASE_UPLOAD_FOLDER = "uploads"
 os.makedirs(BASE_UPLOAD_FOLDER, exist_ok=True)
+
+BASE_MODEL_FOLDER = "models"
+os.makedirs(BASE_MODEL_FOLDER, exist_ok=True)
 
 # @app.route('/file/upload', methods=['POST'])
 # def upload_file():

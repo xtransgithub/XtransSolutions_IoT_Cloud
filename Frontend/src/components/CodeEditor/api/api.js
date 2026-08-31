@@ -73,7 +73,55 @@ export const fetchCSV = async (channelId,channelName, token) => {
     });
 };
 
+export const trainModel = (code, token,modelName) => {
+    return axios.post(
+        `${config.FLASK_URL}model/train`,
+        {
+            code: code,
+            model_name: modelName
+        },
+        {
+            headers: {
+                Authorization: token
+            }
+        }
+    );
+};
 
+
+export const downloadModel = (filename, token) => {
+    return axios.get(
+        `${config.FLASK_URL}model/download/${encodeURIComponent(filename)}`,
+        {
+            headers: {
+                Authorization: `Bearer ${token}`
+            },
+            responseType: "blob"
+        }
+    );
+};
+
+export const listModels = (token) => {
+    return axios.get(
+        `${config.FLASK_URL}model/list`,
+        {
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        }
+    );
+    
+};
+export const deleteModel = (filename, token) => {
+    return axios.delete(
+        `${config.FLASK_URL}model/delete/${encodeURIComponent(filename)}`,
+        {
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        }
+    );
+};
 // export const getChannelName = async (channelId, token) => {
 //     return axios.get(
 //         `${config.BACKEND_URL}api/auth/channel/${channelId}/name`,

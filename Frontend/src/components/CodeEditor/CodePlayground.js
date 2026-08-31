@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback  } from "react";
-import { listFiles, deleteFile, uploadFile, runCode, renameFile, fetchChannels, fetchCSV, getChannelName} from "./api/api";
+import { listFiles, deleteFile, uploadFile, runCode, renameFile, fetchChannels, fetchCSV, getChannelName,trainModel,downloadModel,listModels,deleteModel} from "./api/api";
 import { toast } from "react-toastify";
 import CodeMirror from "@uiw/react-codemirror";
 import { python } from "@codemirror/lang-python";
@@ -22,15 +22,62 @@ import {
 } from "@mui/material";
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 import PlayArrowIcon from "@mui/icons-material/PlayArrow";
+import ModelTrainingIcon from "@mui/icons-material/ModelTraining";
+import DownloadIcon from "@mui/icons-material/Download";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
 import FolderIcon from "@mui/icons-material/Folder";
 import InsertDriveFileIcon from "@mui/icons-material/InsertDriveFile";
 
 const CodePlayground = ({ token }) => {
+    //const [code, setCode] = useState("");
     const [code, setCode] = useState("");
+    const [codeLoaded, setCodeLoaded] = useState(false);
+  useEffect(() => {
+    const storedUserId = localStorage.getItem("userId");
+
+    if (storedUserId) {
+        setUserId(storedUserId);
+
+        const savedCode = localStorage.getItem(
+            `codePlaygroundCode_${storedUserId}`
+        );
+
+        if (savedCode !== null) {
+            setCode(savedCode);
+        }
+    }
+
+    setCodeLoaded(true);
+}, []);
+
+// SAVE CODE WHENEVER YOU TYPE
+useEffect(() => {
+    if (!codeLoaded) return;
+
+    const storedUserId = localStorage.getItem("userId");
+
+    if (storedUserId) {
+        localStorage.setItem(
+            `codePlaygroundCode_${storedUserId}`,
+            code
+        );
+    }
+}, [code, codeLoaded]);
+// useEffect(() => {
+//     const storedUserId = localStorage.getItem("userId");
+
+//     if (storedUserId) {
+//         const savedCode = localStorage.getItem(
+//             `codePlaygroundCode_${storedUserId}`
+//         );
+
+//         setCode(savedCode || "");
+//     }
+// }, []);
     const [output, setOutput] = useState("");
     const [plots, setPlots] = useState([]); // FIXED: Initialize as an empty array
+    const [terminalHeight, setTerminalHeight] = useState(40);
     const [plotPopupOpen, setPlotPopupOpen] = useState(false);
     const [isPopupOpen, setPopupOpen] = useState(false);
     const [files, setFiles] = useState([]);
@@ -39,6 +86,9 @@ const CodePlayground = ({ token }) => {
     const [selectedFile, setSelectedFile] = useState("");
     const [newFileName, setNewFileName] = useState("");
     const [isRunning, setIsRunning] = useState(false);
+    const [isTraining, setIsTraining] = useState(false);
+    const [trainedModels, setTrainedModels] = useState([]);
+    const [modelName, setModelName] = useState("");
     const [channels, setChannels] = useState([]);
     const [selectedChannel, setSelectedChannel] = useState("");
     const [userId, setUserId] = useState("");
@@ -56,16 +106,52 @@ const CodePlayground = ({ token }) => {
             toast.error("Failed to fetch files.");
         }
     }, [token]);
+    const fetchModels = useCallback(async () => {
+    try {
+        const response = await listModels(token);
+
+        setTrainedModels(
+            response.data.models || []
+        );
+
+        console.log(
+            "Fetched trained models:",
+            response.data.models
+        );
+
+    } catch (error) {
+
+        console.error(
+            "Failed to fetch trained models:",
+            error
+        );
+
+        toast.error("Failed to fetch trained models.");
+    }
+}, [token]);
 
     useEffect(() => {
         fetchFiles();
     }, [fetchFiles]);
-     useEffect(() => {
-    const storedUserId = localStorage.getItem("userId");
-    if (storedUserId) {
-        setUserId(storedUserId);
-    }
-}, []);
+    useEffect(() => {
+    fetchModels();
+}, [fetchModels]);
+//      useEffect(() => {
+//     const storedUserId = localStorage.getItem("userId");
+//     if (storedUserId) {
+//         setUserId(storedUserId);
+//     }
+// }, []);
+// useEffect(() => {
+//     const storedUserId = localStorage.getItem("userId");
+
+//     if (storedUserId) {
+//         localStorage.setItem(
+//             `codePlaygroundCode_${storedUserId}`,
+//             code
+//         );
+//     }
+// }, [code]);
     const handleRunCode = async () => {
         setIsRunning(true);
         try {
@@ -86,6 +172,196 @@ const CodePlayground = ({ token }) => {
             setIsRunning(false);
         }
     };
+//     const handleTrainModel = async () => {
+
+//     if (!code.trim()) {
+//         toast.warn("Please enter training code.");
+//         return;
+//     }
+
+//     setIsTraining(true);
+//     setTrainedModel(null);
+
+//     try {
+
+//         const response = await trainModel(code, token);
+
+//         if (response.data.success) {
+
+//             setTrainedModel(response.data.filename);
+
+//             // Show training output
+//             if (response.data.output) {
+//                 setOutput(response.data.output);
+//             }
+
+//             toast.success("Model trained successfully!");
+
+//         } else {
+
+//             toast.error(
+//                 response.data.error || "Model training failed."
+//             );
+//         }
+
+//     } catch (error) {
+
+//         const errorMessage =
+//             error?.response?.data?.error ||
+//             "Model training failed.";
+
+//         setOutput(`Training Error:\n${errorMessage}`);
+
+//         toast.error("Model training failed.");
+
+//     } finally {
+
+//         setIsTraining(false);
+//     }
+// };
+const handleTrainModel = async () => {
+
+    // Check code
+    if (!code.trim()) {
+        toast.warn("Please enter training code.");
+        return;
+    }
+
+    // Check model name
+    if (!modelName.trim()) {
+        toast.warn("Please enter a model name.");
+        return;
+    }
+
+    setIsTraining(true);
+
+    try {
+
+        // Send code + model name
+        const response = await trainModel(
+            code,
+            token,
+            modelName
+        );
+
+        if (response.data.success) {
+
+            // Show training output
+            if (response.data.output) {
+                setOutput(response.data.output);
+            }
+
+            toast.success(
+                `${response.data.model_name || modelName} trained successfully!`
+            );
+
+            // Refresh model list
+            fetchModels();
+
+        } else {
+
+            toast.error(
+                response.data.error ||
+                "Model training failed."
+            );
+        }
+
+    } catch (error) {
+
+        const errorMessage =
+            error?.response?.data?.error ||
+            "Model training failed.";
+
+        setOutput(
+            `Training Error:\n${errorMessage}`
+        );
+
+        toast.error("Model training failed.");
+
+    } finally {
+
+        setIsTraining(false);
+    }
+};
+
+const handleDownloadModel = async (filename) => {
+
+    try {
+
+        const response = await downloadModel(
+            filename,
+            token
+        );
+
+        const blob = new Blob(
+            [response.data],
+            {
+                type: "application/octet-stream"
+            }
+        );
+
+        const url = window.URL.createObjectURL(blob);
+
+        const link = document.createElement("a");
+
+        link.href = url;
+        link.download = filename;
+
+        document.body.appendChild(link);
+
+        link.click();
+
+        link.remove();
+
+        window.URL.revokeObjectURL(url);
+
+        toast.success(
+            `${filename} downloaded successfully!`
+        );
+
+    } catch (error) {
+
+        console.error(
+            "Model download error:",
+            error
+        );
+
+        toast.error(
+            "Failed to download model."
+        );
+    }
+};
+const handleDeleteModel = async (filename) => {
+
+    try {
+
+        const confirmed = window.confirm(
+            `Are you sure you want to delete ${filename}?`
+        );
+
+        if (!confirmed) {
+            return;
+        }
+
+        await deleteModel(filename, token);
+
+        toast.success("Model deleted successfully!");
+
+        // Refresh model list
+        fetchModels();
+
+    } catch (error) {
+
+        console.error(
+            "Model delete error:",
+            error
+        );
+
+        toast.error(
+            "Failed to delete model."
+        );
+    }
+};
 
     useEffect(() => {
         const loadChannels = async () => {
@@ -193,9 +469,75 @@ const channelName = selectedChannelData?.name;
     navigator.clipboard.writeText(text);
     toast.success("Copied to clipboard!");
 };
+const startTerminalResize = (e) => {
+    e.preventDefault();
 
+    // Get the main container directly
+    const container = e.currentTarget.closest(
+        '[data-code-playground-container]'
+    );
+
+    if (!container) {
+        return;
+    }
+
+    const handleMouseMove = (event) => {
+
+    const rect = container.getBoundingClientRect();
+
+    const mouseY = event.clientY - rect.top;
+
+    // Calculate terminal height percentage
+    let terminalPercent =
+        ((rect.bottom - event.clientY) / rect.height) * 100;
+
+    // Minimum terminal height = 15%
+    // Maximum terminal height = 70%
+    terminalPercent = Math.max(
+        15,
+        Math.min(70, terminalPercent)
+    );
+
+    setTerminalHeight(terminalPercent);
+};
+
+    const handleMouseUp = () => {
+
+        document.removeEventListener(
+            "mousemove",
+            handleMouseMove
+        );
+
+        document.removeEventListener(
+            "mouseup",
+            handleMouseUp
+        );
+
+        document.body.style.cursor = "";
+        document.body.style.userSelect = "";
+    };
+
+    document.addEventListener(
+        "mousemove",
+        handleMouseMove
+    );
+
+    document.addEventListener(
+        "mouseup",
+        handleMouseUp
+    );
+
+    document.body.style.cursor = "row-resize";
+    document.body.style.userSelect = "none";
+};
     return (
-        <Box sx={styles.container}>
+       <Box
+    sx={{
+        ...styles.container,
+        gridTemplateRows: `${100 - terminalHeight}% ${terminalHeight}%`
+    }}
+    data-code-playground-container
+>
             {/* Sidebar - File Explorer */}
             <Box sx={styles.sidebar}>
                 <Typography variant="h6" sx={styles.sidebarTitle}>
@@ -365,6 +707,134 @@ files.map((file, index) => {
                     )}
                 </Paper>
     </Paper>
+
+    {/* Trained Models */}
+<Paper
+    elevation={3}
+     sx={{
+        ...styles.uploadBox,
+        marginTop: "8px",
+        height: "190px",
+        overflowY: "auto",
+        overflowX: "hidden",
+        flexShrink: 0
+    }}
+>
+    <Typography
+        variant="subtitle2"
+        sx={{
+            fontWeight: "bold",
+            mb: 1
+        }}
+    >
+        Trained Models
+    </Typography>
+
+    {trainedModels.length === 0 ? (
+
+        <Typography
+            variant="body2"
+            sx={{
+                textAlign: "center",
+                color: "gray",
+                py: 1
+            }}
+        >
+            No trained models available
+        </Typography>
+
+    ) : (
+
+        trainedModels.map((model, index) => (
+
+         <Box
+    key={model.filename || index}
+    sx={{
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "space-between",
+        padding: "7px 4px",
+        minHeight: "38px",
+        boxSizing: "border-box",
+        borderBottom:
+            index !== trainedModels.length - 1
+                ? "1px solid #eee"
+                : "none",
+        gap: "5px"
+    }}
+>
+
+                <Box
+                    sx={{
+                        display: "flex",
+                        alignItems: "center",
+                        minWidth: 0,
+                        flexGrow: 1
+                    }}
+                >
+
+                    <ModelTrainingIcon
+                        sx={{
+                            fontSize: 18,
+                            mr: 1,
+                            color: "primary.main"
+                        }}
+                    />
+
+                    <Typography
+                        variant="body2"
+                        sx={{
+                            overflow: "hidden",
+                            textOverflow: "ellipsis",
+                            whiteSpace: "nowrap"
+                        }}
+                        title={model.filename}
+                    >
+                        {model.filename}
+                    </Typography>
+
+                </Box>
+
+                <Box
+    sx={{
+        display: "flex",
+        alignItems: "center",
+        gap: "2px"
+    }}
+>
+
+    {/* Download */}
+    <IconButton
+        size="small"
+        color="primary"
+        onClick={() =>
+            handleDownloadModel(model.filename)
+        }
+        title="Download model"
+    >
+        <DownloadIcon fontSize="small" />
+    </IconButton>
+
+    {/* Delete */}
+    <IconButton
+        size="small"
+        color="error"
+        onClick={() =>
+            handleDeleteModel(model.filename)
+        }
+        title="Delete model"
+    >
+        <DeleteIcon fontSize="small" />
+    </IconButton>
+
+</Box>
+
+            </Box>
+
+        ))
+
+    )}
+</Paper>
                 {/* File List */}
                 <Typography variant="h6" sx={styles.sidebarTitle}>
                     <FolderIcon sx={{ mr: 1 }} />
@@ -418,22 +888,95 @@ files.map((file, index) => {
             {/* Code Editor */}
             <Box sx={styles.editorContainer}>
                 <Box sx={styles.topBar}>
-                    <Button variant="contained" color="success" startIcon={<PlayArrowIcon />} onClick={handleRunCode} disabled={isRunning}>
+                    {/* <Button variant="contained" color="success" startIcon={<PlayArrowIcon />} onClick={handleRunCode} disabled={isRunning}>
                         {isRunning ? "Executing..." : "Run Code"}
-                    </Button>
+                    </Button> */}
+
+                    <TextField
+    size="small"
+    label="Model Name"
+    placeholder="Example: RandomForest"
+    value={modelName}
+    onChange={(e) => setModelName(e.target.value)}
+    sx={{
+        width: "220px",
+        mr: 1
+    }}
+/>
+                    <IconButton
+    color="success"
+    onClick={handleRunCode}
+    disabled={isRunning}
+    title={isRunning ? "Executing..." : "Run Code"}
+>
+    <PlayArrowIcon />
+</IconButton>
+                     {/* <Button
+        variant="contained"
+        color="primary"
+        onClick={handleTrainModel}
+        disabled={isRunning || isTraining}
+    >
+        {isTraining
+            ? "Training..."
+            : "Train & Save Model"
+        }
+    </Button> */}
+
+    <IconButton
+    color="primary"
+    onClick={handleTrainModel}
+    disabled={isRunning || isTraining}
+    title={isTraining ? "Training..." : "Train & Save Model"}
+>
+    <ModelTrainingIcon />
+</IconButton>
+     
+{/* {trainedModel && (
+    <IconButton
+        color="secondary"
+        onClick={handleDownloadModel}
+        title="Download Model"
+    >
+        <DownloadIcon />
+    </IconButton>
+)} */}
+ {/* {trainedModel && (
+        <Button
+            variant="contained"
+            color="secondary"
+            onClick={handleDownloadModel}
+        >
+            Download Model
+        </Button>
+    )} */}
                 </Box>
                 <CodeMirror
                     value={code}
-                    height="400px"
+                    height="100%"
                     extensions={[python()]}
                     theme={vscodeDark}
                     onChange={(value) => setCode(value)}
                     style={{ flexGrow: 1, borderRadius: "5px", overflow: "hidden" }}
                 />
+               
             </Box>
 
             {/* Output Terminal */}
             <Box sx={styles.terminal}>
+    <Box
+    onMouseDown={startTerminalResize}
+    sx={{
+        height: "6px",
+        cursor: "row-resize",
+        backgroundColor: "#d0d0d0",
+        flexShrink: 0,
+
+        "&:hover": {
+            backgroundColor: "#1976d2"
+        }
+    }}
+/>
                 <Typography variant="h6">Output</Typography>                
                 <Paper elevation={3} sx={styles.outputBox}>
                     <pre style={styles.outputText}>{output || "No output yet..."}</pre>
@@ -581,28 +1124,49 @@ const styles = {
         textOverflow: "ellipsis",
         whiteSpace: "nowrap",
     },
-    terminal: {
-        gridArea: "terminal",
-        padding: "10px",
-        backgroundColor: "#ffffff",
-        display: "flex",
-        flexDirection: "column",
-        justifyContent: "flex-start",
-        alignItems: "stretch",
-        marginTop: "30px",
-    },
+    // terminal: {
+    //     gridArea: "terminal",
+    //     padding: "10px",
+    //     backgroundColor: "#ffffff",
+    //     display: "flex",
+    //     flexDirection: "column",
+    //     justifyContent: "flex-start",
+    //     alignItems: "stretch",
+    //     // marginTop: "30px",
+    // },
+   terminal: {
+    gridArea: "terminal",
+    padding: "0px 10px 10px 10px",
+    backgroundColor: "#ffffff",
+    display: "flex",
+    flexDirection: "column",
+    minHeight: 0,
+    overflow: "hidden",
+},
+    // outputBox: {
+    //     padding: "10px",
+    //     borderRadius: "5px",
+    //     minHeight: "160px",
+    //     maxHeight: "300px",
+    //     overflowY: "auto",
+    //     whiteSpace: "pre-wrap",
+    //     backgroundColor: "#333",
+    //     color: "#fff",
+    //     fontSize: "14px",
+    //     fontFamily: "monospace",
+    // },
     outputBox: {
-        padding: "10px",
-        borderRadius: "5px",
-        minHeight: "160px",
-        maxHeight: "300px",
-        overflowY: "auto",
-        whiteSpace: "pre-wrap",
-        backgroundColor: "#333",
-        color: "#fff",
-        fontSize: "14px",
-        fontFamily: "monospace",
-    },
+    padding: "10px",
+    borderRadius: "5px",
+    flex: 1,
+    minHeight: 0,
+    overflowY: "auto",
+    whiteSpace: "pre-wrap",
+    backgroundColor: "#333",
+    color: "#fff",
+    fontSize: "14px",
+    fontFamily: "monospace",
+},
     outputText: {
         margin: "0",
         whiteSpace: "pre-wrap",
@@ -618,6 +1182,20 @@ const styles = {
         alignSelf: "center",
         width: "90%",
     },
+    editorContainer: {
+    gridArea: "editor",
+    display: "flex",
+    flexDirection: "column",
+    minHeight: 0,
+    overflow: "hidden",
+},
+topBar: {
+    display: "flex",
+    alignItems: "center",
+    gap: "10px",
+    padding: "10px",
+    flexShrink: 0,
+},
 };
 
 export default CodePlayground;

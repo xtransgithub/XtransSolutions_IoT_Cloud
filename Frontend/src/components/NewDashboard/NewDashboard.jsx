@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import GaugeChartComponent from '../GuageChart/GuageChart';
 import LineChartComponent from '../LineChart/LineChart';
+import TrafficLightComponent from '../TrafficLight/TrafficLightComponent';
 import './NewDashboard.css';
 import FieldDisplay from './FieldDisplay';
 import { useParams } from 'react-router-dom';
@@ -8,6 +9,7 @@ import axios from 'axios';
 import {AdvancedImage} from '@cloudinary/react';
 import { FiCopy } from 'react-icons/fi';
 import images from '../../assets/index'
+
 
 import { fetchChannelData } from './FetchChannel';
 import { getCSV } from './CsvUtils';
@@ -185,6 +187,7 @@ const ChannelDashboard = () => {
                                     <option value="gauge">Gauge</option>
                                     <option value="line">Chart</option>
                                     <option value="toggle">Toggle</option>
+                                    {/* <option value="traffic">Traffic Light</option> */}
                                 </select>
 
                                 {(chartTypes[field] === 'all') && (
@@ -209,6 +212,16 @@ const ChannelDashboard = () => {
                                         </button>
                                     </div>
                                 )}
+                               
+                                {/* {(chartTypes[field] === 'traffic') && (
+
+    <div className="TrafficLight">
+        <TrafficLightComponent 
+            color={fieldData[field]}
+        />
+    </div>
+
+)} */}
 
                                 {(chartTypes[field] === 'all' || chartTypes[field] === 'gauge') && (
                                     <div className='GuageChart'>

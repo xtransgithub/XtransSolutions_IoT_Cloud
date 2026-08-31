@@ -1,0 +1,55 @@
+.traffic-container{
+    width:110px;
+    background:#222;
+    border-radius:25px;
+    padding:20px;
+    display:flex;
+    flex-direction:column;
+    gap:20px;
+    align-items:center;
+}
+
+
+.light{
+    width:60px;
+    height:60px;
+    border-radius:50%;
+    background:#555;
+}
+
+
+.red{
+    background:red;
+}
+
+
+.yellow{
+    background:yellow;
+}
+
+
+.green{
+    background:green;
+}
+
+
+.blink{
+    animation:blink-animation 1s infinite;
+}
+
+
+@keyframes blink-animation{
+
+    0%{
+        opacity:1;
+    }
+
+    50%{
+        opacity:0.2;
+    }
+
+    100%{
+        opacity:1;
+    }
+
+}
