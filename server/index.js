@@ -41,7 +41,7 @@ app.use(express.json())
 app.use('/api/auth', authRouter)
 app.use('/api/auth', accountRouter)
 // yaha pr data ka middleware dalna hai
-app.use('/verify', verification.verifyEmail)
+app.use('/api/verify', verification.verifyEmail)
 // Apply to routes
 app.use('/api/auth', authenticateJWT, authRouter);
 // app.use('/api', dataRouter)
