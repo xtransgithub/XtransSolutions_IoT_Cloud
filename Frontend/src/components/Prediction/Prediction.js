@@ -74,7 +74,7 @@ const Prediction = () => {
     }
 
     try {
-      const response = await axios.post(`${config.BACKEND_URL}prediction`, formData, {
+      const response = await axios.post(`${config.FLASK_URL}prediction`, formData, {
      // const response = await axios.post('http://74.208.151.248:5001/prediction', formData, {
         headers: { Authorization: `Bearer ${token}` },
       });
